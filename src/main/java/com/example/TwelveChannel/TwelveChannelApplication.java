@@ -8,6 +8,7 @@ public class TwelveChannelApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(TwelveChannelApplication.class, args);
+		//ai
 	}
 
 }
