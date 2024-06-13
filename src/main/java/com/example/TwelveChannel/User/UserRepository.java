@@ -18,7 +18,7 @@ public class UserRepository implements IUserRepository{
         param.addValue("login_id", loginForm.getLogin_id());
         param.addValue("password", loginForm.getPassword());
         var list = jdbcTemplate.query("SELECT * " +
-                "FROM users1 " +
+                "FROM users " +
                 "WHERE login_id = :login_id AND password = :password "
                 , param, new DataClassRowMapper<>(UserEntity.class));
         return list.isEmpty() ? null : list.get(0);
@@ -29,7 +29,7 @@ public class UserRepository implements IUserRepository{
         var param = new MapSqlParameterSource();
         param.addValue("login_id", signUpForm.getLogin_id());
         param.addValue("password", signUpForm.getPassword());
-        return jdbcTemplate.update("INSERT INTO users1" +
+        return jdbcTemplate.update("INSERT INTO users " +
                 "(login_id, password )" +
                 "VALUES(:login_id,:password)", param);
     }
@@ -38,7 +38,7 @@ public class UserRepository implements IUserRepository{
     public int deleteUser(int id){
         var param = new MapSqlParameterSource();
         param.addValue("id", id);
-        return jdbcTemplate.update("Delete From users1 " +
+        return jdbcTemplate.update("Delete From users " +
                 "WHERE id = :id ",param);
     }
 }
