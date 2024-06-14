@@ -29,7 +29,7 @@ public class UserRepository implements IUserRepository{
         var param = new MapSqlParameterSource();
         param.addValue("login_id", signUpForm.getLogin_id());
         param.addValue("password", signUpForm.getPassword());
-        return jdbcTemplate.update("INSERT INTO users " +
+        return jdbcTemplate.update("INSERT INTO users" +
                 "(login_id, password )" +
                 "VALUES(:login_id,:password)", param);
     }
