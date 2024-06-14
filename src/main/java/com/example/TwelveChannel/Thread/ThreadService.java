@@ -22,6 +22,11 @@ public class ThreadService implements IThreadService{
     }
 
     @Override
+    public List<ThreadEntity> FindbyrCeatorthread(int user_id){
+        return threadRepository.FindbyrCeatorthread(user_id);
+    }
+
+    @Override
     public int InsertThread(ThreadEntity threadEntity){
         return threadRepository.InsertThread(threadEntity);
     }

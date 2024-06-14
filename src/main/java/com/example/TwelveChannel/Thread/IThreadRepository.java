@@ -8,6 +8,8 @@ public interface IThreadRepository {
 
     ThreadEntity FindbyIdthread(int thread_id);
 
+    List<ThreadEntity> FindbyrCeatorthread(int user_id);
+
     int InsertThread(ThreadEntity threadEntity);
 
     int UpdateThread(ThreadEntity threadEntity);

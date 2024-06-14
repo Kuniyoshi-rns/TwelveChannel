@@ -8,6 +8,8 @@ public interface IThreadService {
 
     public ThreadEntity FindbyIdthread(int thread_id);
 
+    public List<ThreadEntity> FindbyrCeatorthread(int user_id);
+
     public int InsertThread(ThreadEntity threadEntity);
 
     public int UpdateThread(ThreadEntity threadEntity);
