@@ -3,7 +3,6 @@ package com.example.TwelveChannel.Favorite;
 import com.example.TwelveChannel.Thread.ThreadEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.DataClassRowMapper;
-import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -33,7 +32,7 @@ public class FavoriteRepository implements IFavoriteRepository{
         param.addValue("thread_id", threadId);
         return jdbcTemplate.query("SELECT count(*) " +
                 "FROM favorite_threads " +
-                "WHERE thread_id = :thread_id", param, new DataClassRowMapper<>(count.class)).get(0).count();
+                "WHERE thread_id = :thread_id", param, new DataClassRowMapper<>(Count.class)).get(0).count();
     }
 
     @Override
