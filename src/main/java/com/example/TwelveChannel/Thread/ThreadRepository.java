@@ -30,8 +30,8 @@ public class ThreadRepository implements IThreadRepository{
 
     public int InsertThread(ThreadEntity threadEntity){
         var param = new MapSqlParameterSource();
-        param.addValue("authar",threadEntity.authar());
-        param.addValue("threadtitle",threadEntity.threadtitle());
+        param.addValue("creator",threadEntity.creator());
+        param.addValue("thread_title",threadEntity.thread_title());
         param.addValue("comment",threadEntity.comment());
         param.addValue("image_name",threadEntity.image_name());
         param.addValue("image_base64",threadEntity.image_base64());
@@ -39,8 +39,8 @@ public class ThreadRepository implements IThreadRepository{
         param.addValue("updated_at",threadEntity.updated_at());
         param.addValue("view_count",threadEntity.view_count());
 
-        return jdbcTemplate.update("insert into threads(authar,threadtitle,comment,image_name,image_base64,created_at,updated_at,view_count)" +
-                " values(:authar,:threadtitle,:comment,:image_name,:image_base64,:created_at,:updated_at,:view_count)",param);
+        return jdbcTemplate.update("insert into threads(creator,thread_title,comment,image_name,image_base64,created_at,updated_at,view_count)" +
+                " values(:creator,:thread_title,:comment,:image_name,:image_base64,:created_at,:updated_at,:view_count)",param);
     }
 
     @Override
@@ -48,13 +48,13 @@ public class ThreadRepository implements IThreadRepository{
 
         var param = new MapSqlParameterSource();
         param.addValue("id",threadEntity.id());
-        param.addValue("threadtitle",threadEntity.threadtitle());
+        param.addValue("thread_title",threadEntity.thread_title());
         param.addValue("comment",threadEntity.comment());
         param.addValue("image_name",threadEntity.image_name());
         param.addValue("image_base64",threadEntity.image_base64());
         param.addValue("updated_at",threadEntity.updated_at());
 
-        return jdbcTemplate.update("UPDATE threads SET threadtitle = :threadtitle," +
+        return jdbcTemplate.update("UPDATE threads SET thread_title = :thread_title," +
                                                             "comment = :comment," +
                                                             "image_name= :image_name," +
                                                             "image_base64= :image_base64," +
