@@ -12,37 +12,37 @@ public class ThreadService implements IThreadService{
     ThreadRepository threadRepository;
 
     @Override
-    public List<ThreadEntity> TreadAll(){
-        return threadRepository.TreadAll();
+    public List<ThreadEntity> threadAll(){
+        return threadRepository.threadAll();
     }
 
     @Override
-    public ThreadEntity FindbyIdthread(int thread_id) {
-        return threadRepository.FindbyIdthread(thread_id);
+    public ThreadEntity findByIdThread(int thread_id) {
+        return threadRepository.findByIdThread(thread_id);
     }
 
     @Override
-    public List<ThreadEntity> FindbyrCeatorthread(int user_id){
-        return threadRepository.FindbyrCeatorthread(user_id);
+    public List<ThreadEntity> findByCreatorThread(int user_id){
+        return threadRepository.findByCreatorThread(user_id);
     }
 
     @Override
-    public int InsertThread(ThreadEntity threadEntity){
-        return threadRepository.InsertThread(threadEntity);
+    public int insertThread(ThreadEntity threadEntity){
+        return threadRepository.insertThread(threadEntity);
     }
 
     @Override
-    public int UpdateThread(ThreadEntity threadEntity){
-        return threadRepository.UpdateThread(threadEntity);
+    public int updateThread(ThreadEntity threadEntity){
+        return threadRepository.updateThread(threadEntity);
     }
 
     @Override
-    public int DeleteThread(int thread_id){
-        return threadRepository.DeleteThread(thread_id);
+    public int deleteThread(int thread_id){
+        return threadRepository.deleteThread(thread_id);
     }
 
     @Override
-    public void AddViewCount(int id){
-        threadRepository.AddViewCount(id);
+    public void addViewCount(int id){
+        threadRepository.addViewCount(id);
     }
 }

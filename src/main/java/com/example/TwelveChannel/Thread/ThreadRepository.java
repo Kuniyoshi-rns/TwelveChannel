@@ -14,12 +14,12 @@ public class ThreadRepository implements IThreadRepository{
     private NamedParameterJdbcTemplate jdbcTemplate;
 
     @Override
-    public List<ThreadEntity>  TreadAll(){
+    public List<ThreadEntity>  threadAll(){
         return jdbcTemplate.query("SELECT * FROM threads",new DataClassRowMapper<>(ThreadEntity.class));
     }
 
     @Override
-    public ThreadEntity FindbyIdthread(int thread_id){
+    public ThreadEntity findByIdThread(int thread_id){
         var param = new MapSqlParameterSource();
         param.addValue("threadid",thread_id);
         var threadList = jdbcTemplate.query("SELECT * FROM threads " +
@@ -29,7 +29,7 @@ public class ThreadRepository implements IThreadRepository{
     }
 
     @Override
-    public List<ThreadEntity> FindbyrCeatorthread(int user_id){
+    public List<ThreadEntity> findByCreatorThread(int user_id){
         var param = new MapSqlParameterSource();
         param.addValue("creator",user_id);
         return jdbcTemplate.query("SELECT * FROM threads " +
@@ -37,7 +37,7 @@ public class ThreadRepository implements IThreadRepository{
                 param,new DataClassRowMapper<>(ThreadEntity.class));
     }
 
-    public int InsertThread(ThreadEntity threadEntity){
+    public int insertThread(ThreadEntity threadEntity){
         var param = new MapSqlParameterSource();
         param.addValue("creator",threadEntity.creator());
         param.addValue("thread_title",threadEntity.thread_title());
@@ -53,7 +53,7 @@ public class ThreadRepository implements IThreadRepository{
     }
 
     @Override
-    public int UpdateThread(ThreadEntity threadEntity){
+    public int updateThread(ThreadEntity threadEntity){
 
         var param = new MapSqlParameterSource();
         param.addValue("id",threadEntity.id());
@@ -72,14 +72,14 @@ public class ThreadRepository implements IThreadRepository{
     }
 
     @Override
-    public int DeleteThread(int thread_id){
+    public int deleteThread(int thread_id){
         var param = new MapSqlParameterSource();
         param.addValue("id",thread_id);
         return jdbcTemplate.update("DELETE FROM threads WHERE id = :id",param);
     }
 
     @Override
-    public void AddViewCount(int id){
+    public void addViewCount(int id){
         var param=new MapSqlParameterSource();
         param.addValue("id",id);
         jdbcTemplate.update("UPDATE threads " +

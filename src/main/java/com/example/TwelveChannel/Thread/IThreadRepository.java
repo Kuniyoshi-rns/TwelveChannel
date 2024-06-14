@@ -4,17 +4,17 @@ import java.util.List;
 
 public interface IThreadRepository {
 
-    List<ThreadEntity> TreadAll();
+    List<ThreadEntity> threadAll();
 
-    ThreadEntity FindbyIdthread(int thread_id);
+    ThreadEntity findByIdThread(int thread_id);
 
-    List<ThreadEntity> FindbyrCeatorthread(int user_id);
+    List<ThreadEntity> findByCreatorThread(int user_id);
 
-    int InsertThread(ThreadEntity threadEntity);
+    int insertThread(ThreadEntity threadEntity);
 
-    int UpdateThread(ThreadEntity threadEntity);
+    int updateThread(ThreadEntity threadEntity);
 
-    int DeleteThread(int thread_id);
+    int deleteThread(int thread_id);
 
-    void AddViewCount(int id);
+    void addViewCount(int id);
 }
