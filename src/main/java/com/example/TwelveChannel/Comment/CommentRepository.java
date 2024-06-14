@@ -16,10 +16,11 @@ public class CommentRepository implements ICommentRepository {
     public List<CommentEntity> getCommentByThread(int thread_id) {
         var param = new MapSqlParameterSource();
         param.addValue("thread_id", thread_id);
-        var list = jdbcTemplate.query("SELECT * " +
+        return jdbcTemplate.query("SELECT comments.id,thread_id,thread_title,user_id,comments.comment,comments.image_name,comments.image_base64,comments.created_at " +
                 "FROM comments " +
+                "INNER JOIN threads " +
+                "ON comments.thread_id = threads.id " +
                 "WHERE thread_id = :thread_id", param, new DataClassRowMapper<>(CommentEntity.class));
-        return list.isEmpty() ? null : list;
     }
 
     @Override
@@ -47,9 +48,10 @@ public class CommentRepository implements ICommentRepository {
     public List<CommentEntity> getCommentByUser(int user_id){
         var param = new MapSqlParameterSource();
         param.addValue("user_id", user_id);
-        var list = jdbcTemplate.query("SELECT * " +
+        return jdbcTemplate.query("SELECT comments.id,thread_id,thread_title,user_id,comments.comment,comments.image_name,comments.image_base64,comments.created_at " +
                 "FROM comments " +
+                "INNER JOIN threads " +
+                "ON comments.thread_id = threads.id " +
                 "WHERE user_id = :user_id", param, new DataClassRowMapper<>(CommentEntity.class));
-        return list.isEmpty() ? null : list;
     }
 }
