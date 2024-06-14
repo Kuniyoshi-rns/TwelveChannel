@@ -28,6 +28,15 @@ public class ThreadRepository implements IThreadRepository{
         return threadList.isEmpty() ? null : threadList.get(0);
     }
 
+    @Override
+    public List<ThreadEntity> FindbyrCeatorthread(int user_id){
+        var param = new MapSqlParameterSource();
+        param.addValue("creator",user_id);
+        return jdbcTemplate.query("SELECT * FROM threads " +
+                        "WHERE creator = :creator",
+                param,new DataClassRowMapper<>(ThreadEntity.class));
+    }
+
     public int InsertThread(ThreadEntity threadEntity){
         var param = new MapSqlParameterSource();
         param.addValue("creator",threadEntity.creator());
