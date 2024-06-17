@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>マイページ</title>
-    <link href="" rel="stylesheet">
+    <link href="../static/css/unten.css" rel="stylesheet">
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
@@ -12,69 +12,94 @@
     <header>
         <div class="parent">
             <div>
-                <img id="title" src="images/title.png">
+                <img id="title" src="../static/images/twelvechannel.png">
             </div>
-            <div class="right">
+            <div class="header-btn">
                 <button id="myPage">マイページ</button>
-                <button id="logout">ログアウト</button>
+                <button id="logout" style="background-color:#ff6347">ログアウト</button>
             </div>
         </div>
     </header>
 
+    <div class="top-btn">
+       <br><button  class="return-btn" type="submit"  style="background-color:#17207A">戻る</button>
 
-    <div>
-        <form>
-            <button  type="submit" >戻る</button>
-            <button  type="submit" >タグ設定</button>
-            <button  type="submit" >新規投稿</button>
-            <button  type="submit" >退会</button>
+       <div>
+        <form class="mypage-btn">
+            <button  type="submit" style="background-color:#17207A">タグ設定</button>
+            <button  type="submit" style="background-color:#17207A">新規投稿</button>
+            <button  type="submit" style="background-color:#ff6347">退会</button>
         </form>
+      </div>
     </div>
+    <h1 class="mypage">マイページ</h1>
 
-    <h1>マイページ</h1>
+<!--    <form class="btns">-->
+<!--        <button class="btn" type="submit">投稿履歴</button>-->
+<!--        <button class="btn" type="submit">いいね履歴</button>-->
+<!--        <button class="btn" type="submit">コメント履歴</button>-->
+<!--    </form>-->
 
-    <form>
-        <button class="btn" type="submit">投稿履歴</button>
-        <button class="btn" type="submit">いいね履歴</button>
-        <button class="btn" type="submit">コメント履歴</button>
-    </form>
+    <ul class="history-btn">
+        <li class="this">投稿履歴</li>
+        <li>いいね履歴</li>
+        <li>コメント履歴</li>
+    </ul>
 
-    <div>
-        <p>No.434904563</p>
-        <a href="">お菓子について語る</a>
-        <a href="">-#お菓子</a>
-        <a href="">#グリコ</a>
-        <a href="">#明治</a>
-        <p>コメント:120</p>
-        <p>いいね:15</p>
+
+        <div class="scrollbar">
+
+            <div>
+                <p>No.434904563</p>
+                <a href="">お菓子について語る</a>
+                <a href="">-#お菓子</a>
+                <a href="">#グリコ</a>
+                <a href="">#明治</a>
+                <p>コメント:120</p>
+                <p>いいね:15</p>
+            </div>
+
+            <hr>
+
+            <div >
+                <p>No.434904563</p>
+                <a href="">お前らの好きなラーメン教えろ</a>
+                <a href="">-#ラーメン</a>
+                <a href="">#カップ麺</a>
+                <p>コメント:3</p>
+                <p>いいね:0</p>
+                <p>いいね:0</p>
+                <p>いいね:0</p>4
+                <p>いいね:0</p>
+            </div>
+
+            <hr>
+            <div>
+                <p>No.434904563</p>
+                <a href="">安室奈美恵好き集まれ</a>
+                <a href="">-#安室奈美恵</a>
+                <a href="">#美</a>
+                <p>コメント:123</p>
+                <p>いいね:25</p>
+            </div>
+            <hr>
+            <div>
+                <p>No.434904563</p>
+                <a href="">月曜日がきつい</a>
+                <a href="">-#週休4日希望</a>
+                <p>コメント:123</p>
+                <p>いいね:25</p>
+            </div>
+        </div>
+
     </div>
+    <ul class="pagination">
+        <li>前へ</li>
+        <li class="this">1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>次へ</li>
+    </ul>
 
-    <div>
-        <p>No.434904563</p>
-        <a href="">お前らの好きなラーメン教えろ</a>
-        <a href="">-#ラーメン</a>
-        <a href="">#カップ麺</a>
-        <p>コメント:3</p>
-        <p>いいね:0</p>
-    </div>
-
-    <div>
-        <p>No.434904563</p>
-        <a href="">安室奈美恵好き集まれ</a>
-        <a href="">-#安室奈美恵</a>
-        <a href="">#美</a>
-        <p>コメント:123</p>
-        <p>いいね:25</p>
-    </div>
-
-    <div>
-        <p>No.434904563</p>
-        <a href="">月曜日がきつい</a>
-        <a href="">-#週休4日希望</a>
-        <p>コメント:123</p>
-        <p>いいね:25</p>
-    </div>
-
-</div>
-</body>
-</html>
+    </body>
+    </html>

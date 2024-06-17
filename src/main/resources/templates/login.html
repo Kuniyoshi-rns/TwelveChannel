@@ -3,36 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>ログイン</title>
-    
+    <link href="../static/css/unten.css" rel="stylesheet">
 </head>
 <body>
-<div>
-    <h1><img src="../static/images/title_logo.png" height=100 alt="12ちゃんねる。"></h1>
-</div>
+<fieldset style="background-color:white" class="login">
+
+    <h1 ><img src="../static/images/title_logo.png"></h1>
 
 <div>
-    <img src="">
-    <p ></p> 
-
-    <form>
-        <fieldset>
-            <div>
-                <input type="text" placeholder="ID">
-                <div>
-                </div>
-            </div>
-
-            <div>
-                <input type="password" placeholder="パスワード">
-                <div>
-                </div>
-            </div>
-        </fieldset>
-        <button submit="button">
-            ログイン
-        </button>
+    <form >
+        <input type="text" class="login-input" style="width:200px; height:30px;" placeholder="ID"><br>
+        <p></p>
+        <input type="password" class="login-input" style="width:200px; height:30px;" placeholder="パスワード"><br>
     </form>
-    <p><a href="signup.html">新規登録はこちら</a></p>
+    <p></p>
+    <button submit="button" class="login-btn">ログイン</button>
+    <p class="url"><a href="signup.html">新規登録はこちら</a></p>
 </div>
+</fieldset>
 </body>
 </html>

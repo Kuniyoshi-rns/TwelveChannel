@@ -1,0 +1,118 @@
+header {
+    padding: 20px;
+    background: #17207A;
+}
+
+body {
+    background: #E6E6E6;
+}
+
+/*12ちゃんねるの画像*/
+#title {
+    display: block;
+    height: 50px;
+    margin-left:10%;
+}
+
+.header-btn{
+    position: absolute;
+    top: 5%;
+    right: 10%; /* 右寄せ */
+}
+
+.return-btn {
+     color: white;
+     width: 10em;
+     margin-left: 13%
+}
+
+.mypage-btn{
+     width: 10em;
+     display: flex;
+     flex-direction: column;
+     position: absolute;
+     right: 10%; /* 右寄せ */
+     gap:1em;
+}
+.mypage-btn button { color: white;}
+
+.top-btn{
+      display: flex;
+      flex-direction: row;
+      margin-top:20px;
+}
+
+.mypage{
+     margin-top: 5px;
+     text-align: center;
+}
+
+.pagination li {
+    display: inline;
+    padding:10px 15px;
+    border:1px #ccc solid;color:#000053;
+    border-radius: 5px / 5px;}
+    .pagination .this {background-color:#777;
+    color:#fff;
+
+ }
+
+ .pagination { text-align: center;
+ }
+
+.scrollbar {
+  width: 70%;
+  height: 400px;
+   margin: 0 auto;
+  overflow: scroll;
+  border: #a9a9a9 5px solid;
+  background-color:white;
+}
+
+.history-btn li {
+    background-color:white;
+    display: inline;
+    padding:10px 15px;
+    border:1px #ccc solid;color:#000053;
+    border-radius: 5px / 5px;}
+    .history-btn .this {background-color:#777;
+    color:#fff;
+ }
+
+  .history-btn { text-align: center;
+  }
+
+  .login{
+        width: 400px;
+        height: 350px;
+        position: absolute;
+      	top: 50%;
+      	left: 50%;
+      	transform: translate(-50%, -50%);
+        text-align: center;
+        border-radius: 10px;
+        background-color: white;
+
+  }
+
+  .login-title{
+    width: 180px;
+
+  }
+
+  .login-btn{
+  background-color:#17207A;
+  color: white;
+  }
+
+  .login-input{
+  width: 250px;
+  height: 15px;
+  padding:8px 10px;
+  border-radius:10px;
+  gap:10px;
+}
+
+.url{
+	margin-left:250px;
+}
