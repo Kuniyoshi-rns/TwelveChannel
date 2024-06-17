@@ -1,0 +1,55 @@
+header {
+    padding: 30px;
+    background: #17207A;
+}
+
+body {
+    background: #E6E6E6;
+    align-items: center;
+}
+
+.parent {
+    display: flex;
+    justify-content: flex-start; /* 子要素を中央揃え */
+    position: relative;
+}
+.right{
+    position: absolute;
+    right: 0; /* 右寄せ */
+}
+
+#title {
+    display: block;
+    height: 100px;
+}
+
+#myPage{
+    background-color:#0D99FF;
+    color: white;
+}
+
+#logout{
+    background-color:#CF1E0E;
+    color: white;
+}
+
+#back{
+    background-color:#17207A;
+    color: white;
+}
+
+#favorite{
+    background-color:#17207A;
+    color: white;
+}
+
+#addComment{
+    background-color:#17207A;
+    color: white;
+}
+
+.comment{
+    width:80vw;
+    margin:0 auto;
+    background-color:white;
+}
