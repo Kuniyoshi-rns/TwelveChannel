@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link href="css/test.css" rel="stylesheet">
+    <!--    <link href="css/test.css" rel="stylesheet">-->
 </head>
 <body>
 <header>
     <div class="parent">
         <div>
-            <img id="title" src="images/title.png">
+            <!--            <img id="title" src="images/title.png">-->
         </div>
         <div class="right">
             <button id="myPage">マイページ</button>
@@ -21,21 +21,86 @@
     <button id="back">←戻る</button>
     <button id="favorite" class="right">いいね♡</button>
 </div>
-<div class="comment">
-    <p>お菓子について語る - #お菓子,#グリコ,#明治</p>
-    <p>投稿者.</p><p>2024/06/11</p>
-    <p>ぷくぷくたいチョコ</p>
-    <img src="images/taityoko.png">
-</div>
-<div class="comment">
-    <p>284.2024/06/13</p>
-    <p>プリングルスが最強です。</p>
-</div>
-<div class="comment">
-    <p>506.2024/06/13</p>
-    <p>羊羹以外はgm<br>お前ら羊羹食え</p>
-</div>
+
+<div id="comment-list"></div>
+
+<textarea id="statement"></textarea>
 <button id="addImage">+画像追加</button>
-<button id="addComment">書き込み</button>
+<button id="addComment" onclick="addComment()">書き込み</button>
+
+<script>
+    async function commentDelete(id){
+        const param = {method:"DELETE"};
+        await fetch(`delete-comment/${id}`,param);
+        document.getElementById(id).remove();
+    }
+
+    async function addComment(){
+        let statement = document.getElementById('statement').value;
+        let image_base64 = '';
+        let image_name = '';
+
+        const commentForm = {
+            comment: statement,
+            image_name: image_name,
+            image_base64: image_base64
+        }
+
+        console.log(commentForm);
+
+        const param = {method: 'POST',
+                        headers:{'Content-Type': 'application/json'},
+                         body: JSON.stringify(commentForm)}
+         await fetch('insert-comment/13',param)
+         .then(res =>{
+            if(res.status === 400){
+                res.json()
+                .then(data => {
+                    data.errors.forEach(e => console.log(e.defaultMessage))
+                })
+            }
+        })
+        document.getElementById('comment-list').innerHTML = '';
+        commentReload();
+    }
+
+    function commentReload(){
+        fetch('view-comment/13')
+        .then(res =>{
+            if(res.status === 200){
+                res.json()
+                .then(data => {
+                    console.log(data);
+                    let commentList = document.getElementById('comment-list');
+
+                    for(let comme of data){
+                        console.log(comme);
+                        let commeDiv = document.createElement('div');
+                        commeDiv.classList.add("comment");
+                        commeDiv.id = comme.id;
+                        let id = document.createElement('p');
+                        let date = document.createElement('p');
+                        let statement = document.createElement('p');
+
+                        date.textContent = comme.created_at;
+                        statement.textContent = comme.comment;
+
+                        commeDiv.appendChild(date);
+                        commeDiv.appendChild(statement);
+                        if(comme.image_base64 != ''){
+                           commeDiv.insertAdjacentHTML('beforeend',`<img src="data:image/png;base64,${comme.image_base64}" />`)
+                        }
+                        if(comme.user_id === 1){
+                           commeDiv.insertAdjacentHTML('beforeend',`<button onclick='commentDelete(${comme.id})'>削除</button>`)
+                        }
+                        commentList.prepend(commeDiv);
+                    }
+                })
+            }
+        });
+    }commentReload();
+
+</script>
+
 </body>
 </html>
