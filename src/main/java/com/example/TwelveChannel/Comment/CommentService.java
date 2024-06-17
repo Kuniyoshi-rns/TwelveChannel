@@ -27,4 +27,9 @@ public class CommentService implements ICommentService{
     public List<CommentEntity> getCommentByUser(int user_id){
         return commentRepository.getCommentByUser(user_id);
     }
+
+    @Override
+    public int getCommentListByThread(int threadId){
+        return commentRepository.getCommentListByThread(threadId);
+    }
 }

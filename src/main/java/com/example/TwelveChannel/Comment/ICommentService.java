@@ -10,4 +10,6 @@ public interface ICommentService {
     int deleteComment(int id);
 
     List<CommentEntity> getCommentByUser(int user_id);
+
+    int getCommentListByThread(int threadId);
 }
