@@ -62,6 +62,6 @@ public class CommentRepository implements ICommentRepository {
         param.addValue("thread_id", threadId);
         return jdbcTemplate.query("SELECT count(*) " +
                 "FROM comments " +
-                "WHERE thread_id = :thread_id", param, new DataClassRowMapper<>(Count.class)).get(0).count();
+                "WHERE thread_id = :thread_id", param, new DataClassRowMapper<>(CommentCount.class)).get(0).count();
     }
 }
