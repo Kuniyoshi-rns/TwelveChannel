@@ -1,5 +1,6 @@
 package com.example.TwelveChannel.Comment;
 
+import com.example.TwelveChannel.Favorite.Count;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.DataClassRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -53,5 +54,14 @@ public class CommentRepository implements ICommentRepository {
                 "INNER JOIN threads " +
                 "ON comments.thread_id = threads.id " +
                 "WHERE user_id = :user_id", param, new DataClassRowMapper<>(CommentEntity.class));
+    }
+
+    @Override
+    public int getCommentListByThread(int threadId) {
+        var param = new MapSqlParameterSource();
+        param.addValue("thread_id", threadId);
+        return jdbcTemplate.query("SELECT count(*) " +
+                "FROM comments " +
+                "WHERE thread_id = :thread_id", param, new DataClassRowMapper<>(Count.class)).get(0).count();
     }
 }

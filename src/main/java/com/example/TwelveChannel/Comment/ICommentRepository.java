@@ -8,4 +8,6 @@ public interface ICommentRepository {
     int deleteComment(int id);
 
     List<CommentEntity> getCommentByUser(int user_id);
+
+    int getCommentListByThread(int threadId);
 }
