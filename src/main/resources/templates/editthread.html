@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>新規スレッド</title>
+</head>
+<body>
+<header>
+    <div class="parent">
+        <div>
+            <img id="title" src="images/title.png">
+        </div>
+        <div class="right">
+            <button id="myPage">マイページ</button>
+            <button id="logout">ログアウト</button>
+        </div>
+    </div>
+</header>
+
+<button submit="button">
+    戻る
+</button>
+
+<div>
+    <div>
+        <p>
+            スレッド編集
+        </p>
+    </div>
+
+    <div>
+        <form>
+            <fieldset>
+                <div>
+                    <label>スレッドタイトル:</label>
+                    <input type="text" name="title">
+                    <span class="error">エラーメッセージ</span>
+                </div>
+                <div>
+                    <label >タグ：</label>
+                    <input type="text" name="tag">
+                    <span class="error">エラーメッセージ</span>
+                </div>
+                <div>
+                    <label>本文：</label>
+                    <textarea name="comment"></textarea>
+                    <div>
+                        <button type="button">+画像選択</button>
+                    </div>
+                </div>
+            </fieldset>
+            <div>
+                <button type="button">投稿</button>
+            </div>
+</body>
+</html>
