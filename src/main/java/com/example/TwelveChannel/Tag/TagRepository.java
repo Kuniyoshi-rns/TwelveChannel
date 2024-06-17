@@ -15,20 +15,44 @@ public class TagRepository implements ITagRepository{
     private NamedParameterJdbcTemplate jdbcTemplate;
 
     @Override
-    public List<String> userTag(int user_id){
+    public List<UserTagEntity> userTag(int user_id){
         var param=new MapSqlParameterSource();
         param.addValue("user_id",user_id);
-        return jdbcTemplate.query("SELECT tag " +
-                                    "FROM users_tag " +
-                                    "WHERE user_id=:user_id",param,new DataClassRowMapper<>(String.class));
+        return jdbcTemplate.query("SELECT * " +
+                                    "FROM users_tags " +
+                                    "WHERE user_id=:user_id",param,new DataClassRowMapper<>(UserTagEntity.class));
     }
 
     @Override
-    public List<String> threadTag(int thread_id){
+    public List<ThreadTagEntity> threadTag(int thread_id){
         var param=new MapSqlParameterSource();
+        System.out.println("thread_id確認:"+thread_id);
         param.addValue("thread_id",thread_id);
-        return jdbcTemplate.query("SELECT tag " +
-                "FROM threads_tag " +
-                "WHERE thread_id=:thread_id",param,new DataClassRowMapper<>(String.class));
+        return jdbcTemplate.query("SELECT * " +
+                "FROM threads_tags " +
+                "WHERE thread_id=:thread_id",param,new DataClassRowMapper<>(ThreadTagEntity.class));
     }
+
+    @Override
+    public int userTagInsert(int user_id,String tag){
+        var param=new MapSqlParameterSource();
+        param.addValue("user_id",user_id);
+        param.addValue("tag",tag);
+        var result=jdbcTemplate.query("SELECT * FROM users_tags " +
+                                    "WHERE user_id=:user_id AND tag=:tag",param,new DataClassRowMapper<>(UserTagEntity.class));
+        if(result.isEmpty()){
+            return jdbcTemplate.update("INSERT INTO users_tags " +
+                                        "VALUES(:user_id,:tag)",param);
+        }
+        return 0;
+    }
+
+    @Override
+    public int userTagDelete(int user_id,String tag){
+        var param=new MapSqlParameterSource();
+        param.addValue("user_id",user_id);
+        param.addValue("tag",tag);
+        return jdbcTemplate.update("DELETE FROM users_tags " +
+                                    "WHERE user_id=:user_id and tag=:tag",param);
+    };
 }
