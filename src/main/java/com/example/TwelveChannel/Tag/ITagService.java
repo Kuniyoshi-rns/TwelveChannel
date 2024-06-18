@@ -10,4 +10,6 @@ public interface ITagService {
 
     int userTagInsert(int user_id,String tag);
     int userTagDelete(int user_id,String tag);
+
+    int threadTagInsert(int thread_id,String tag);
 }

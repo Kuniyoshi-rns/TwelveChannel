@@ -20,4 +20,9 @@ public class TagService implements ITagService{
 
     @Override
     public  int userTagDelete(int user_id,String tag){return tagRepository.userTagDelete(user_id,tag);}
+
+    @Override
+    public int threadTagInsert(int thread_id,String tag){
+        return tagRepository.threadTagInsert(thread_id,tag);
+    }
 }
