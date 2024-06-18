@@ -54,5 +54,19 @@ public class TagRepository implements ITagRepository{
         param.addValue("tag",tag);
         return jdbcTemplate.update("DELETE FROM users_tags " +
                                     "WHERE user_id=:user_id and tag=:tag",param);
-    };
+    }
+
+    @Override
+    public int threadTagInsert(int thread_id,String tag){
+        var param=new MapSqlParameterSource();
+        param.addValue("thread_id",thread_id);
+        param.addValue("tag",tag);
+        var result=jdbcTemplate.query("SELECT * FROM threads_tags " +
+                "WHERE thread_id=:thread_id AND tag=:tag",param,new DataClassRowMapper<>(UserTagEntity.class));
+        if(result.isEmpty()){
+            return jdbcTemplate.update("INSERT INTO threads_tags " +
+                    "VALUES(:thread_id,:tag)",param);
+        }
+        return 0;
+    }
 }

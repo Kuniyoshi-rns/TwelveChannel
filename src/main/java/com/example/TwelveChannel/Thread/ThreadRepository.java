@@ -86,4 +86,20 @@ public class ThreadRepository implements IThreadRepository{
                 "SET view_count=view_count+1 " +
                 "WHERE id=:id",param);
     }
+@Override
+    public int insertThreadOkuma(ThreadAddForm threadAddForm,int userId){
+        var param = new MapSqlParameterSource();
+        param.addValue("creator",userId);
+        param.addValue("thread_title",threadAddForm.getTitle());
+        param.addValue("comment",threadAddForm.getComment());
+        param.addValue("image_name",threadAddForm.getImage_name());
+        param.addValue("image_base64",threadAddForm.getImage_base64());
+
+        return jdbcTemplate.query("insert into threads" +
+                "(creator,thread_title,comment,image_name,image_base64,created_at,updated_at,view_count)" +
+                " values" +
+                "(:creator,:thread_title,:comment,:image_name,:image_base64,now(),now(),0)" +
+                " RETURNING " +
+                "id",param,new DataClassRowMapper<>(GetThreadId.class)).get(0).id();
+    }
 }

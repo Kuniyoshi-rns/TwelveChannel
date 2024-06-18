@@ -1,56 +1,106 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>新規スレッド</title>
-</head>
-<body>
-    <header>
-        <div class="parent">
-            <div>
-                <img id="title" src="images/title.png">
-            </div>
-            <div class="right">
-                <button id="myPage">マイページ</button>
-                <button id="logout">ログアウト</button>
-            </div>
-        </div>
-    </header>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 
-    <button submit="button">
-        戻る
-    </button>
-  
+<head>
+  <meta charset="UTF-8">
+  <title>新規スレッド</title>
+</head>
+
+<body>
+  <header>
+    <div class="parent">
+      <div>
+        <img id="title" src="images/title.png">
+      </div>
+      <div class="right">
+        <button id="myPage">マイページ</button>
+        <button id="logout">ログアウト</button>
+      </div>
+    </div>
+  </header>
+
+  <button submit="button">
+    戻る
+  </button>
+
   <div>
     <div>
       <p>
         新規スレッド
       </p>
     </div>
-  
+
     <div>
-      <form>
+      <form action="/add-thread" method="post" th:object="${addThread}">
         <fieldset>
           <div>
             <label>スレッドタイトル:</label>
-            <input type="text" name="title">
+            <input type="text" name="title" th:field="*{title}">
             <span class="error">エラーメッセージ</span>
           </div>
           <div>
-            <label >タグ：</label>
-            <input type="text" name="tag">
+            <label>タグ：</label>
+            <input type="text" name="tag" th:field="*{tag}">
             <span class="error">エラーメッセージ</span>
           </div>
           <div>
             <label>本文：</label>
-            <textarea name="comment"></textarea>
+            <textarea name="comment" th:field="*{comment}"></textarea>
             <div>
-                <button type="button">+画像選択</button>
-              </div>
+
+              <input type="file" id="example" accept="image/*">
+              <!-- :point_down:ここにプレビュー画像を追加する -->
+              <div id="preview"></div>
+              <input type="hidden" id="image_name" th:field="*{image_name}" value="">
+              <input type="hidden" id="base64" th:field="*{image_base64}" value="">
+              <script th:src="@{js/sample.js}"></script>
+
+            </div>
           </div>
         </fieldset>
-        <div>
-          <button type="button">投稿</button>
-        </div>
+
+      <div>
+        <button type="submit">投稿</button>
+      </div>
+      </form>
+      </div>
+  </div>
+<script>
+  function previewFile(file) {
+  // プレビュー画像を追加する要素
+  const preview = document.getElementById('preview');
+  //
+<!--  console.log(preview.children)-->
+  while(preview.firstChild){
+  preview.removeChild(preview.firstChild)
+  }
+  // FileReaderオブジェクトを作成
+  const reader = new FileReader();
+  // ファイルが読み込まれたときに実行する
+  reader.onload = function (e) {
+  const imageUrl = e.target.result; // 画像のURLはevent.target.resultで呼び出せる
+<!--  console.log(e.target.result)-->
+document.getElementById('base64').setAttribute('value',e.target.result)
+  const img = document.createElement("img"); // img要素を作成
+  img.src = imageUrl; // 画像のURLをimg要素にセット
+  preview.appendChild(img); // #previewの中に追加
+  }
+  // いざファイルを読み込む
+  reader.readAsDataURL(file);
+  }
+  // <input>でファイルが選択されたときの処理
+  const fileInput = document.getElementById('example');
+  const handleFileSelect = () => {
+  const files = fileInput.files;
+  for (let i = 0; i < files.length; i++) {
+  previewFile(files[i]);
+  console.log(fileInput.value);
+  console.log(fileInput.value.split('\\')[2]);
+  document.getElementById('image_name').setAttribute('value',fileInput.value.split('\\')[2])
+  }
+  }
+  fileInput.addEventListener('change', handleFileSelect);
+</script>
 </body>
+
 </html>

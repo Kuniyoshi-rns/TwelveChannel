@@ -17,4 +17,6 @@ public interface IThreadRepository {
     int deleteThread(int thread_id);
 
     void addViewCount(int id);
+
+    int insertThreadOkuma(ThreadAddForm threadAddForm,int userId);
 }

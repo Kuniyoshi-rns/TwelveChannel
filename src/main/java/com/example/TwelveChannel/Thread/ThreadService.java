@@ -45,4 +45,9 @@ public class ThreadService implements IThreadService{
     public void addViewCount(int id){
         threadRepository.addViewCount(id);
     }
+
+    @Override
+    public int insertThreadOkuma(ThreadAddForm threadAddForm,int userId){
+        return threadRepository.insertThreadOkuma(threadAddForm,userId);
+    }
 }
