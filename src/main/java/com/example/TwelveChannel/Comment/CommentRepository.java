@@ -64,4 +64,26 @@ public class CommentRepository implements ICommentRepository {
                 "FROM comments " +
                 "WHERE thread_id = :thread_id", param, new DataClassRowMapper<>(CommentCount.class)).get(0).count();
     }
+
+    @Override
+    public CommentEntity insertAndGet(CommentForm commentForm, int thread_id, int user_id) {
+        var param = new MapSqlParameterSource();
+        param.addValue("comment",commentForm.getComment());
+        param.addValue("image_name",commentForm.getImage_name());
+        param.addValue("image_base64",commentForm.getImage_base64());
+        param.addValue("thread_id",thread_id);
+        param.addValue("user_id",user_id);
+        return jdbcTemplate.query("INSERT INTO comments " +
+                "(thread_id,user_id,comment,image_name,image_base64,created_at) " +
+                "VALUES " +
+                "(:thread_id,:user_id,:comment,:image_name,:image_base64,now())"+
+                " RETURNING id,thread_id,'' thread_title,user_id,comment,image_name,image_base64,created_at;",param,new DataClassRowMapper<>(CommentEntity.class)).get(0);
+    }
+
+    @Override
+    public List<CommentCountHome> getCommentListAllThreadHome() {
+        return jdbcTemplate.query("SELECT thread_id,count(*) " +
+                "FROM comments " +
+                "GROUP BY thread_id", new DataClassRowMapper<>(CommentCountHome.class));
+    }
 }

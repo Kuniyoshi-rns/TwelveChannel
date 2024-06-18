@@ -25,4 +25,9 @@ public class TagService implements ITagService{
     public int threadTagInsert(int thread_id,String tag){
         return tagRepository.threadTagInsert(thread_id,tag);
     }
+
+    @Override
+    public List<ThreadTagEntity> threadTagAllFind() {
+        return tagRepository.threadTagAllFind();
+    }
 }

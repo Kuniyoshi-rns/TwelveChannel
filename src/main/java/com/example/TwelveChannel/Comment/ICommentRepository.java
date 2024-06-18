@@ -10,4 +10,8 @@ public interface ICommentRepository {
     List<CommentEntity> getCommentByUser(int user_id);
 
     int getCommentListByThread(int threadId);
+
+    CommentEntity insertAndGet(CommentForm commentForm,int thread_id,int user_id);
+
+    List<CommentCountHome> getCommentListAllThreadHome();
 }

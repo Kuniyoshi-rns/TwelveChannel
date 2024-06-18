@@ -102,4 +102,12 @@ public class ThreadRepository implements IThreadRepository{
                 " RETURNING " +
                 "id",param,new DataClassRowMapper<>(GetThreadId.class)).get(0).id();
     }
+
+    @Override
+    public List<ThreadEntity> findThread(int offset) {
+        var param= new MapSqlParameterSource();
+        param.addValue("offset",offset);
+        return jdbcTemplate.query("SELECT * FROM threads ORDER BY id desc LIMIT 5 OFFSET :offset",
+                param,new DataClassRowMapper<>(ThreadEntity.class));
+    }
 }

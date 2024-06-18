@@ -19,4 +19,5 @@ public interface IThreadRepository {
     void addViewCount(int id);
 
     int insertThreadOkuma(ThreadAddForm threadAddForm,int userId);
+    List<ThreadEntity> findThread(int offset);
 }

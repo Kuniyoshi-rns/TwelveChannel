@@ -69,4 +69,10 @@ public class TagRepository implements ITagRepository{
         }
         return 0;
     }
+
+    @Override
+    public List<ThreadTagEntity> threadTagAllFind() {
+        return jdbcTemplate.query("SELECT * FROM threads_tags"
+                ,new DataClassRowMapper<>(ThreadTagEntity.class));
+    }
 }

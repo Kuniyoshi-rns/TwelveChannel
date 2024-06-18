@@ -63,5 +63,13 @@ public class FavoriteRepository implements IFavoriteRepository{
         param.addValue("thread_id",threadId);
         jdbcTemplate.update("DELETE FROM favorite_threads WHERE user_id = :user_id AND thread_id = :thread_id ",param);
     }
+
+    @Override
+    public List<FavoriteThreadCount> favoriteThreadCountHome() {
+        return jdbcTemplate.query("SELECT thread_id,count(*) " +
+                        "FROM favorite_threads " +
+                        "GROUP BY thread_id",
+                new DataClassRowMapper<>(FavoriteThreadCount.class));
+    }
 }
 

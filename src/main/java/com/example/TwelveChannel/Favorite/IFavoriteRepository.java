@@ -16,5 +16,7 @@ public interface IFavoriteRepository {
 
     void deleteFavorite(int userId, int threadId);
 
+    List<FavoriteThreadCount> favoriteThreadCountHome();
+
 
 }

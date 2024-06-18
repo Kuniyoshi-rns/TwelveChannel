@@ -32,4 +32,11 @@ public class CommentService implements ICommentService{
     public int getCommentListByThread(int threadId){
         return commentRepository.getCommentListByThread(threadId);
     }
+
+    @Override
+    public CommentEntity insertAndGet(CommentForm commentForm, int thread_id, int user_id) {
+        return commentRepository.insertAndGet(commentForm,thread_id,user_id);
+    }
+    @Override
+    public List<CommentCountHome> getCommentListAllThreadHome(){return commentRepository.getCommentListAllThreadHome();}
 }

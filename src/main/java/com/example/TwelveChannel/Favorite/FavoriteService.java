@@ -35,5 +35,7 @@ public class FavoriteService implements IFavoriteService{
     public void deleteFavorite(int userId, int threadId){
         favoriteRepository.deleteFavorite(userId,threadId);
     }
+    @Override
+    public List<FavoriteThreadCount> favoriteThreadCountHome(){return favoriteRepository.favoriteThreadCountHome();}
 }
 

@@ -15,4 +15,6 @@ public interface IFavoriteService {
     void insertFavorite(int userId, int threadId);
 
     void deleteFavorite(int userId, int threadId);
+
+    List<FavoriteThreadCount> favoriteThreadCountHome();
 }
