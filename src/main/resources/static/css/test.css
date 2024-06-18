@@ -8,14 +8,27 @@ body {
     align-items: center;
 }
 
+fieldset{
+    text-align:center;
+    background: white;
+    width:40vw;
+    margin: auto;
+    vertical-align: middle;
+
+}
+
 .parent {
     display: flex;
-    justify-content: flex-start; /* 子要素を中央揃え */
+    justify-content: flex-start; /* 左寄せ */
     position: relative;
 }
 .right{
     position: absolute;
     right: 0; /* 右寄せ */
+}
+
+.error{
+    color:red;
 }
 
 #title {
@@ -25,6 +38,11 @@ body {
 
 #myPage{
     background-color:#0D99FF;
+    color: white;
+}
+
+#login{
+    background-color:#17207A;
     color: white;
 }
 
