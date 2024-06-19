@@ -1,6 +1,7 @@
 header {
-    padding: 20px;
+    padding: 10px;
     background: #17207A;
+    height: 80px;
 }
 
 body {
@@ -10,7 +11,7 @@ body {
 /*12ちゃんねるの画像*/
 #title {
     display: block;
-    height: 50px;
+    height: 70px;
     margin-left:10%;
 }
 
@@ -21,52 +22,108 @@ body {
 }
 
 .return-btn {
-     color: white;
-     width: 10em;
-     margin-left: 13%
+    background: #17207A;
+    color: white;
+    width: 10em;
+    margin-left: 15%
 }
 
 .mypage-btn{
-     width: 10em;
-     display: flex;
-     flex-direction: column;
-     position: absolute;
-     right: 10%; /* 右寄せ */
-     gap:1em;
+    width: 10em;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    right: 10%; /* 右寄せ */
+    gap:1em;
 }
 .mypage-btn button { color: white;}
 
+.home-btn{
+    width: 10em;
+    position: absolute;
+    right: 10%; /* 右寄せ */
+    margin-top:30px;
+    color: white;
+}
+
+.admin-btn{
+    display: flex;
+    flex-direction: row;
+    gap:10px;
+ /* いいねボタンと重なる位置
+     position: absolute;
+     right: 15%;   */
+}
+
+.delete-btn{
+    width: 10em;
+}
+
+.edit{
+    width: 10em;
+}
+
+.search-btn{
+    width:60px;
+    height:32px;
+}
+
+.search-box{
+     width:200px;
+     height:30px;
+}
+
+.search {
+    margin-left: 600px;
+    display: flex;
+    flex-direction: row;
+    margin-bottom:30px;
+    margin-top:30px
+}
+
 .top-btn{
-      display: flex;
-      flex-direction: row;
-      margin-top:20px;
+    display: flex;
+    flex-direction: row;
+    margin-top:20px;
+    margin-bottom:10px;
 }
 
 .mypage{
-     margin-top: 5px;
-     text-align: center;
+    margin-top: 5px;
+    text-align: center;
+}
+
+.thread-tag{
+    text-align: center;
+}
+.thread{
+    margin-bottom: 0px;
+    margin-top:0px;
+    text-align: center;
 }
 
 .pagination li {
+    background-color:white;
     display: inline;
     padding:10px 15px;
     border:1px #ccc solid;color:#000053;
     border-radius: 5px / 5px;}
     .pagination .this {background-color:#777;
     color:#fff;
-
  }
 
- .pagination { text-align: center;
- }
+ .pagination { text-align: center;}
 
 .scrollbar {
-  width: 70%;
-  height: 400px;
-   margin: 0 auto;
-  overflow: scroll;
-  border: #a9a9a9 5px solid;
-  background-color:white;
+    width: 70%;
+    height: 400px;
+    margin: 0 auto;
+    padding-left:10px;
+    word-break:break-all;
+    border: #a9a9a9 2px solid;
+    background-color:white;
+    overflow-x:hidden;
+    overflow-y:scroll;
 }
 
 .history-btn li {
@@ -79,40 +136,231 @@ body {
     color:#fff;
  }
 
-  .history-btn { text-align: center;
-  }
+.history-btn { text-align: center; }
 
-  .login{
-        width: 400px;
-        height: 350px;
-        position: absolute;
-      	top: 50%;
-      	left: 50%;
-      	transform: translate(-50%, -50%);
-        text-align: center;
-        border-radius: 10px;
-        background-color: white;
+.login{
+    width: 400px;
+    height: 350px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    border-radius: 10px;
+    background-color: white;
 
-  }
+}
 
-  .login-title{
+.login-title{
     width: 180px;
-
-  }
-
-  .login-btn{
-  background-color:#17207A;
-  color: white;
-  }
-
-  .login-input{
-  width: 250px;
-  height: 15px;
-  padding:8px 10px;
-  border-radius:10px;
-  gap:10px;
 }
 
-.url{
-	margin-left:250px;
+.login-btn{
+    background-color:#17207A;
+    color: white;
+    width:100px;
+    height:30px;
+ }
+
+.login-input{
+    width:200px;
+    height:30px;
+    padding:8px 10px;
+    border-radius:10px;
+    gap:10px;
 }
+
+.url{margin-left:250px;}
+
+.thread-title{
+    margin: 0 auto;
+    margin-bottom:10px;
+    padding-left:10px;
+    width: 70%;
+    height: 40px;
+    background-color:white;
+    font-size: 1.3rem;
+    border: 1px solid black;
+}
+
+.like-btn{
+    width: 10em;
+    position: absolute;
+    right: 15%; /* 右寄せ */
+    color: white;
+    background-color:#17207A;
+}
+
+.unlike-btn{
+    width: 10em;
+    position: absolute;
+    right: 15%; /* 右寄せ */
+    color: black;
+    background-color: red;
+}
+
+
+
+
+
+#addComment{
+    color: white;
+}
+
+.add-title{
+    margin-left:200px;
+
+}
+.title-input{
+    width:920px;
+    height:50px;
+}
+
+.add-comment{
+    margin-left:285px;
+    margin-top:30px;
+    margin-bottom:30px;
+
+}
+
+.comment-input{
+    width:920px;
+    height:250px;
+}
+
+.add-tag{
+    margin-left:285px;
+    margin-top:30px;
+
+}
+
+.tag-input{
+    width:920px;
+    height:50px;
+}
+
+textarea{
+    vertical-align:top;
+    resize: none;
+}
+
+.add-btn{
+    margin-left:1000px;
+}
+
+.post-btn{
+    color:white ;
+    width: 10em;
+}
+
+.comment-like{
+    display: flex;
+    flex-direction: row;
+    margin-left:850px;
+}
+
+.title{
+    font-size: 1.3rem;
+}
+
+#logout,.red{
+    background-color:#ff6347;
+}
+
+.blue{
+    background-color:#17207A;
+    color:white;
+}
+
+#statement{width:960px; height:75px;}
+
+#modal,#delete-modal {
+  width: 500px;
+  height:200px;
+}
+
+#modal.is-show,#tag-modal.is-show,#delete-modal.is-show {
+    opacity: 1;
+    visibility: visible;
+    z-index: 10;
+}
+
+.retire{
+    font-size: 1.3rem;
+    margin-top:30px;
+    font-weight: bold;
+}
+
+.retire-btn{
+    width:90px;
+    height:25px;
+}
+
+/*popupの背景を暗くする*/
+#fadeLayer {
+  position:fixed;
+  top:0px;
+  left:0px;
+  width:100%;
+  height:100%;
+  background-color:#000000;
+  opacity:0.5;
+  visibility:hidden;
+  z-index:1;
+}
+
+/*タグ設定popupのサイズ*/
+#tag-modal {
+  width: 500px;
+  height:400px;
+}
+
+/*タグ設定内のスクロールバー*/
+.tag-scrollbar {
+    width: 70%;
+    height: 200px;
+    margin: 0 auto;
+    padding-left:10px;
+    word-break:break-all;
+    border: #a9a9a9 2px solid;
+    background-color:white;
+    overflow-x:hidden;
+    overflow-y:scroll;
+}
+
+/*popupの基本設定*/
+#tag-modal,#modal,#delete-modal{
+    border: solid 1px;
+    border-radius: 5px;
+    text-align: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.5s;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    background-color: #fff;
+}
+
+.image{
+    display: flex;
+    flex-direction: column;
+    width: 100px;
+    height:20px;
+    margin-top:10px;
+    gap:10px;
+}
+
+.comment{
+    margin-top:10px;
+    margin-left:14.5%;
+    display: flex;
+    flex-direction: row;
+    gap:10px;
+}
+
+
+
