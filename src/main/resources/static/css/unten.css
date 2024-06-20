@@ -120,9 +120,30 @@ body {
     border-radius: 5px / 5px;}
     .pagination .this {background-color:#777;
     color:#fff;
+
+      
  }
 
- .pagination { text-align: center;}
+ .pagination {
+    text-align: center;
+        margin: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: row;
+ }
+
+ .pagination div:nth-child(3) {
+     flex: 0 1 auto;
+     text-align: center;
+     width: 100%;
+ }
+
+ .pagination div:nth-child(3)::before,
+ .pagination div:nth-child(3)::after {
+     content: "";
+     flex: 1;
+ }
 
 .scrollbar {
     width: 70%;
@@ -208,7 +229,6 @@ body {
     color: black;
     background-color: red;
 }
-
 .add-thread{
 margin-top:30px;
 margin-right:5px;

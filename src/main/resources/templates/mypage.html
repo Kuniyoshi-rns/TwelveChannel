@@ -1,36 +1,60 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>マイページ</title>
-    <link href="../static/css/unten.css" rel="stylesheet">
+    <link href="/css/unten.css" rel="stylesheet">
+<!--    <link href="/css/commons.css" rel="stylesheet">-->
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
 <div>
 
-    <header>
-        <div class="parent">
-            <div>
-                <img id="title" src="../static/images/twelvechannel.png">
-            </div>
-            <div class="header-btn">
-                <button id="myPage">マイページ</button>
-                <button id="logout" style="background-color:#ff6347">ログアウト</button>
-            </div>
+    <header class="header">
+        <link href="/css/unten.css" rel="stylesheet">
+        <!--    <p><img id="title" src="/images/twelvechannel.png" ></p>-->
+        <a href="/home"><img id="title" src="/images/twelvechannel.png" ></a>
+        <div class="header-btn">
+            <button id="myPage" onclick="location.href='/mypage'">マイページ</button>
+            <form class="logout_form" action="/login" method="get">
+                <button id="logout" class="custom-btn" type="submit">ログアウト</button>
+            </form>
         </div>
     </header>
 
     <div class="top-btn">
-       <br><button  class="return-btn" type="submit"  style="background-color:#17207A">戻る</button>
+       <br><button id="home-back" class="return-btn" type="submit" >戻る</button>
 
        <div>
-        <form class="mypage-btn">
-            <button  type="submit" style="background-color:#17207A">タグ設定</button>
-            <button  type="submit" style="background-color:#17207A">新規投稿</button>
-            <button  type="submit" style="background-color:#ff6347">退会</button>
-        </form>
+           <form class="mypage-btn">
+            <button class="blue" type="button" onclick="openTagModal()">タグ設定</button>
+            <button class="blue" type="button" >新規投稿</button>
+            <button class="red" type="button" onclick="openModal()">退会</button>
+           </form>
+
       </div>
+    </div>
+    <div id="modal">
+        <p class="retire"> 本当に退会しますか？</p>
+        <div>
+            <input type="button"  class="red retire-btn" value="退会">
+            <button type="button" onclick="closeModal()" >キャンセル</button>
+        </div>
+        <p > 退会すると再登録が必要になります</p>
+    </div>
+    <div id="tag-modal">
+        <p class="retire"> タグ設定</p>
+        <div>
+            <div class="tag-scrollbar" >
+            </div><p></p>
+
+            <div >
+                <input type="text" name="keyword" class="search-box" placeholder="タグ入力">
+                <input type="submit" class="blue search-btn"  value="登録">
+            </div><p></p>
+
+            <button type="button" onclick="closeTagModal()" >戻る</button>
+        </div>
     </div>
     <h1 class="mypage">マイページ</h1>
 
@@ -41,36 +65,57 @@
 <!--    </form>-->
 
     <ul class="history-btn">
-        <li class="this">投稿履歴</li>
-        <li>いいね履歴</li>
-        <li>コメント履歴</li>
+        <li><a href="/mypage?menu=1" >投稿履歴</a></li>
+        <li><a href="/mypage?menu=2" >いいね履歴</a></li>
+        <li><a href="/mypage?menu=3" >コメント履歴</a></li>
     </ul>
 
 
-        <div class="scrollbar" id="view">
+        <div class="scrollbar">
+            <div th:each="thread:${threads}" th:if="${menu}==1 OR ${menu}==2">
+                <p>No.<span th:text="${thread.id}"></span></p>
+                <p>
+                    <a th:href="@{/thread?thread_id={thread_id} (thread_id=${thread.id})}" th:text="${thread.thread_title}" ></a>
+                    -
+                    <span th:each="tag:${tags}">
+                    <a th:href="@{/home?tag={tag} (tag=${tag.tag})}" th:text="'#'+${tag.tag}" th:if="${thread.id==tag.thread_id}"></a>
+                    </span>
+                </p>
 
-            <hr>
-            <div>
-                <p>No.434904563</p>
-                <a href="">安室奈美恵好き集まれ</a>
-                <a href="">-#安室奈美恵</a>
-                <a href="">#美</a>
-                <p>コメント:123</p>
-                <p>いいね:25</p>
+                <div th:each="count:${comment_count}">
+                    <p th:if="${thread.id==count.thread_id}">コメント:<span th:text="${count.count}"></span></p>
+                </div>
+
+                <div th:each="favorite:${favorites}">
+                    <p th:if="${thread.id==favorite.thread_id}">いいね:<span th:text="${favorite.count}"></span></p>
+                </div>
+                <hr>
             </div>
-            <hr>
-
+            <div th:each="comment:${comments}" th:if="${menu}==3">
+                <p>No.<span th:text="${comment.thread_id}"></span></p>
+                <p>
+                    <a th:href="@{/thread?thread_id={thread_id} (thread_id=${comment.thread_id})}" th:text="${comment.thread_title}" ></a>
+                    -<span th:text="${comment.comment}"></span>
+                <p th:text="${comment.created_at}"></p>
+                <img th:src="${comment.image_base64}">
+                <hr>
+            </div>
         </div>
-    <ul class="pagination">
-        <li>前へ</li>
-        <li class="this">1</li>
-        <li>2</li>
-        <li>3</li>
-        <li>次へ</li>
-    </ul>
-</div>
-<script>
 
-</script>
-</body>
+    </div>
+    <div class="pagination">
+        <a th:href="@{/mypage?offset={offset}&menu={menu} (offset=${offset-20},menu=${menu})}" th:if="${offset>=20}">次へ</a>
+        <p><span th:text="${thread_page}"></span>/<span th:text="${thread_all}"></span>ページ</p>
+        <a th:href="@{/mypage?offset={offset}&menu={menu} (offset=${offset+20},menu=${menu})}" th:if="${thread_page<thread_all}">前へ</a>
+    </div>
+    <div id="fadeLayer"></div>
+<script src="/js/unten.js"></script>
+    <script>
+        'use strict'
+
+        document.getElementById('home-back').addEventListener('click', () => {
+          location.href = './home'
+        })
+    </script>
+    </body>
 </html>
