@@ -3,104 +3,283 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link href="../static/css/test.css" rel="stylesheet">
+    <link href="/css/unten.css" rel="stylesheet">
 </head>
 <body>
-<header>
-    <div class="parent">
-        <div>
-            <!--            <img id="title" src="images/title.png">-->
-        </div>
-        <div class="right">
-            <button id="myPage">マイページ</button>
-            <button id="logout">ログアウト</button>
-        </div>
+<th:block th:insert="common/header"></th:block>
+
+<div class="top-btn">
+    <button class="return-btn"  id="back" onclick="location.href='/home'">←戻る</button>
+    <button class="like-btn right" id="favorite"  th:if="${session.loginuser.id}!=1">いいね♡</button>
+    <div class="admin-btn">
+    <button class="blue edit right" id="edit"  th:if="${session.loginuser.id}==1" onclick="location.href='/edit-thread/thread_id'">編集</button>
+    <button class="red delete-btn right" id="delete"  th:if="${session.loginuser.id}==1" onclick="openDeleteModal()">削除</button>
     </div>
-</header>
-<div class="parent">
-    <button id="back">←戻る</button>
-    <button id="favorite" class="right">いいね♡</button>
 </div>
 
-<div id="comment-list"></div>
+<!--削除ポップアップ!-->
+    <div id="delete-modal">
+        <p class="retire"> 本当に投稿を削除しますか？</p>
+        <div>
+            <input type="button"  class="red retire-btn" value="削除" onclick="location.href='/home'">
+            <button type="button" onclick="closeDeleteModal()" >キャンセル</button>
+        </div>
+        <p > 投稿を削除すると復元はできません</p>
+    </div>
 
-<textarea id="statement"></textarea>
-<button id="addImage">+画像追加</button>
-<button id="addComment" onclick="addComment()">書き込み</button>
+<h1 class="thread" th:text="${thread.thread_title}"></h1>
+
+<div class="thread-tag" th:each="tag:${tags}">
+    <a href="" th:text="'#'+${tag.tag}" th:if="${thread.id==tag.thread_id}"></a>
+</div>
+
+<div class="scrollbar"  id="comment-list"></div>
+
+<div class="comment">
+<textarea  id="statement"></textarea>
+    <div class="image">
+        <button id="addImage" type="hidden">+画像追加</button>
+        <div id="imgInsert"><input id="example" type="file" accept="image/*"></div>
+        <button class="blue" id="addComment" onclick="addComment()">書き込み</button>
+    </div>
+</div>
 
 <script>
+    let imageName = '';
+    let imageBase64 = '';
+
+    let comCount = 3; //後から変更;
+
+    function deleteImage(){
+        imageName='';
+        image_base64='';
+
+        console.log('削除完了');
+        const imgForm = document.getElementById('imgInsert');
+        imgForm.removeChild(imgForm.children[1]);
+        console.log(imgForm.children);
+        fileInput.setAttribute('type','file');
+    }
+
+    function setFile(file) {
+        // FileReaderオブジェクトを作成
+        const reader = new FileReader();
+        imageName = file.name;
+        // ファイルが読み込まれたときに実行する
+        reader.onload = function (e) {
+        const imageUrl = e.target.result; // 画像のURLはevent.target.resultで呼び出せる
+        imageBase64 = imageUrl;
+        //  const img = document.createElement("img"); // img要素を作成
+        //  img.src = imageUrl; // 画像のURLをimg要素にセット
+        //  preview.appendChild(img); // #previewの中に追加
+        }
+        // いざファイルを読み込む
+        reader.readAsDataURL(file);
+    }
+        // <input>でファイルが選択されたときの処理
+    const fileInput = document.getElementById('example');
+    const handleFileSelect = () => {
+        const files = fileInput.files;
+        for (let i = 0; i < files.length; i++) {
+            setFile(files[i]);
+        }
+        const imgForm = document.getElementById('imgInsert');
+        fileInput.setAttribute('type','hidden');
+        imgForm.insertAdjacentHTML('beforeend',`<button type="button" onclick="deleteImage()">x ${imageName}</button>`);
+
+    }
+
+    fileInput.addEventListener('change', handleFileSelect);
+
+    function isFavorite(){
+    let threadId = document.URL.split('/').slice(-1)[0];
+    fetch(`/isFavorite/${threadId}`)
+    .then(res =>{
+      if(res.status === 200){
+          res.json()
+          .then(data => {
+              if(data){
+                  console.log(data);
+                  document.getElementById('favorite').setAttribute('onclick',`deleteFavorite(${threadId})`)
+              }else{
+                  console.log(data);
+                  document.getElementById('favorite').setAttribute('onclick',`insertFavorite(${threadId})`)
+                  }
+          })
+      }
+    });
+    }
+
+    async function insertFavorite(threadId){
+        await fetch(`/favorite/${threadId}`);
+        isFavorite(threadId);
+    }
+    async function deleteFavorite(threadId){
+        const param = {method:"DELETE"};
+        await fetch(`/favorite/${threadId}`,param);
+        isFavorite(threadId);
+    }
+
     async function commentDelete(id){
         const param = {method:"DELETE"};
-        await fetch(`delete-comment/${id}`,param);
+        await fetch(`/delete-comment/${id}`,param);
         document.getElementById(id).remove();
     }
 
     async function addComment(){
-        let statement = document.getElementById('statement').value;
-        let image_base64 = '';
-        let image_name = '';
+    let threadId = document.URL.split('/').slice(-1)[0];
+    let statement = document.getElementById('statement').value;
 
-        const commentForm = {
-            comment: statement,
-            image_name: image_name,
-            image_base64: image_base64
-        }
-
-        console.log(commentForm);
-
-        const param = {method: 'POST',
-                        headers:{'Content-Type': 'application/json'},
-                         body: JSON.stringify(commentForm)}
-         await fetch('insert-comment/13',param)
-         .then(res =>{
-            if(res.status === 400){
-                res.json()
-                .then(data => {
-                    data.errors.forEach(e => console.log(e.defaultMessage))
-                })
-            }
-        })
-        document.getElementById('comment-list').innerHTML = '';
-        commentReload();
+    const commentForm = {
+      comment: statement,
+      image_name: imageName,
+      image_base64: imageBase64
     }
 
-    function commentReload(){
-        fetch('view-comment/13')
-        .then(res =>{
-            if(res.status === 200){
-                res.json()
-                .then(data => {
-                    console.log(data);
-                    let commentList = document.getElementById('comment-list');
+    imageName='';
+    image_base64='';
 
-                    for(let comme of data){
-                        console.log(comme);
-                        let commeDiv = document.createElement('div');
-                        commeDiv.classList.add("comment");
-                        commeDiv.id = comme.id;
-                        let id = document.createElement('p');
-                        let date = document.createElement('p');
-                        let statement = document.createElement('p');
+    document.getElementById('statement').value='';
 
-                        date.textContent = comme.created_at;
-                        statement.textContent = comme.comment;
+    const imgForm = document.getElementById('imgInsert');
 
-                        commeDiv.appendChild(date);
-                        commeDiv.appendChild(statement);
-                        if(comme.image_base64 != ''){
-                           commeDiv.insertAdjacentHTML('beforeend',`<img src="data:image/png;base64,${comme.image_base64}" />`)
-                        }
-                        if(comme.user_id === 1){
-                           commeDiv.insertAdjacentHTML('beforeend',`<button onclick='commentDelete(${comme.id})'>削除</button>`)
-                        }
-                        commentList.prepend(commeDiv);
-                    }
-                })
-            }
-        });
-    }commentReload();
+    if(imageName !== ''){
+      document.getElementById('example').value='';
+      imgForm.removeChild(imgForm.children[1]);
+      fileInput.setAttribute('type','file');
+    }
+
+
+    const param = {method: 'POST',
+                  headers:{'Content-Type': 'application/json'},
+                   body: JSON.stringify(commentForm)}
+    await fetch(`/insert-comment/${threadId}`,param)
+    .then(res =>{
+      if(res.status === 400){
+          res.json()
+          .then(data => {
+              data.errors.forEach(e => console.log(e.defaultMessage))
+          })
+      }else{
+          res.json()
+          .then(data => {
+              let commentList = document.getElementById('comment-list');
+              let commeDiv = document.createElement('div');
+              commeDiv.classList.add("comment");
+              commeDiv.id = data.id;
+
+              let id = document.createElement('p');
+              let date = document.createElement('p');
+              let statement = document.createElement('p');
+
+              id.textContent = 'No. '+data.id;
+              date.textContent = data.created_at.split(' ')[0].replaceAll('-','/');
+              statement.textContent = data.comment;
+
+              commeDiv.appendChild(id);
+              commeDiv.appendChild(date);
+              commeDiv.appendChild(statement);
+
+              if(data.image_base64 != ''){
+                 commeDiv.insertAdjacentHTML('beforeend',`<img src="${data.image_base64}" />`)
+              }
+              if(data.user_id === 1){
+                 commeDiv.insertAdjacentHTML('beforeend',`<button onclick='commentDelete(${data.id})'>削除</button>`)
+              }
+              commentList.prepend(commeDiv);
+          })
+      }
+    })
+    }
+
+    function commentView(){
+    console.log(document.URL.split('/').slice(-1)[0]);
+    let threadId = document.URL.split('/').slice(-1)[0];
+    fetch(`/view-comment/${threadId}`)
+    .then(res =>{
+      if(res.status === 200){
+          res.json()
+          .then(data => {
+              let commentList = document.getElementById('comment-list');
+              console.log('長さ：'+data.length);
+
+              for(let comme of data){
+                  console.log(comme.created_at.split(' ')[0].replaceAll('-','/'));
+                  let commeDiv = document.createElement('div');
+                  commeDiv.classList.add("comment");
+                  commeDiv.id = comme.id;
+                  let id = document.createElement('p');
+                  let date = document.createElement('p');
+                  let statement = document.createElement('p');
+
+                  id.textContent = 'No. '+comme.id;
+                  date.textContent = comme.created_at.split(' ')[0].replaceAll('-','/');
+                  statement.textContent = comme.comment;
+
+                  commeDiv.appendChild(id);
+                  commeDiv.appendChild(date);
+                  commeDiv.appendChild(statement);
+                  if(comme.image_base64 != ''){
+                     commeDiv.insertAdjacentHTML('beforeend',`<img src="${comme.image_base64}" />`)
+                  }
+                  if(comme.user_id === 1){
+                     commeDiv.insertAdjacentHTML('beforeend',`<button onclick='commentDelete(${comme.id})'>削除</button>`)
+                  }
+                  commentList.append(commeDiv);
+              }
+              if(data.length == comCount){
+                  comCount=1;
+                  commentList.insertAdjacentHTML('beforeend',`<button onclick='shit()' id='dataReload'>データ更新</button>`);
+              }
+          })
+      }
+    });
+    }
+    function shit(){
+    document.getElementById('dataReload').remove();
+    fetch(`/view-comment-reload`)
+    .then(res =>{
+      if(res.status === 200){
+          res.json()
+          .then(data => {
+              let commentList = document.getElementById('comment-list');
+              console.log('長さ：'+data.length);
+
+              for(let comme of data){
+                  let commeDiv = document.createElement('div');
+                  commeDiv.classList.add("comment");
+                  commeDiv.id = comme.id;
+                  let id = document.createElement('p');
+                  let date = document.createElement('p');
+                  let statement = document.createElement('p');
+
+                  id.textContent = 'No. '+comme.id;
+                  date.textContent = comme.created_at.split(' ')[0].replaceAll('-','/');
+                  statement.textContent = comme.comment;
+
+                  commeDiv.appendChild(id);
+                  commeDiv.appendChild(date);
+                  commeDiv.appendChild(statement);
+                  if(comme.image_base64 != ''){
+                     commeDiv.insertAdjacentHTML('beforeend',`<img src="${comme.image_base64}" />`)
+                  }
+                  if(comme.user_id === 1){
+                     commeDiv.insertAdjacentHTML('beforeend',`<button onclick='commentDelete(${comme.id})'>削除</button>`)
+                  }
+                  commentList.append(commeDiv);
+              }
+              if(data.length === comCount){
+                  commentList.insertAdjacentHTML('beforeend',`<button onclick='shit()' id='dataReload'>データ更新</button>`);
+              }
+          })
+      }
+    });
+    }
+    commentView();
+    isFavorite();
 
 </script>
-
+<div id="fadeLayer"></div>
+<script src="/js/unten.js"></script>
 </body>
 </html>
