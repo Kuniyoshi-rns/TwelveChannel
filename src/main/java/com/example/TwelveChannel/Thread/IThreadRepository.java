@@ -20,4 +20,6 @@ public interface IThreadRepository {
 
     int insertThreadOkuma(ThreadAddForm threadAddForm,int userId);
     List<ThreadEntity> findThread(int offset);
+
+    int updateThreadOkuma(ThreadAddForm threadAddForm,int thread_id);
 }

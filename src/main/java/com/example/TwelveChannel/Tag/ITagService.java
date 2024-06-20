@@ -14,4 +14,6 @@ public interface ITagService {
     int threadTagInsert(int thread_id,String tag);
 
     List<ThreadTagEntity> threadTagAllFind();
+
+    int threadTagDelete(int thread_id,String tag);
 }

@@ -37,5 +37,10 @@ public class FavoriteService implements IFavoriteService{
     }
     @Override
     public List<FavoriteThreadCount> favoriteThreadCountHome(){return favoriteRepository.favoriteThreadCountHome();}
+
+    @Override
+    public List<ThreadEntity> getFavoThreadList(int user_id) {
+        return favoriteRepository.getFavoThreadList(user_id);
+    }
 }
 
