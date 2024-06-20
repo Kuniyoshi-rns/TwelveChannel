@@ -21,7 +21,7 @@ public class CommentRepository implements ICommentRepository {
                 "FROM comments " +
                 "INNER JOIN threads " +
                 "ON comments.thread_id = threads.id " +
-                "WHERE thread_id = :thread_id", param, new DataClassRowMapper<>(CommentEntity.class));
+                "WHERE thread_id = :thread_id ORDER BY created_at DESC", param, new DataClassRowMapper<>(CommentEntity.class));
     }
 
     @Override

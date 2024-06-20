@@ -55,4 +55,9 @@ public class ThreadService implements IThreadService{
     public List<ThreadEntity> findThread(int offset) {
         return threadRepository.findThread(offset);
     }
+
+    @Override
+    public int updateThreadOkuma(ThreadAddForm threadAddForm, int thread_id) {
+        return threadRepository.updateThreadOkuma(threadAddForm,thread_id);
+    }
 }

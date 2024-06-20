@@ -71,5 +71,13 @@ public class FavoriteRepository implements IFavoriteRepository{
                         "GROUP BY thread_id",
                 new DataClassRowMapper<>(FavoriteThreadCount.class));
     }
-}
 
+    @Override
+    public List<ThreadEntity> getFavoThreadList(int user_id) {
+        var param = new MapSqlParameterSource();
+        param.addValue("user",user_id);
+        return jdbcTemplate.query("SELECT id,creator,thread_title,comment,image_name,image_base64,created_at,updated_at,view_count" +
+                "FROM favorite_threads JOIN threads on favorite_threads.thread_id = threads.id" +
+                "WHERE user_id=:user",param,new DataClassRowMapper<>(ThreadEntity.class));
+    }
+}

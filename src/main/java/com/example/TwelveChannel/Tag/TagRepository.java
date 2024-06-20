@@ -75,4 +75,13 @@ public class TagRepository implements ITagRepository{
         return jdbcTemplate.query("SELECT * FROM threads_tags"
                 ,new DataClassRowMapper<>(ThreadTagEntity.class));
     }
+
+    @Override
+    public int threadTagDelete(int thread_id, String tag) {
+        var param=new MapSqlParameterSource();
+        param.addValue("thread_id",thread_id);
+        param.addValue("tag",tag);
+        return jdbcTemplate.update("DELETE FROM threads_tags " +
+                "WHERE thread_id=:thread_id",param);
+    }
 }

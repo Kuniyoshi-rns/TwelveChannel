@@ -3,10 +3,8 @@ package com.example.TwelveChannel.Controller;
 import com.example.TwelveChannel.Comment.CommentEntity;
 import com.example.TwelveChannel.Comment.CommentForm;
 import com.example.TwelveChannel.Comment.ICommentService;
-import com.example.TwelveChannel.Favorite.Count;
 import com.example.TwelveChannel.Favorite.FavoriteEntity;
 import com.example.TwelveChannel.Favorite.IFavoriteService;
-import com.example.TwelveChannel.Favorite.IsFavorite;
 import com.example.TwelveChannel.Thread.IThreadService;
 import com.example.TwelveChannel.Thread.ThreadEntity;
 import com.example.TwelveChannel.User.UserEntity;
@@ -39,7 +37,7 @@ public class AppRestController {
     @GetMapping("view-comment/{threadId}")
     public ResponseEntity<List<CommentEntity>> viewAll(@PathVariable("threadId") int threadId){
         list = commentService.getCommentByThread(threadId);
-        commentCount = 3; //後から変更
+        commentCount = 10; //後から変更
         List<CommentEntity> returnList;
         if(list.size() > commentCount) {
             returnList = list.subList(0,commentCount);
@@ -54,7 +52,7 @@ public class AppRestController {
     public ResponseEntity<List<CommentEntity>> reloadViewAll(){
         List<CommentEntity> returnList;
         int prevCount = commentCount;
-        commentCount += 1; //後から変更
+        commentCount += 5; //後から変更
         if(list.size() > commentCount) {
             returnList = list.subList(prevCount,commentCount);
             System.out.println(list.size());
@@ -102,6 +100,13 @@ public class AppRestController {
         UserEntity userEntity = (UserEntity) session.getAttribute("");
 //        favoriteService.deleteFavorite(userEntity.id(), threadId);
         favoriteService.deleteFavorite(1,threadId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("deleteThread/{threadId}")
+    public ResponseEntity<ThreadEntity> deleteThread(@PathVariable("threadId") int threadId){
+        System.out.println(threadId);
+        threadService.deleteThread(threadId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

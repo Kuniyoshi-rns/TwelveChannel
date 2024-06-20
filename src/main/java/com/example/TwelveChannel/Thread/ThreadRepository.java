@@ -1,5 +1,9 @@
 package com.example.TwelveChannel.Thread;
 
+import com.example.TwelveChannel.Comment.ICommentService;
+import com.example.TwelveChannel.Favorite.IFavoriteService;
+import com.example.TwelveChannel.Tag.ITagService;
+import com.example.TwelveChannel.Tag.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.DataClassRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -12,6 +16,7 @@ import java.util.List;
 public class ThreadRepository implements IThreadRepository{
     @Autowired
     private NamedParameterJdbcTemplate jdbcTemplate;
+
 
     @Override
     public List<ThreadEntity>  threadAll(){
@@ -75,6 +80,10 @@ public class ThreadRepository implements IThreadRepository{
     public int deleteThread(int thread_id){
         var param = new MapSqlParameterSource();
         param.addValue("id",thread_id);
+
+        jdbcTemplate.update("DELETE FROM comments WHERE thread_id = :id",param);
+        jdbcTemplate.update("DELETE FROM favorite_threads WHERE thread_id = :id",param);
+        jdbcTemplate.update("DELETE FROM threads_tags WHERE thread_id = :id",param);
         return jdbcTemplate.update("DELETE FROM threads WHERE id = :id",param);
     }
 
@@ -109,5 +118,24 @@ public class ThreadRepository implements IThreadRepository{
         param.addValue("offset",offset);
         return jdbcTemplate.query("SELECT * FROM threads ORDER BY id desc LIMIT 5 OFFSET :offset",
                 param,new DataClassRowMapper<>(ThreadEntity.class));
+    }
+
+    @Override
+    public int updateThreadOkuma(ThreadAddForm threadAddForm,int thread_id){
+        var param = new MapSqlParameterSource();
+        param.addValue("id",thread_id);
+        param.addValue("thread_title",threadAddForm.getTitle());
+        param.addValue("comment",threadAddForm.getComment());
+        param.addValue("image_name",threadAddForm.getImage_name());
+        param.addValue("image_base64",threadAddForm.getImage_base64());
+
+        return jdbcTemplate.update("UPDATE threads " +
+                "SET " +
+                "thread_title = :thread_title," +
+                "comment = :comment," +
+                "image_name= :image_name," +
+                "image_base64= :image_base64," +
+                "updated_at= now()" +
+                "WHERE id = :id",param);
     }
 }

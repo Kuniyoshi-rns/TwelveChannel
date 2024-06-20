@@ -30,4 +30,9 @@ public class TagService implements ITagService{
     public List<ThreadTagEntity> threadTagAllFind() {
         return tagRepository.threadTagAllFind();
     }
+
+    @Override
+    public int threadTagDelete(int thread_id, String tag) {
+        return tagRepository.threadTagDelete(thread_id,tag);
+    }
 }

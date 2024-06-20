@@ -22,4 +22,6 @@ public interface IThreadService {
 
     List<ThreadEntity> findThread(int offset);
 
+    int updateThreadOkuma(ThreadAddForm threadAddForm,int thread_id);
+
 }

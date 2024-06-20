@@ -18,5 +18,7 @@ public interface IFavoriteRepository {
 
     List<FavoriteThreadCount> favoriteThreadCountHome();
 
+    List<ThreadEntity> getFavoThreadList(int user_id);
+
 
 }

@@ -15,4 +15,6 @@ public interface ITagRepository {
     int threadTagInsert(int thread_id,String tag);
 
     List<ThreadTagEntity> threadTagAllFind();
+
+    int threadTagDelete(int thread_id,String tag);
 }

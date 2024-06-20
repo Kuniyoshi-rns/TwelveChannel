@@ -17,4 +17,6 @@ public interface IFavoriteService {
     void deleteFavorite(int userId, int threadId);
 
     List<FavoriteThreadCount> favoriteThreadCountHome();
+
+    List<ThreadEntity> getFavoThreadList(int user_id);
 }
