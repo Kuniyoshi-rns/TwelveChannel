@@ -22,7 +22,7 @@
             </select>
             <div>
                 <input class="search-box" type="text" name="keyword" size="25" placeholder="キーワード検索">
-                <input class="search-btn blue" type="submit" value="&#xf002">
+                <input class="search-btn blue" type="submit" value="検索">
             </div>
         </form>
         <button class="home-btn blue" id="add-thread">新規投稿</button>
@@ -32,20 +32,25 @@
         <div th:each="thread:${threads}">
             <p>No.<span th:text="${thread.id}"></span></p>
             <p>
-                <a th:href="@{/thread/{thread_id} (thread_id=${thread.id})}" th:text="${thread.thread_title}" ></a>
+                <a th:href="@{/thread/{thread_id} (thread_id=${thread.id})}" th:text="${thread.thread_title}" class="home-title"></a>
                 -
                 <span th:each="tag:${tags}">
                     <a th:href="@{/home?tag={tag} (tag=${tag.tag})}" th:text="'#'+${tag.tag}" th:if="${thread.id==tag.thread_id}"></a>
                 </span>
             </p>
 
-            <div th:each="count:${comment_count}">
+            <div class="like-comment">
+
+            <div th:each="count:${comment_count}" class="home-comment">
                 <p th:if="${thread.id==count.thread_id}">コメント:<span th:text="${count.count}"></span></p>
             </div>
 
             <div th:each="favorite:${favorites}">
                 <p th:if="${thread.id==favorite.thread_id}">いいね:<span th:text="${favorite.count}"></span></p>
             </div>
+
+            </div>
+
             <hr>
         </div>
     </div>

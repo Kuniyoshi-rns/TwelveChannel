@@ -39,12 +39,12 @@
     <div id="tag-modal">
         <p class="retire"> タグ設定</p>
         <div>
-            <div class="tag-scrollbar" >
+            <div id="myTags" class="tag-scrollbar" >
             </div><p></p>
 
             <div>
                 <input id="suggest" type="text" name="keyword" class="search-box" placeholder="タグ入力">
-                <input type="submit" class="blue search-btn"  value="登録">
+                <input type="button" class="blue search-btn" value="登録" onclick="add()">
             </div><p></p>
 
             <button type="button" onclick="closeTagModal()" >戻る</button>
@@ -125,9 +125,46 @@
     <script>
         'use strict'
 
+        const tagList=[];
+        const myTags = document.getElementById('myTags');
+
         document.getElementById('home-back').addEventListener('click', () => {
           location.href = './home'
         })
+
+        async function getTags(){
+            await fetch('/getTags')
+            .then(res => {
+                if(res.status === 200){
+                    res.json()
+                    .then(data =>{
+                        for(let tag of data){
+                            tagList.push(tag.tag);
+                            myTags.insertAdjacentHTML('beforeend',`<button type="button" value=${tag.tag} onclick="remove(this.value),this.remove()">x ${tag.tag}</button>`);
+                        }
+                        console.log(tagList);
+                    });
+                }
+            });
+        }
+
+        async function add(){
+            let tagValue = document.getElementById('suggest').value;
+            if(tagValue.replaceAll(/　| /g,'') !== '' && !tagList.includes(tagValue)){
+                console.log(tagValue);
+                await fetch(`myTag/${tagValue}`);
+                myTags.insertAdjacentHTML('beforeend',`<button type="button" value=${tagValue} onclick="remove(this.value),this.remove()">x ${tagValue}</button>`);
+                tagList.push(tagValue);
+            }document.getElementById('suggest').value = '';
+        }
+        async function remove(value){
+            console.log(value);
+            const param = {method:"DELETE"};
+            await fetch(`myTag/${value}`,param);
+            tagList.splice(tagList.indexOf(value));
+        }
+
+        getTags();
     </script>
     </body>
 </html>

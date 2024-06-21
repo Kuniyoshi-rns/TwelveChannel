@@ -5,6 +5,8 @@ import com.example.TwelveChannel.Comment.CommentForm;
 import com.example.TwelveChannel.Comment.ICommentService;
 import com.example.TwelveChannel.Favorite.FavoriteEntity;
 import com.example.TwelveChannel.Favorite.IFavoriteService;
+import com.example.TwelveChannel.Tag.ITagService;
+import com.example.TwelveChannel.Tag.UserTagEntity;
 import com.example.TwelveChannel.Thread.IThreadService;
 import com.example.TwelveChannel.Thread.ThreadEntity;
 import com.example.TwelveChannel.User.UserEntity;
@@ -30,6 +32,9 @@ public class AppRestController {
 
     @Autowired
     IFavoriteService favoriteService;
+
+    @Autowired
+    ITagService tagService;
 
     @Autowired
     HttpSession session;
@@ -108,6 +113,25 @@ public class AppRestController {
         System.out.println(threadId);
         threadService.deleteThread(threadId);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("myTag/{tagValue}")
+    public ResponseEntity<UserEntity> insertTag(@PathVariable("tagValue") String tag){
+        System.out.println(tag+"を追加");
+        tagService.userTagInsert(1,tag);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("myTag/{tagValue}")
+    public ResponseEntity<UserTagEntity> deleteTag(@PathVariable("tagValue") String tag){
+        System.out.println(tag+"を削除");
+        tagService.userTagDelete(1,tag);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("getTags")
+    public ResponseEntity<List<UserTagEntity>> myTags(){
+        return new ResponseEntity<>(tagService.userTag(1),HttpStatus.OK);
     }
 
 }
