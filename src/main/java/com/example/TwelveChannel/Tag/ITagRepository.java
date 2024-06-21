@@ -17,4 +17,6 @@ public interface ITagRepository {
     List<ThreadTagEntity> threadTagAllFind();
 
     int threadTagDelete(int thread_id,String tag);
+
+    List<TagCountEntity> TagCount(String keyword);
 }
