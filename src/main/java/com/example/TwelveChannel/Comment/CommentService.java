@@ -39,4 +39,9 @@ public class CommentService implements ICommentService{
     }
     @Override
     public List<CommentCountHome> getCommentListAllThreadHome(){return commentRepository.getCommentListAllThreadHome();}
+
+    @Override
+    public List<CommentEntity> getCommentOffsetByUser(int user_id, int offset) {
+        return commentRepository.getCommentOffsetByUser(user_id,offset);
+    }
 }

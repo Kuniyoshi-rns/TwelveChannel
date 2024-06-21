@@ -14,4 +14,5 @@ public interface ICommentService {
     int getCommentListByThread(int threadId);
     CommentEntity insertAndGet(CommentForm commentForm,int thread_id,int user_id);
     List<CommentCountHome> getCommentListAllThreadHome();
+    List<CommentEntity> getCommentOffsetByUser(int user_id, int offset);
 }

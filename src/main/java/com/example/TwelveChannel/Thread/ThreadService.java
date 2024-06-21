@@ -60,4 +60,34 @@ public class ThreadService implements IThreadService{
     public int updateThreadOkuma(ThreadAddForm threadAddForm, int thread_id) {
         return threadRepository.updateThreadOkuma(threadAddForm,thread_id);
     }
+
+    @Override
+    public List<ThreadEntity> searchThread(int offset, String tag, String order, String keyword) {
+        return threadRepository.searchThread(offset, tag, order, keyword);
+    }
+
+    @Override
+    public List<ThreadEntity> searchFiveThread(int offset, String tag, String order, String keyword) {
+        return threadRepository.searchFiveThread(offset, tag, order, keyword);
+    }
+
+    @Override
+    public List<ThreadEntity> findThreadOffsetByUser(int user_id, int offset) {
+        return threadRepository.findThreadOffsetByUser(user_id, offset);
+    }
+
+    @Override
+    public List<ThreadEntity> findThreadByUser(int user_id) {
+        return threadRepository.findThreadByUser(user_id);
+    }
+
+    @Override
+    public List<ThreadEntity> findFavoriteOffsetThreadByUser(int user_id, int offset) {
+        return threadRepository.findFavoriteOffsetThreadByUser(user_id,offset);
+    }
+
+    @Override
+    public List<ThreadEntity> findFavoriteThreadByUser(int user_id) {
+        return threadRepository.findFavoriteThreadByUser(user_id);
+    }
 }

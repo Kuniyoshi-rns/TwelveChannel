@@ -8,19 +8,8 @@
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
+<th:block th:insert="common/header"></th:block>
 <div>
-
-    <header class="header">
-        <link href="/css/unten.css" rel="stylesheet">
-        <!--    <p><img id="title" src="/images/twelvechannel.png" ></p>-->
-        <a href="/home"><img id="title" src="/images/twelvechannel.png" ></a>
-        <div class="header-btn">
-            <button id="myPage" onclick="location.href='/mypage'">マイページ</button>
-            <form class="logout_form" action="/login" method="get">
-                <button id="logout" class="custom-btn" type="submit">ログアウト</button>
-            </form>
-        </div>
-    </header>
 
     <div class="top-btn">
        <br><button id="home-back" class="return-btn" type="submit" >戻る</button>

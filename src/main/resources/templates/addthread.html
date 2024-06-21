@@ -95,7 +95,18 @@ console.log(imgForm.children)
   // ファイルが読み込まれたときに実行する
   reader.onload = function (e) {
     const imageUrl = e.target.result; // 画像のURLはevent.target.resultで呼び出せる
-    document.getElementById('base64').value = imageUrl;
+
+    //ここ追加
+        var img = new Image();
+        img.src = imageUrl;
+        img.onload = function(){
+            const canvas = document.createElement('canvas');
+            canvas.width = 200;
+            canvas.height = img.height * (200/img.width);
+            canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
+            document.getElementById('base64').value = canvas.toDataURL();
+
+  //document.getElementById('base64').value = imageUrl;
   //  const img = document.createElement("img"); // img要素を作成
   //  img.src = imageUrl; // 画像のURLをimg要素にセット
   //  preview.appendChild(img); // #previewの中に追加

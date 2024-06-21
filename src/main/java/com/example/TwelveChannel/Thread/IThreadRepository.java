@@ -22,4 +22,16 @@ public interface IThreadRepository {
     List<ThreadEntity> findThread(int offset);
 
     int updateThreadOkuma(ThreadAddForm threadAddForm,int thread_id);
+
+    List<ThreadEntity> searchThread(int offset,String tag,String order,String keyword);
+
+    List<ThreadEntity> searchFiveThread(int offset,String tag,String order,String keyword);
+
+    List<ThreadEntity> findThreadOffsetByUser(int user_id, int offset);
+
+    List<ThreadEntity> findThreadByUser(int user_id);
+
+    List<ThreadEntity> findFavoriteOffsetThreadByUser(int user_id, int offset);
+
+    List<ThreadEntity> findFavoriteThreadByUser(int user_id);
 }

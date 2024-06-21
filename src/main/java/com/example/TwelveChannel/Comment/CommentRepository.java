@@ -86,4 +86,18 @@ public class CommentRepository implements ICommentRepository {
                 "FROM comments " +
                 "GROUP BY thread_id", new DataClassRowMapper<>(CommentCountHome.class));
     }
+
+    @Override
+    public List<CommentEntity> getCommentOffsetByUser(int user_id, int offset){
+        var param = new MapSqlParameterSource();
+        param.addValue("user_id", user_id);
+        param.addValue("offset", offset);
+        return jdbcTemplate.query("SELECT comments.id,thread_id,thread_title,user_id,comments.comment,comments.image_name,comments.image_base64,comments.created_at " +
+                "FROM comments " +
+                "INNER JOIN threads " +
+                "ON comments.thread_id = threads.id " +
+                "WHERE user_id = :user_id " +
+                "LIMIT 20 " +
+                "OFFSET :offset", param, new DataClassRowMapper<>(CommentEntity.class));
+    }
 }

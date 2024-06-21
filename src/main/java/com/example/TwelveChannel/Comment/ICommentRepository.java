@@ -15,4 +15,6 @@ public interface ICommentRepository {
 
     List<CommentCountHome> getCommentListAllThreadHome();
 
+    List<CommentEntity> getCommentOffsetByUser(int user_id, int offset);
+
 }

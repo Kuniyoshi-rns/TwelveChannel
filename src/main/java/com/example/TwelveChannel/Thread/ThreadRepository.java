@@ -138,4 +138,140 @@ public class ThreadRepository implements IThreadRepository{
                 "updated_at= now()" +
                 "WHERE id = :id",param);
     }
+
+    @Override
+    public List<ThreadEntity> searchThread(int offset,String tag,String order,String keyword){
+        var param= new MapSqlParameterSource();
+        System.out.println("offset:"+offset+" order:"+order+" keyword:"+keyword+" tag:"+tag);
+        switch (order){
+            case "並び替え":
+                order="id desc";
+                break;
+            case "新しい順":
+                order="id desc";
+                break;
+            case "古い順":
+                order="id asc";
+                break;
+            default:
+                order="id asc";
+        }
+        System.out.println(order);
+        param.addValue("offset",offset);
+        param.addValue("tag",tag);
+        param.addValue("order",order);
+        param.addValue("keyword",keyword);
+        if(tag.isEmpty() && keyword.length()>1){
+            System.out.println("keyword検索");
+            return jdbcTemplate.query("SELECT * FROM threads " +
+                            "WHERE thread_title LIKE '%"+keyword+"%' "+
+                            "ORDER BY "+order,
+                    param,new DataClassRowMapper<>(ThreadEntity.class));
+        }else if(keyword.isEmpty() && tag.length()>1){
+            System.out.println("Tag検索");
+            return jdbcTemplate.query("SELECT * FROM threads " +
+                            "WHERE id IN(select thread_id from threads_tags where tag='"+tag+"') " +
+                            "ORDER BY "+order,
+                    param,new DataClassRowMapper<>(ThreadEntity.class));
+        }
+        System.out.println("orderのみ");
+        return jdbcTemplate.query("SELECT * FROM threads " +
+                        "ORDER BY "+order,
+                param,new DataClassRowMapper<>(ThreadEntity.class));
+    }
+
+    @Override
+    public List<ThreadEntity> searchFiveThread(int offset,String tag,String order,String keyword){
+        var param= new MapSqlParameterSource();
+        System.out.println("offset:"+offset+" order:"+order+" keyword:"+keyword+" tag:"+tag);
+        switch (order){
+            case "並び替え":
+                order="id desc";
+                break;
+            case "新しい順":
+                order="id desc";
+                break;
+            case "古い順":
+                order="id asc";
+                break;
+            default:
+                order="id asc";
+        }
+        System.out.println(order);
+        param.addValue("offset",offset);
+        param.addValue("tag",tag);
+        param.addValue("order",order);
+        param.addValue("keyword",keyword);
+        if(tag.isEmpty() && keyword.length()>1){
+            System.out.println("keyword検索");
+            return jdbcTemplate.query("SELECT * FROM threads " +
+                            "WHERE thread_title LIKE '%"+keyword+"%' "+
+                            "ORDER BY "+order+" LIMIT 5 OFFSET :offset",
+                    param,new DataClassRowMapper<>(ThreadEntity.class));
+        }else if(keyword.isEmpty() && tag.length()>1){
+            System.out.println("Tag検索");
+            return jdbcTemplate.query("SELECT * FROM threads " +
+                            "WHERE id IN(select thread_id from threads_tags where tag='"+tag+"') " +
+                            "ORDER BY "+order+" LIMIT 5 OFFSET :offset",
+                    param,new DataClassRowMapper<>(ThreadEntity.class));
+        }
+        System.out.println("orderのみ");
+        return jdbcTemplate.query("SELECT * FROM threads " +
+                        "ORDER BY "+order+" LIMIT 5 OFFSET :offset",
+                param,new DataClassRowMapper<>(ThreadEntity.class));
+    }
+
+    @Override
+    public List<ThreadEntity> findThreadOffsetByUser(int user_id, int offset){
+        var param = new  MapSqlParameterSource();
+        param.addValue("creator",user_id);
+        param.addValue("offset", offset);
+        return jdbcTemplate.query("SELECT * " +
+                "FROM threads " +
+                "WHERE creator = :creator " +
+                "ORDER BY id desc " +
+                "LIMIT 20 " +
+                "OFFSET :offset", param, new DataClassRowMapper<>(ThreadEntity.class));
+    }
+
+    @Override
+    public List<ThreadEntity> findThreadByUser(int user_id){
+        var param = new  MapSqlParameterSource();
+        param.addValue("creator",user_id);
+        return jdbcTemplate.query("SELECT * " +
+                        "FROM threads " +
+                        "WHERE creator = :creator "+
+                        "ORDER BY id desc ",
+                param, new DataClassRowMapper<>(ThreadEntity.class));
+    }
+
+    @Override
+    public List<ThreadEntity> findFavoriteOffsetThreadByUser(int user_id, int offset){
+        var param = new MapSqlParameterSource();
+        param.addValue("creator", user_id);
+        param.addValue("offset", offset);
+        return jdbcTemplate.query("SELECT * " +
+                        "FROM threads " +
+                        "WHERE id IN ( " +
+                        "SELECT thread_id " +
+                        "FROM favorite_threads " +
+                        "WHERE user_id = :creator) " +
+                        "LIMIT 20 " +
+                        "OFFSET :offset",
+                param, new DataClassRowMapper<>(ThreadEntity.class));
+    }
+
+    @Override
+    public List<ThreadEntity> findFavoriteThreadByUser(int user_id){
+        var param = new MapSqlParameterSource();
+        param.addValue("creator", user_id);
+        return jdbcTemplate.query("SELECT * " +
+                        "FROM threads " +
+                        "WHERE id IN ( " +
+                        "SELECT thread_id " +
+                        "FROM favorite_threads " +
+                        "WHERE user_id = :creator) ",
+                param, new DataClassRowMapper<>(ThreadEntity.class));
+    }
+
 }

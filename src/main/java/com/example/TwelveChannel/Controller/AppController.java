@@ -1,9 +1,11 @@
 package com.example.TwelveChannel.Controller;
 
+import com.example.TwelveChannel.Comment.CommentEntity;
 import com.example.TwelveChannel.Comment.CommentService;
 import com.example.TwelveChannel.Favorite.FavoriteService;
 import com.example.TwelveChannel.Tag.TagService;
 import com.example.TwelveChannel.Thread.ThreadAddForm;
+import com.example.TwelveChannel.Thread.ThreadEntity;
 import com.example.TwelveChannel.Thread.ThreadService;
 import com.example.TwelveChannel.User.Form.LoginForm;
 import com.example.TwelveChannel.User.Form.SignUpForm;
@@ -16,6 +18,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 public class AppController {
@@ -54,7 +58,7 @@ public class AppController {
             model.addAttribute("loginError","ID、またはパスワードが異なります。");
             return "login";
         }
-        return "home";
+        return "redirect:/home";
     }
 
     //新規登録
@@ -128,12 +132,6 @@ public class AppController {
         return "redirect:/thread/" + threadId;
     }
 
-    //ホーム画面
-    @GetMapping("/home")
-    public String login(){
-        return "home";
-    }
-
 
     @GetMapping({"/thread","/thread/{thread_id}"})
     public String Thread(@PathVariable("thread_id") int thread_id, Model model){
@@ -145,7 +143,105 @@ public class AppController {
         return "thread";
     }
 
+    @GetMapping("/home")
+    public String home(@RequestParam(name = "offset", defaultValue = "0") int offset,
+                       @RequestParam(name = "tag", defaultValue = "") String tag,
+                       @RequestParam(name = "order", defaultValue = "") String order,
+                       @RequestParam(name = "keyword", defaultValue = "") String keyword,
+                       Model model) {
+        int thread_page=threadService.threadAll().size();
+
+        var thread=threadService.findThread(offset);
+        if(tag.isEmpty() && keyword.isEmpty() && order.isEmpty()) {
+            System.out.println("何もなし");
+        }else{
+            thread = threadService.searchThread(offset, tag, order, keyword);
+            thread_page=thread.size();
+            thread=threadService.searchFiveThread(offset,tag,order,keyword);
+            for (var test : thread) {
+                System.out.println(test);
+            }
+        }
+
+        var all_tag=tagService.threadTagAllFind();
+        var comment_count=commentService.getCommentListAllThreadHome();
+        var favorite=favoriteService.favoriteThreadCountHome();
+        model.addAttribute("threads",thread);
+        model.addAttribute("tags",all_tag);
+        model.addAttribute("comment_count",comment_count);
+        model.addAttribute("favorites",favorite);
+
+        model.addAttribute("offset",offset);
+        model.addAttribute("tag",tag);
+        model.addAttribute("order",order);
+        model.addAttribute("keyword",keyword);
+        if(thread_page%5==0){
+            thread_page=thread_page/5;
+        }else{
+            thread_page=thread_page/5+1;
+        }
+        model.addAttribute("thread_page",offset/5+1);
+        model.addAttribute("thread_all",thread_page);
+
+        return "home";
+    }
+
     @GetMapping("/mypage")
-    public String mypage(){ return "mypage";}
+    public String mypage(@RequestParam(name = "offset", defaultValue = "0") int offset,
+                         @RequestParam(name = "menu", defaultValue = "1") int menu,
+                         Model model){
+//        var user= (UserEntity)httpSession.getAttribute("user");
+//        var user_id= user.id();
+        var user_id=1;
+        System.out.println("マイページ遷移:menu="+menu);
+
+        List<ThreadEntity> thread=null;
+        List<CommentEntity> comment=null;
+        int thread_page=0;
+
+        switch (menu){
+            case 1:
+                thread=threadService.findThreadOffsetByUser(user_id,offset);
+                thread_page=threadService.findThreadByUser(user_id).size();
+                break;
+            case 2:
+                thread=threadService.findFavoriteOffsetThreadByUser(user_id,offset);
+                thread_page=threadService.findFavoriteThreadByUser(user_id).size();
+                break;
+            case 3:
+                comment=commentService.getCommentOffsetByUser(user_id,offset);
+                thread_page=commentService.getCommentByUser(user_id).size();
+                break;
+            default:
+                break;
+        }
+
+        System.out.println("全部で"+thread_page+"件");
+
+        for(var test : commentService.getCommentOffsetByUser(user_id,offset)){
+            System.out.println(test);
+        }
+
+        var all_tag=tagService.threadTagAllFind();
+        var comment_count=commentService.getCommentListAllThreadHome();
+        var favorite=favoriteService.favoriteThreadCountHome();
+
+        model.addAttribute("threads",thread);
+        model.addAttribute("comments",comment);
+        model.addAttribute("tags",all_tag);
+        model.addAttribute("comment_count",comment_count);
+        model.addAttribute("favorites",favorite);
+
+        model.addAttribute("offset",offset);
+        model.addAttribute("menu",menu);
+        if(thread_page%20==0 && thread_page!=0){
+            thread_page=thread_page/20;
+        }else{
+            thread_page=thread_page/20+1;
+        }
+        model.addAttribute("thread_page",offset/20+1);
+        model.addAttribute("thread_all",thread_page);
+        return "mypage";
+    }
 }
 
