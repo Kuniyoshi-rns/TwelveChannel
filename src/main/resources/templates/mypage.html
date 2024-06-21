@@ -4,8 +4,12 @@
     <meta charset="UTF-8">
     <title>マイページ</title>
     <link href="/css/unten.css" rel="stylesheet">
-<!--    <link href="/css/commons.css" rel="stylesheet">-->
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.3/dist/css/autoComplete.min.css">
+
 </head>
 <body>
 <th:block th:insert="common/header"></th:block>
@@ -31,20 +35,31 @@
         </div>
         <p > 退会すると再登録が必要になります</p>
     </div>
+
     <div id="tag-modal">
         <p class="retire"> タグ設定</p>
         <div>
             <div class="tag-scrollbar" >
             </div><p></p>
 
-            <div >
-                <input type="text" name="keyword" class="search-box" placeholder="タグ入力">
+            <div>
+                <input id="suggest" type="text" name="keyword" class="search-box" placeholder="タグ入力">
                 <input type="submit" class="blue search-btn"  value="登録">
             </div><p></p>
 
             <button type="button" onclick="closeTagModal()" >戻る</button>
         </div>
+
+
+<!--        <div class="input-wrap">-->
+<!--            <input type="text" id="suggest">-->
+<!--        </div>-->
+
+
     </div>
+
+
+
     <h1 class="mypage">マイページ</h1>
 
 <!--    <form class="btns">-->
@@ -99,6 +114,14 @@
     </div>
     <div id="fadeLayer"></div>
 <script src="/js/unten.js"></script>
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script src="/js/tag-suggest.js"></script>
+
+
     <script>
         'use strict'
 
