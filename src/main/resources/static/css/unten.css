@@ -9,7 +9,7 @@ body {
 }
 
 /*12ちゃんねるの画像*/
-#title {
+.ten {
     display: block;
     height: 70px;
     margin-left:10%;
@@ -33,11 +33,7 @@ body {
     margin-left: 15%
 }
 
-    .return-btn:hover {
-        box-shadow: 0px 12px 24px #0b5dae63;
-        transform: translateY(-4px);
-        background: linear-gradient(110.85deg, #095DAD 0%, #11af75 100.19%);
-    }
+
 
 .mypage-btn{
     width: 10em;
@@ -84,7 +80,7 @@ body {
 }
 
 .search {
-    margin-left: 600px;
+    margin-left: 40%;
     display: flex;
     flex-direction: row;
     margin-bottom:30px;
@@ -155,6 +151,10 @@ body {
     background-color:white;
     overflow-x:hidden;
     overflow-y:scroll;
+}
+
+#comment-list{
+
 }
 
 .history-btn li {
@@ -244,17 +244,11 @@ background-color: #4169e1;
 color: white;
 }
 
-button:hover {
-    /* マウスオーバー時に背景色をグレーに変更 */
-    background-color: #333;
-}
 
 .add-title{
-    margin-left:200px;
-    vertical-align:top;
-    display: flex;
-    flex-direction: row;
-    margin-right:10px;
+    margin-left:210px;
+
+
 }
 
 .errormsg{
@@ -313,12 +307,6 @@ textarea{
     width: 10em;
 }
 
-.post-btn:hover {
-    box-shadow: 0px 12px 24px #0b5dae63;
-    transform: translateY(-4px);
-    background: linear-gradient(110.85deg, #095DAD 0%, #11af75 100.19%);
-}
-
 .comment-like{
     display: flex;
     flex-direction: row;
@@ -331,13 +319,10 @@ textarea{
 
 #logout,.red{
     background-color:#ff6347;
+    color:white;
 }
 
-#logout:hover {
-    box-shadow: 0px 12px 24px #0b5dae63;
-    transform: translateY(-4px);
-    background: linear-gradient(110.85deg, #FFFFFF 0%, #FFF970 100.19%);
-}
+
 
 
 
@@ -444,5 +429,72 @@ textarea{
 #myPage:hover {
            box-shadow: 0px 12px 24px #0b5dae63;
            transform: translateY(-4px);
-           background: linear-gradient(110.85deg, #A1A0EF 0%, #1501F9 50%, #8A00BA 100.19%);
+           background:  linear-gradient(150deg, rgba(0, 255, 177, 1), rgba(65, 74, 255, 1) 44%, rgba(171, 25, 248, 1) 90%);
        }
+
+#logout:hover {
+    box-shadow: 0px 12px 24px #0b5dae63;
+    transform: translateY(-4px);
+    background:  linear-gradient(150deg, rgba(245, 255, 0, 1), rgba(255, 179, 0, 1) 46%, rgba(255, 0, 0, 1));
+}
+.red:hover {
+
+     box-shadow: 0px 12px 24px #0b5dae63;
+        transform: translateY(-4px);
+    background-color: #ffa500;
+}
+
+.blue:hover {
+  box-shadow: 0px 12px 24px #0b5dae63;
+     transform: translateY(-4px);
+    background-color: #4169e1;
+}
+
+.like-btn:hover {
+           box-shadow: 0px 12px 24px #0b5dae63;
+              transform: translateY(-4px);
+             background-color: #00bfff;
+         }
+
+.post-btn:hover {
+    box-shadow: 0px 12px 24px #0b5dae63;
+    transform: translateY(-4px);
+    background: linear-gradient(110.85deg, #095DAD 0%, #11af75 100.19%);
+}
+
+    .return-btn:hover {
+        box-shadow: 0px 12px 24px #0b5dae63;
+        transform: translateY(-4px);
+
+         background-color: #4169e1;
+    }
+    <!--  background: linear-gradient(110.85deg, #095DAD 0%, #11af75 100.19%); -->
+
+.aiu:hover {
+                shadow: 0px 12px 24px #0b5dae63;
+                transform: translateY(-4px);
+}
+
+.comment-delete-btn{
+    margin-left: 90%;
+    width: 5em;
+}
+
+.sample-span{
+    display:flex;
+    gap:20px;
+}
+
+.like-comment{
+     display: flex;
+     flex-direction: row;
+     justify-content: flex-end;
+     padding-right:10px;
+}
+.home-comment{
+    margin-right:1px;
+}
+
+.home-title{
+    font-size:  20px;
+}
