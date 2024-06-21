@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>スレッド編集</title>
-    <link href="css/unten.css" rel="stylesheet">
+    <link href="/css/unten.css" rel="stylesheet">
 </head>
 <body>
 <th:block th:insert="common/header"></th:block>
@@ -89,7 +89,9 @@
     document.getElementById('image_name').value = file.name;
     imageName = file.name
     // ファイルが読み込まれたときに実行する
+    var img = new Image();
     reader.onload = function (e) {
+    img.src = imageUrl;
       const imageUrl = e.target.result; // 画像のURLはevent.target.resultで呼び出せる
       const canvas = document.createElement('canvas');
       canvas.width = 200;
