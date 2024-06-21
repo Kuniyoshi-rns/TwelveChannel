@@ -170,16 +170,14 @@
     const imgForm = document.getElementById('imgInsert');
 
 
-    if(imageName !== ''){
-      deleteImage();
-    }
-
-
     const param = {method: 'POST',
                   headers:{'Content-Type': 'application/json'},
                    body: JSON.stringify(commentForm)}
-    if(statement.replaceAll(/　| /g,'') === ''){
+    if(statement.replaceAll(/　| /g,'') === '' && imageName === ''){
         return;
+    }
+    if(imageName !== ''){
+      deleteImage();
     }
     await fetch(`/insert-comment/${threadId}`,param)
     .then(res =>{
@@ -196,6 +194,9 @@
               commeDiv.classList.add("comment1");
               commeDiv.id = data.id;
 
+              let span = document.createElement('span');
+              span.classList.add('sample-span');
+
               let id = document.createElement('p');
               let date = document.createElement('p');
               let statement = document.createElement('p');
@@ -204,8 +205,12 @@
               date.textContent = data.created_at.split(' ')[0].replaceAll('-','/');
               statement.textContent = data.comment;
 
-              commeDiv.appendChild(id);
-              commeDiv.appendChild(date);
+              span.appendChild(id);
+              span.appendChild(date);
+
+              //commeDiv.appendChild(id);
+              //commeDiv.appendChild(date);
+              commeDiv.appendChild(span)
               commeDiv.appendChild(statement);
 
               if(data.image_base64 != ''){
@@ -214,6 +219,7 @@
               if(data.user_id === 1){
                  commeDiv.insertAdjacentHTML('beforeend',`<button class='comment-delete-btn red' onclick='commentDelete(${data.id})'>削除</button>`)
               }
+              commeDiv.insertAdjacentHTML('beforeend','<hr>');
               commentList.prepend(commeDiv);
           })
       }
@@ -282,8 +288,12 @@
 
               for(let comme of data){
                   let commeDiv = document.createElement('div');
-                  commeDiv.classList.add("comment");
+                  commeDiv.classList.add("comment1");
                   commeDiv.id = comme.id;
+
+                  let span = document.createElement('span');
+                  span.classList.add('sample-span');
+
                   let id = document.createElement('p');
                   let date = document.createElement('p');
                   let statement = document.createElement('p');
@@ -292,19 +302,25 @@
                   date.textContent = comme.created_at.split(' ')[0].replaceAll('-','/');
                   statement.textContent = comme.comment;
 
-                  commeDiv.appendChild(id);
-                  commeDiv.appendChild(date);
+                  span.appendChild(id);
+                  span.appendChild(date);
+
+                  //commeDiv.appendChild(id);
+                  //commeDiv.appendChild(date);
+                  commeDiv.appendChild(span)
+
                   commeDiv.appendChild(statement);
                   if(comme.image_base64 != ''){
                      commeDiv.insertAdjacentHTML('beforeend',`<img src="${comme.image_base64}" />`)
                   }
                   if(comme.user_id === 1){
-                     commeDiv.insertAdjacentHTML('beforeend',`<button onclick='commentDelete(${comme.id})'>削除</button>`)
+                     commeDiv.insertAdjacentHTML('beforeend',`<button class='comment-delete-btn red' onclick='commentDelete(${comme.id})'>削除</button>`)
                   }
+                  commeDiv.insertAdjacentHTML('beforeend','<hr>');
                   commentList.append(commeDiv);
               }
               if(data.length === comCount){
-                  commentList.insertAdjacentHTML('beforeend',`<button onclick='shit()' id='dataReload'>データ更新</button>`);
+                  commentList.insertAdjacentHTML('beforeend',`<button onclick='viewLoad()' id='dataReload'>データ更新</button>`);
               }
           })
       }
