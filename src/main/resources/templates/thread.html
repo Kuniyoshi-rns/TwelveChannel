@@ -38,9 +38,8 @@
 <div class="comment">
 <textarea  id="statement"></textarea>
     <div class="image">
-        <button id="addImage" type="hidden">+画像追加</button>
         <div id="imgInsert"><input id="example" type="file" accept="image/*"></div>
-        <button class="blue" id="addComment" onclick="addComment()">書き込み</button>
+        <button class="blue post-btn" id="addComment" onclick="addComment()">書き込み</button>
     </div>
 </div>
 
@@ -194,7 +193,7 @@
           .then(data => {
               let commentList = document.getElementById('comment-list');
               let commeDiv = document.createElement('div');
-              commeDiv.classList.add("comment");
+              commeDiv.classList.add("comment1");
               commeDiv.id = data.id;
 
               let id = document.createElement('p');
@@ -213,7 +212,7 @@
                  commeDiv.insertAdjacentHTML('beforeend',`<img src="${data.image_base64}" />`)
               }
               if(data.user_id === 1){
-                 commeDiv.insertAdjacentHTML('beforeend',`<button onclick='commentDelete(${data.id})'>削除</button>`)
+                 commeDiv.insertAdjacentHTML('beforeend',`<button class='comment-delete-btn red' onclick='commentDelete(${data.id})'>削除</button>`)
               }
               commentList.prepend(commeDiv);
           })
@@ -235,25 +234,32 @@
               for(let comme of data){
                   console.log(comme.created_at.split(' ')[0].replaceAll('-','/'));
                   let commeDiv = document.createElement('div');
-                  commeDiv.classList.add("comment");
+                  commeDiv.classList.add("comment1");
                   commeDiv.id = comme.id;
+                  let span = document.createElement('span');
+                  span.classList.add('sample-span');
                   let id = document.createElement('p');
-                  let date = document.createElement('p');
+                  let date = document.createElement('p')
                   let statement = document.createElement('p');
 
                   id.textContent = 'No. '+comme.id;
                   date.textContent = comme.created_at.split(' ')[0].replaceAll('-','/');
                   statement.textContent = comme.comment;
 
-                  commeDiv.appendChild(id);
-                  commeDiv.appendChild(date);
+                  span.appendChild(id);
+                  span.appendChild(date);
+
+                  //commeDiv.appendChild(id);
+                  //commeDiv.appendChild(date);
+                  commeDiv.appendChild(span)
                   commeDiv.appendChild(statement);
                   if(comme.image_base64 != ''){
                      commeDiv.insertAdjacentHTML('beforeend',`<img src="${comme.image_base64}" />`)
                   }
                   if(comme.user_id === 1){
-                     commeDiv.insertAdjacentHTML('beforeend',`<button onclick='commentDelete(${comme.id})'>削除</button>`)
+                     commeDiv.insertAdjacentHTML('beforeend',`<button class='comment-delete-btn red' onclick='commentDelete(${comme.id})'>削除</button>`)
                   }
+                  commeDiv.insertAdjacentHTML('beforeend','<hr>');
                   commentList.append(commeDiv);
               }
               if(data.length == comCount){
