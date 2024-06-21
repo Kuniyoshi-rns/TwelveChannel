@@ -84,4 +84,17 @@ public class TagRepository implements ITagRepository{
         return jdbcTemplate.update("DELETE FROM threads_tags " +
                 "WHERE thread_id=:thread_id",param);
     }
+
+    @Override
+    public List<TagCountEntity> TagCount(String keyword){
+        var param=new MapSqlParameterSource();
+        param.addValue("keyword",keyword+"%");
+        return jdbcTemplate.query("SELECT tag,count(*) " +
+                        "FROM threads_tags " +
+                        "WHERE tag like :keyword " +
+                        "GROUP BY tag " +
+                        "ORDER BY count desc,tag asc " +
+                        "LIMIT 5"
+                ,param,new DataClassRowMapper<>(TagCountEntity.class));
+    }
 }
