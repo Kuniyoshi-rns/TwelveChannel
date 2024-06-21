@@ -54,7 +54,7 @@
           <div id="preview"></div>
           <input type="hidden" id="image_name" th:field="*{image_name}" value="">
           <input type="hidden" id="base64" th:field="*{image_base64}" value="">
-          <script th:src="@{js/sample.js}"></script>
+<!--          <script th:src="@{js/sample.js}"></script>-->
           <button class="post-btn blue" type="submit">投稿</button>
 
         </div>
@@ -72,31 +72,31 @@
   const fileInput = document.getElementById('example');
 
   if(imageName!=''){
-const imgForm = document.getElementById('imageForm');
-console.log(imgForm.children)
-  fileInput.setAttribute('type','hidden');
-  imgForm.insertAdjacentHTML('beforeend',`<button type="button" onclick="deleteImage()">x ${imageName}</button>`);
+    const imgForm = document.getElementById('imageForm');
+    console.log(imgForm.children)
+    fileInput.setAttribute('type','hidden');
+    imgForm.insertAdjacentHTML('beforeend',`<button type="button" onclick="deleteImage()">x ${imageName}</button>`);
   }
   function deleteImage(){
-  document.getElementById('image_name').value='';
-  document.getElementById('base64').value='';
+    document.getElementById('image_name').value='';
+    document.getElementById('base64').value='';
 
-  console.log('削除完了');
-  const imgForm = document.getElementById('imageForm');
-  imgForm.removeChild(imgForm.children[1]);
-  console.log(imgForm.children);
-  fileInput.setAttribute('type','file');
-}
+    console.log('削除完了');
+    const imgForm = document.getElementById('imageForm');
+    imgForm.removeChild(imgForm.children[1]);
+    console.log(imgForm.children);
+    fileInput.setAttribute('type','file');
+  }
   function changeFile(file) {
   // FileReaderオブジェクトを作成
-  const reader = new FileReader();
-  document.getElementById('image_name').value = file.name;
-  imageName = file.name
+    const reader = new FileReader();
+    document.getElementById('image_name').value = file.name;
+    imageName = file.name
   // ファイルが読み込まれたときに実行する
-  reader.onload = function (e) {
-    const imageUrl = e.target.result; // 画像のURLはevent.target.resultで呼び出せる
+    reader.onload = function (e) {
+      const imageUrl = e.target.result; // 画像のURLはevent.target.resultで呼び出せる
 
-    //ここ追加
+      //ここ追加
         var img = new Image();
         img.src = imageUrl;
         img.onload = function(){
@@ -105,6 +105,7 @@ console.log(imgForm.children)
             canvas.height = img.height * (200/img.width);
             canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
             document.getElementById('base64').value = canvas.toDataURL();
+        }
 
   //document.getElementById('base64').value = imageUrl;
   //  const img = document.createElement("img"); // img要素を作成
