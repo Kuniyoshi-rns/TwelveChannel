@@ -144,8 +144,8 @@ public class ThreadRepository implements IThreadRepository{
         var param = new MapSqlParameterSource();
         String query = "SELECT * FROM threads ";
 
-        if (!tag.isEmpty() && tag.length() > 1) {
-            query += "WHERE id IN (SELECT thread_id FROM threads_tags WHERE tag = :tag) ";
+        if (!tag.isEmpty()) {
+            query += "WHERE id IN (SELECT thread_id FROM threads_tags WHERE tag = '"+tag+"') ";
             param.addValue("tag", tag);
         }
 
@@ -174,6 +174,7 @@ public class ThreadRepository implements IThreadRepository{
 //
 //        param.addValue("offset", offset);
 
+        System.out.println(query);
         return jdbcTemplate.query(query, param, new DataClassRowMapper<>(ThreadEntity.class));
     }
 
@@ -182,8 +183,8 @@ public class ThreadRepository implements IThreadRepository{
         var param = new MapSqlParameterSource();
         String query = "SELECT * FROM threads ";
 
-        if (!tag.isEmpty() && tag.length() > 1) {
-            query += "WHERE id IN (SELECT thread_id FROM threads_tags WHERE tag = :tag) ";
+        if (!tag.isEmpty()) {
+            query += "WHERE id IN (SELECT thread_id FROM threads_tags WHERE tag = '"+tag+"') ";
             param.addValue("tag", tag);
         }
 

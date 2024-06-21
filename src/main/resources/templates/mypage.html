@@ -80,8 +80,7 @@
                 <p>No.<span th:text="${thread.id}"></span></p>
                 <p>
                     <a th:href="@{/thread/{thread_id} (thread_id=${thread.id})}" th:text="${thread.thread_title}" ></a>
-<!--                    <a th:href="@{/thread?thread_id={thread_id} (thread_id=${thread.id})}" th:text="${thread.thread_title}" ></a>-->
-                    -
+
                     <span th:each="tag:${tags}">
                     <a th:href="@{/home?tag={tag} (tag=${tag.tag})}" th:text="'#'+${tag.tag}" th:if="${thread.id==tag.thread_id}"></a>
                     </span>
@@ -110,9 +109,9 @@
 
     </div>
     <div class="pagination">
-        <a th:href="@{/mypage?offset={offset}&menu={menu} (offset=${offset-20},menu=${menu})}" th:if="${offset>=20}">次へ</a>
+        <a th:href="@{/mypage?offset={offset}&menu={menu} (offset=${offset-20},menu=${menu})}" th:if="${offset>=20}">＜</a>
         <p><span th:text="${thread_page}"></span>/<span th:text="${thread_all}"></span>ページ</p>
-        <a th:href="@{/mypage?offset={offset}&menu={menu} (offset=${offset+20},menu=${menu})}" th:if="${thread_page<thread_all}">前へ</a>
+        <a th:href="@{/mypage?offset={offset}&menu={menu} (offset=${offset+20},menu=${menu})}" th:if="${thread_page<thread_all}">＞</a>
     </div>
     <div id="fadeLayer"></div>
 <script src="/js/unten.js"></script>
