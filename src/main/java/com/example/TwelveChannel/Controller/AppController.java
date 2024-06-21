@@ -53,11 +53,17 @@ public class AppController {
         if(bindingResult.hasErrors()) {
             return "login";
         }
+
         System.out.println(userService.findByIdUser(loginForm));
-        if(userService.findByIdUser(loginForm)==null){
+        var loginuser = userService.findByIdUser(loginForm);
+
+        if(loginuser==null){
             model.addAttribute("loginError","ID、またはパスワードが異なります。");
             return "login";
         }
+
+        System.out.println(userService.findByIdUser(loginForm));
+        session.setAttribute("loginuser",loginuser);
         return "redirect:/home";
     }
 
@@ -135,9 +141,10 @@ public class AppController {
 
     @GetMapping({"/thread","/thread/{thread_id}"})
     public String Thread(@PathVariable("thread_id") int thread_id, Model model){
-        var loginuser = new UserEntity(2,"yamada","02");
-        session.setAttribute("loginuser",loginuser);
+//        var loginuser = new UserEntity(1,"yamada","02");
+//        session.setAttribute("loginuser",loginuser);
         model.addAttribute("thread",threadService.findByIdThread(thread_id));
+        System.out.println(threadService.findByIdThread(thread_id));
         model.addAttribute("tags",tagService.threadTag(thread_id));
 
         return "thread";
@@ -242,6 +249,12 @@ public class AppController {
         model.addAttribute("thread_page",offset/20+1);
         model.addAttribute("thread_all",thread_page);
         return "mypage";
+    }
+
+    @GetMapping("/logout")
+    public String logout(@ModelAttribute("loginForm") LoginForm loginForm) {
+        session.invalidate();
+        return "redirect:/login";
     }
 }
 
