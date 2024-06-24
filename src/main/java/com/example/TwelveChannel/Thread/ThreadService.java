@@ -67,8 +67,8 @@ public class ThreadService implements IThreadService{
     }
 
     @Override
-    public List<ThreadEntity> searchFiveThread(int offset, String tag, String order, String keyword) {
-        return threadRepository.searchFiveThread(offset, tag, order, keyword);
+    public List<ThreadEntity> searchOffsetThread(int offset, String tag, String order, String keyword) {
+        return threadRepository.searchOffsetThread(offset, tag, order, keyword);
     }
 
     @Override

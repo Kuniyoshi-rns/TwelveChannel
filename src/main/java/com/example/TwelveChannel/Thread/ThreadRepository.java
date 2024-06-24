@@ -116,7 +116,7 @@ public class ThreadRepository implements IThreadRepository{
     public List<ThreadEntity> findThread(int offset) {
         var param= new MapSqlParameterSource();
         param.addValue("offset",offset);
-        return jdbcTemplate.query("SELECT * FROM threads ORDER BY id desc LIMIT 5 OFFSET :offset",
+        return jdbcTemplate.query("SELECT * FROM threads ORDER BY id desc LIMIT 20 OFFSET :offset",
                 param,new DataClassRowMapper<>(ThreadEntity.class));
     }
 
@@ -179,12 +179,12 @@ public class ThreadRepository implements IThreadRepository{
     }
 
     @Override
-    public List<ThreadEntity> searchFiveThread(int offset,String tag,String order,String keyword){
+    public List<ThreadEntity> searchOffsetThread(int offset, String tag, String order, String keyword){
         var param = new MapSqlParameterSource();
         String query = "SELECT * FROM threads ";
 
-        if (!tag.isEmpty()) {
-            query += "WHERE id IN (SELECT thread_id FROM threads_tags WHERE tag = '"+tag+"') ";
+        if (!tag.isEmpty() && tag.length() > 0) {
+            query += "WHERE id IN (SELECT thread_id FROM threads_tags WHERE tag = :tag) ";
             param.addValue("tag", tag);
         }
 
@@ -209,7 +209,7 @@ public class ThreadRepository implements IThreadRepository{
                 query += "ORDER BY id asc";
         }
 
-        query += " LIMIT 5 OFFSET :offset";
+        query += " LIMIT 20 OFFSET :offset";
 
         param.addValue("offset", offset);
 
