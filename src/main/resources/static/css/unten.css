@@ -100,7 +100,10 @@ body {
 }
 
 .thread-tag{
-    text-align: center;
+
+   display:flex;
+   justify-content:center;
+
 }
 .thread{
     margin-bottom: 0px;
@@ -162,10 +165,13 @@ body {
     display: inline;
     padding:10px 15px;
     border:1px #ccc solid;color:#000053;
-    border-radius: 5px / 5px;}
-    .history-btn .this {background-color:#777;
-    color:#fff;
- }
+    border-radius: 5px / 5px;
+
+    }
+
+.history{
+    text-decoration: none;
+}
 
 .history-btn { text-align: center; }
 
@@ -216,19 +222,31 @@ body {
 
 .like-btn{
     width: 10em;
+    height:3em;
     position: absolute;
     right: 15%; /* 右寄せ */
-    color: white;
-    background-color:#17207A;
+    font-weight: bold;
+   color: #888;
+    border-radius:30px;
+    background-color: transparent;
+     border: 0.2em solid;
+     border-radius: 1em;
 }
+
 
 .unlike-btn{
     width: 10em;
+    height:3em;
     position: absolute;
     right: 15%; /* 右寄せ */
-    color: black;
-    background-color: red;
+    color: white;
+    background-image: linear-gradient(90deg, rgba(247, 93, 139, 1), rgba(254, 176, 64, 1));
+    border-radius:30px;
+    border: 0em solid;
+         border-radius: 1em;
+         font-weight: bold;
 }
+
 .add-thread{
 margin-top:30px;
 margin-right:5px;
@@ -240,15 +258,13 @@ padding-right:10px;
 }
 
 #myPage{
-background-color: #4169e1;
-color: white;
+    background-color: #4169e1;
+    color: white;
 }
 
 
 .add-title{
     margin-left:210px;
-
-
 }
 
 .errormsg{
@@ -257,6 +273,7 @@ color: white;
 }
 
 .title-input{
+
     width:920px;
     height:50px;
 
@@ -424,13 +441,14 @@ textarea{
 #myPage,#logout{
     width: 10em;
     height:40px;
+    font-weight: bold;
 }
 
 #myPage:hover {
-           box-shadow: 0px 12px 24px #0b5dae63;
-           transform: translateY(-4px);
-           background:  linear-gradient(150deg, rgba(0, 255, 177, 1), rgba(65, 74, 255, 1) 44%, rgba(171, 25, 248, 1) 90%);
-       }
+    box-shadow: 0px 12px 24px #0b5dae63;
+    transform: translateY(-4px);
+    background:  linear-gradient(150deg, rgba(0, 255, 177, 1), rgba(65, 74, 255, 1) 44%, rgba(171, 25, 248, 1) 90%);
+}
 
 #logout:hover {
     box-shadow: 0px 12px 24px #0b5dae63;
@@ -440,21 +458,23 @@ textarea{
 .red:hover {
 
      box-shadow: 0px 12px 24px #0b5dae63;
-        transform: translateY(-4px);
-    background-color: #ffa500;
+     transform: translateY(-4px);
+     background-color: #ffa500;
 }
 
 .blue:hover {
-  box-shadow: 0px 12px 24px #0b5dae63;
-     transform: translateY(-4px);
+    box-shadow: 0px 12px 24px #0b5dae63;
+    transform: translateY(-4px);
     background-color: #4169e1;
 }
 
 .like-btn:hover {
-           box-shadow: 0px 12px 24px #0b5dae63;
-              transform: translateY(-4px);
-             background-color: #00bfff;
+    box-shadow: 0px 12px 24px #0b5dae63;
+    transform: translateY(-4px);
+    color: #e5348c;
          }
+
+
 
 .post-btn:hover {
     box-shadow: 0px 12px 24px #0b5dae63;
@@ -462,13 +482,11 @@ textarea{
     background: linear-gradient(110.85deg, #095DAD 0%, #11af75 100.19%);
 }
 
-    .return-btn:hover {
-        box-shadow: 0px 12px 24px #0b5dae63;
-        transform: translateY(-4px);
-
-         background-color: #4169e1;
-    }
-    <!--  background: linear-gradient(110.85deg, #095DAD 0%, #11af75 100.19%); -->
+.return-btn:hover {
+    box-shadow: 0px 12px 24px #0b5dae63;
+    transform: translateY(-4px);
+    background-color: #4169e1;
+}
 
 .aiu:hover {
                 shadow: 0px 12px 24px #0b5dae63;
@@ -497,4 +515,33 @@ textarea{
 
 .home-title{
     font-size:  20px;
+}
+
+ .likeButton__icon {
+ display: inline-block;
+ fill: currentColor;
+ width: 1em;
+ height: 0.8em;
+ margin-top: 0.5em;
+ }
+
+.my-parts {
+	display: inline-block;
+	width: 50px;
+	height: 50px;
+	font-size: 50px;
+	position: relative;
+	box-shadow: 0 0 0 1px rgba(0,0,0,.1);
+	cursor: pointer;
+}
+.my-parts span {
+	position: absolute;
+	display: block;
+	top: 50%;
+	left: 50%;
+	width: 56%;
+	height: 56%;
+	border-radius: 50%;
+	margin: -.28em 0 0 -.28em;
+	border: .12em solid #673AB7;
 }
