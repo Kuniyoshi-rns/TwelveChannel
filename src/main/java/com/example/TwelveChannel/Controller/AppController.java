@@ -281,9 +281,8 @@ public class AppController {
     @Transactional
     @PostMapping("/withdrawal")
     public String withdrawal(){
-//        UserEntity userEntity = (UserEntity) session.getAttribute("user");
-//        int userId = userEntity.id();
-        int userId = 24;//セッション仮置き
+        UserEntity userEntity = (UserEntity) session.getAttribute("loginuser");
+        int userId = userEntity.id();
         tagService.userTagAllDel(userId);
         favoriteService.userfavoriteAllDel(userId);
         commentService.userCommentAllDel(userId);
