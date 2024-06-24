@@ -36,4 +36,6 @@ public interface IThreadService {
 
     List<ThreadEntity> findFavoriteThreadByUser(int user_id);
 
+    void userThreadAllDel(int user_id);
+
 }

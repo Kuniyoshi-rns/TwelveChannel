@@ -17,4 +17,6 @@ public interface ICommentRepository {
 
     List<CommentEntity> getCommentOffsetByUser(int user_id, int offset);
 
+    void userCommentAllDel(int user_id);
+
 }
