@@ -11,7 +11,7 @@
 <body>
 <th:block th:insert="common/header"></th:block>
 <div>
-    <hr>
+
 
     <div class="top-btn">
         <form class="search" method="get" action="/home">
@@ -20,10 +20,11 @@
                 <option>新しい順</option>
                 <option>古い順</option>
             </select>
-            <div>
+
                 <input class="search-box" type="text" name="keyword" size="25" placeholder="キーワード検索">
-                <input class="search-btn blue" type="submit" value="&#x1F50D;">
-            </div>
+                <button class="search-btn blue" type="submit">
+                    <img src="/images/m.png"  alt="写真" width="22" height="22"> </button>
+
         </form>
         <button class="home-btn blue" id="add-thread" onclick="location.href='/add-thread'">新規投稿</button>
     </div>
@@ -34,20 +35,20 @@
             <p>
                 <a th:href="@{/thread/{thread_id} (thread_id=${thread.id})}" th:text="${thread.thread_title}" class="home-title"></a>
                 -
-                <span th:each="tag:${tags}">
+                <th:block th:each="tag:${tags}">
                     <a th:href="@{/home?tag={tag} (tag=${tag.tag})}" th:text="'#'+${tag.tag}" th:if="${thread.id==tag.thread_id}"></a>
-                </span>
+                </th:block>
             </p>
 
             <div class="like-comment">
 
-            <div th:each="count:${comment_count}" class="home-comment">
+            <th:block th:each="count:${comment_count}" class="home-comment">
                 <p th:if="${thread.id==count.thread_id}">コメント:<span th:text="${count.count}"></span></p>
-            </div>
+            </th:block>
 
-            <div th:each="favorite:${favorites}">
+            <th:block th:each="favorite:${favorites}">
                 <p th:if="${thread.id==favorite.thread_id}">いいね:<span th:text="${favorite.count}"></span></p>
-            </div>
+            </th:block>
 
             </div>
 
