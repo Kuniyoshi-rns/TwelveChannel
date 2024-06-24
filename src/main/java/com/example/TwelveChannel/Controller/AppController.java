@@ -166,23 +166,33 @@ public class AppController {
                        @RequestParam(name = "keyword", defaultValue = "") String keyword,
                        Model model) {
         int thread_page=threadService.threadAll().size();
-
+        UserEntity userEntity = (UserEntity) session.getAttribute("loginuser");
+        int user_id=userEntity.id();
         var thread=threadService.findThread(offset);
+
         if(tag.isEmpty() && keyword.isEmpty() && order.isEmpty()) {
-            System.out.println("何もなし");
+            if(threadService.recommendationThread(user_id).isEmpty()){
+                System.out.println("フォローしているタグ無し or タグを含むスレッド無し");
+            }else {
+                System.out.println("お勧め表示一覧");
+                thread = threadService.recommendationOffsetThread(user_id, offset);
+                thread_page=threadService.recommendationThread(user_id).size();
+                for (var test : threadService.recommendationOffsetThread(user_id, offset)) {
+                    System.out.println(test);
+                }
+            }
         }else{
             if(keyword.startsWith("#")){
                 tag=keyword.substring(1);
                 keyword="";
                 System.out.println("タグ検索"+keyword+tag);
-                //keyword=keyword.substring(1);
             }
             thread = threadService.searchThread(offset, tag, order, keyword);
             thread_page=thread.size();
             thread=threadService.searchOffsetThread(offset,tag,order,keyword);
-            for (var test : thread) {
-                System.out.println(test);
-            }
+//            for (var test : thread) {
+//                System.out.println(test);
+//            }
         }
 
         var all_tag=tagService.threadTagAllFind();
@@ -212,9 +222,10 @@ public class AppController {
     public String mypage(@RequestParam(name = "offset", defaultValue = "0") int offset,
                          @RequestParam(name = "menu", defaultValue = "1") int menu,
                          Model model){
-        var user= (UserEntity)session.getAttribute("loginuser");
-        var user_id= user.id();
-        //var user_id=1;
+
+        UserEntity userEntity = (UserEntity) session.getAttribute("loginuser");
+        int user_id=userEntity.id();
+      
         System.out.println("マイページ遷移:menu="+menu);
 
         List<ThreadEntity> thread=null;
