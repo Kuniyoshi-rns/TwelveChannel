@@ -16,12 +16,14 @@
 <div>
 
     <div class="top-btn">
-       <br><button id="home-back" class="return-btn" type="submit" >戻る</button>
+       <br><button id="home-back" class="return-btn" type="submit" >< 戻る</button>
 
        <div>
            <form class="mypage-btn">
-            <button class="blue" type="button" onclick="openTagModal()">タグ設定</button>
-            <button class="blue" type="button" >新規投稿</button>
+
+             <button class="blue" type="button" onclick="openTagModal()">タグ設定&#x2699;&#xFE0F;</button>
+            <button class="blue" type="button" onclick="location.href='/add-thread'">新規投稿</button>
+
             <button class="red" type="button" onclick="openModal()">退会</button>
            </form>
 
@@ -47,7 +49,7 @@
                 <input type="button" class="blue search-btn" value="登録" onclick="add()">
             </div><p></p>
 
-            <button type="button" onclick="closeTagModal()" >戻る</button>
+            <button type="button" onclick="closeTagModal(),document.getElementById('suggest').value=''" >戻る</button>
         </div>
 
 
@@ -69,9 +71,9 @@
 <!--    </form>-->
 
     <ul class="history-btn">
-        <li><a href="/mypage?menu=1" >投稿履歴</a></li>
-        <li><a href="/mypage?menu=2" >いいね履歴</a></li>
-        <li><a href="/mypage?menu=3" >コメント履歴</a></li>
+        <li><a href="/mypage?menu=1" class="history">投稿履歴</a></li>
+        <li><a href="/mypage?menu=2" class="history">いいね履歴</a></li>
+        <li><a href="/mypage?menu=3" class="history">コメント履歴</a></li>
     </ul>
 
 
@@ -79,8 +81,8 @@
             <div th:each="thread:${threads}" th:if="${menu}==1 OR ${menu}==2">
                 <p>No.<span th:text="${thread.id}"></span></p>
                 <p>
-                    <a th:href="@{/thread?thread_id={thread_id} (thread_id=${thread.id})}" th:text="${thread.thread_title}" ></a>
-                    -
+                    <a th:href="@{/thread/{thread_id} (thread_id=${thread.id})}" th:text="${thread.thread_title}" ></a>
+
                     <span th:each="tag:${tags}">
                     <a th:href="@{/home?tag={tag} (tag=${tag.tag})}" th:text="'#'+${tag.tag}" th:if="${thread.id==tag.thread_id}"></a>
                     </span>
@@ -98,7 +100,8 @@
             <div th:each="comment:${comments}" th:if="${menu}==3">
                 <p>No.<span th:text="${comment.thread_id}"></span></p>
                 <p>
-                    <a th:href="@{/thread?thread_id={thread_id} (thread_id=${comment.thread_id})}" th:text="${comment.thread_title}" ></a>
+                    <a th:href="@{/thread/{thread_id} (thread_id=${comment.thread_id})}" th:text="${comment.thread_title}" ></a>
+<!--                    <a th:href="@{/thread?thread_id={thread_id} (thread_id=${comment.thread_id})}" th:text="${comment.thread_title}" ></a>-->
                     -<span th:text="${comment.comment}"></span>
                 <p th:text="${comment.created_at}"></p>
                 <img th:src="${comment.image_base64}">
@@ -108,9 +111,9 @@
 
     </div>
     <div class="pagination">
-        <a th:href="@{/mypage?offset={offset}&menu={menu} (offset=${offset-20},menu=${menu})}" th:if="${offset>=20}">次へ</a>
+        <a th:href="@{/mypage?offset={offset}&menu={menu} (offset=${offset-20},menu=${menu})}" th:if="${offset>=20}">＜</a>
         <p><span th:text="${thread_page}"></span>/<span th:text="${thread_all}"></span>ページ</p>
-        <a th:href="@{/mypage?offset={offset}&menu={menu} (offset=${offset+20},menu=${menu})}" th:if="${thread_page<thread_all}">前へ</a>
+        <a th:href="@{/mypage?offset={offset}&menu={menu} (offset=${offset+20},menu=${menu})}" th:if="${thread_page<thread_all}">＞</a>
     </div>
     <div id="fadeLayer"></div>
 <script src="/js/unten.js"></script>

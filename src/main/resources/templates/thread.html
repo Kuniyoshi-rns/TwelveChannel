@@ -2,7 +2,7 @@
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title th:text="${thread.thread_title}"></title>
     <link href="/css/unten.css" rel="stylesheet">
 </head>
 <body>
@@ -10,10 +10,14 @@
 
 <div class="top-btn">
     <button class="return-btn"  id="back" onclick="location.href='/home'">←戻る</button>
-    <button class="like-btn right" id="favorite"  th:if="${session.loginuser.id}!=1">いいね♡</button>
+
+    <button class="like-btn right" id="favorite"  th:if="${session.loginuser.id}!=1">
+        <svg class="likeButton__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M91.6 13A28.7 28.7 0 0 0 51 13l-1 1-1-1A28.7 28.7 0 0 0 8.4 53.8l1 1L50 95.3l40.5-40.6 1-1a28.6 28.6 0 0 0 0-40.6z"/></svg>
+        いいね</button>
+
     <div class="admin-btn">
-    <button class="blue edit right" id="edit"  th:if="${session.loginuser.id}==1" onclick="location.href='/edit-thread/thread_id'">編集</button>
-    <button class="red delete-btn right" id="delete"  th:if="${session.loginuser.id}==1" onclick="openDeleteModal()">削除</button>
+    <button class="blue edit right" id="edit"  th:if="${session.loginuser.id}==${thread.creator}" th:onclick="|location.href='/edit-thread/__${thread.id}__'|">編集</button>
+    <button class="red delete-btn right" id="delete"  th:if="${session.loginuser.id}==${thread.creator}" onclick="openDeleteModal()">削除</button>
     </div>
 </div>
 
@@ -29,11 +33,29 @@
 
 <h1 class="thread" th:text="${thread.thread_title}"></h1>
 
-<div class="thread-tag" th:each="tag:${tags}">
-    <a href="" th:text="'#'+${tag.tag}" th:if="${thread.id==tag.thread_id}"></a>
-</div>
+<span class="thread-tag">
+  <span th:if="${tags.size()}<3" th:each="tag:${tags}">
+      <a th:href="'/home?tag='+${tag.tag}" th:text="'#'+${tag.tag}"></a> &nbsp;
+  </span>
 
-<div class="scrollbar"  id="comment-list"></div>
+  <span th:if="${tags.size()}>=3" th:each="i:${#numbers.sequence(0,2)}">
+      <a th:href="'/home?tag='+${tags[i].tag}" th:text="'#'+${tags[i].tag}"></a>&nbsp;
+  </span>
+</span>
+
+<div class="scrollbar"  id="comment-list1">
+   <div class="comment1">
+       <span class="sample-span">
+           <span>投稿者　</span>
+           <span th:text="${thread.created_at.split(' ')[0].replaceAll('-','/')}+'　'"></span>
+       </span>
+<span th:text="${thread.comment}"></span>
+       <p><img th:if="${thread.image_name != ''}" th:src="${thread.image_base64}"></p>
+       <hr>
+       <div id="comment-list">
+       </div>
+   </div>
+</div>
 
 <div class="comment">
 <textarea  id="statement"></textarea>
