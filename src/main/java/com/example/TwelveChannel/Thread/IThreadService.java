@@ -39,4 +39,7 @@ public interface IThreadService {
     List<ThreadEntity> recommendationThread(int user_id);
 
     List<ThreadEntity> recommendationOffsetThread(int user_id,int offset);
+
+  void userThreadAllDel(int user_id);
+
 }

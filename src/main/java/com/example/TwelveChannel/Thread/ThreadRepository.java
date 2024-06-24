@@ -297,4 +297,11 @@ public class ThreadRepository implements IThreadRepository{
                 ,param,new DataClassRowMapper<>(ThreadEntity.class));
     }
 
+
+    public void userThreadAllDel(int user_id){
+        var param=new MapSqlParameterSource();
+        param.addValue("creator",user_id);
+        jdbcTemplate.update("DELETE FROM threads " +
+                "WHERE creator = :creator",param);
+    }
 }

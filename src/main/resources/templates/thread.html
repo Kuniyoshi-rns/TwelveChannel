@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<th:block th:insert="common/sessionCheck"></th:block>
 <head>
     <meta charset="UTF-8">
     <title th:text="${thread.thread_title}"></title>
@@ -43,7 +44,7 @@
   </span>
 </span>
 
-<div class="scrollbar"  id="comment-list1">
+<div class="scrollbar">
    <div class="comment1">
        <span class="sample-span">
            <span>投稿者　</span>

@@ -97,4 +97,12 @@ public class TagRepository implements ITagRepository{
                         "LIMIT 5"
                 ,param,new DataClassRowMapper<>(TagCountEntity.class));
     }
+
+    @Override
+    public void userTagAllDel(int user_id){
+        var param=new MapSqlParameterSource();
+        param.addValue("user_id",user_id);
+        jdbcTemplate.update("DELETE FROM users_tags " +
+                "WHERE user_id = :user_id",param);
+    }
 }

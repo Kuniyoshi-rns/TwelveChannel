@@ -80,4 +80,11 @@ public class FavoriteRepository implements IFavoriteRepository{
                 "FROM favorite_threads JOIN threads on favorite_threads.thread_id = threads.id" +
                 "WHERE user_id=:user",param,new DataClassRowMapper<>(ThreadEntity.class));
     }
+
+    @Override
+    public void userfavoriteAllDel(int user_id) {
+        var param = new MapSqlParameterSource();
+        param.addValue("user_id",user_id);
+        jdbcTemplate.update("DELETE FROM favorite_threads WHERE user_id = :user_id",param);
+    }
 }
