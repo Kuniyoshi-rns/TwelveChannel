@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <th:block th:insert="common/sessionCheck"></th:block>
     <meta charset="UTF-8">
     <title>マイページ</title>
     <link href="/css/unten.css" rel="stylesheet">
@@ -14,7 +15,6 @@
 <body>
 <th:block th:insert="common/header"></th:block>
 <div>
-
     <div class="top-btn">
        <br><button id="home-back" class="return-btn" type="submit" >< 戻る</button>
 

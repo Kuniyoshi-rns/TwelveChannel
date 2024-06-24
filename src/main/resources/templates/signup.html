@@ -14,10 +14,11 @@
     <form action="signup" method="post" th:object="${SignUpForm}">
         <fieldset class="login">
             <div>
-                <h1><img src="images/signup_logo.png" alt="新規登録"></h1>
+                <h1 style="margin-bottom:0"><img src="images/signup_logo.png" alt="新規登録"></h1>
             </div>
 
-            <p class="error" th:text="${checkuser}"></p>
+            <p class="error" th:if="${checkuser}!=null" th:text="${checkuser}" style="margin:0"></p>
+            <p th:if="${checkuser}==null" style="margin:0">　</p>
             <div>
 
                 <input type="text" placeholder="ID" th:field="*{login_id}" class="login-input">
