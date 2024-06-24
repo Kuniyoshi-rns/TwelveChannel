@@ -49,21 +49,22 @@ public class AppController {
     @PostMapping("/login")//ログイン情報確認
     public String login(@Validated @ModelAttribute("loginForm") LoginForm loginForm,
                         BindingResult bindingResult, Model model){
-        System.out.println(loginForm);
+        //System.out.println(loginForm);
         if(bindingResult.hasErrors()) {
             return "login";
         }
 
-        System.out.println(userService.findByIdUser(loginForm));
-        var loginuser = userService.findByIdUser(loginForm);
+        //System.out.println(userService.findByIdUser(loginForm));
+        UserEntity loginuser = userService.findByIdUser(loginForm);
 
         if(loginuser==null){
             model.addAttribute("loginError","ID、またはパスワードが異なります。");
             return "login";
         }
 
-        System.out.println(userService.findByIdUser(loginForm));
+        //System.out.println(userService.findByIdUser(loginForm));
         session.setAttribute("loginuser",loginuser);
+        //System.out.print(session);
         return "redirect:/home";
     }
 
@@ -86,6 +87,8 @@ public class AppController {
 
         if (checkuser==null && signUpForm.getPassword().equals(signUpForm.getPasswordCheck())){
             userService.insertUser(signUpForm);
+            var loginuser = userService.findByIdUser(loginform);
+            session.setAttribute("loginuser",loginuser);
             return "home";
         }else if(checkuser!=null){
             model.addAttribute("checkuser","そのIDは存在しています");
@@ -105,10 +108,10 @@ public class AppController {
         if(bindingResult.hasErrors()){
             return "addthread";
         }
-//        UserEntity userEntity = (UserEntity) session.getAttribute("");
-//        int userId = userEntity.id();
+        UserEntity userEntity = (UserEntity) session.getAttribute("loginuser");
+        int userId = userEntity.id();
 //        上記コードはセッションを実装した段階で使う。消さないで。
-        int threadId = threadService.insertThreadOkuma(threadAddForm, 1);
+        int threadId = threadService.insertThreadOkuma(threadAddForm, userId);
         tagService.threadTagInsert(threadId, threadAddForm.getTag());
         return "redirect:/thread/" + threadId;
     }
@@ -203,9 +206,9 @@ public class AppController {
     public String mypage(@RequestParam(name = "offset", defaultValue = "0") int offset,
                          @RequestParam(name = "menu", defaultValue = "1") int menu,
                          Model model){
-//        var user= (UserEntity)httpSession.getAttribute("user");
-//        var user_id= user.id();
-        var user_id=1;
+        var user= (UserEntity)session.getAttribute("loginuser");
+        var user_id= user.id();
+        //var user_id=1;
         System.out.println("マイページ遷移:menu="+menu);
 
         List<ThreadEntity> thread=null;
@@ -260,6 +263,12 @@ public class AppController {
     @GetMapping("/logout")
     public String logout(@ModelAttribute("loginForm") LoginForm loginForm) {
         session.invalidate();
+        //session.removeAttribute("loginuser");
+        if (session.getAttribute("loginuser") == null){
+            System.out.println("破棄されました");
+        }else {
+            System.out.println("破棄できませんでした");
+        }
         return "redirect:/login";
     }
 }
