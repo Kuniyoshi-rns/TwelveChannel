@@ -82,7 +82,7 @@ body {
 }
 
 .search {
-    margin-left: 40%;
+    margin:  0 auto;
     display: flex;
     flex-direction: row;
     margin-bottom:30px;
@@ -510,7 +510,13 @@ textarea{
      display: flex;
      flex-direction: row;
      justify-content: flex-end;
+     margin-right:10px;
 
+
+}
+
+.home-comment{
+margin-right:10px;
 }
 
 
@@ -527,8 +533,12 @@ textarea{
  }
 
 .tag-btn{
-background:red;
+     margin:3px;
+     border-radius:20px;
+     padding:10px;
+     background:#DCCDFF;
 }
+
 
 
 

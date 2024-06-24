@@ -10,7 +10,7 @@
 <th:block th:insert="common/header"></th:block>
 
 <div class="top-btn">
-    <button class="return-btn"  id="back" onclick="location.href='/home'">←戻る</button>
+    <button class="return-btn"  id="back" onclick="location.href='/home'">	&#x1f844; 戻る</button>
 
     <button class="like-btn right" id="favorite"  th:if="${session.loginuser.id}!=1">
         <svg class="likeButton__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M91.6 13A28.7 28.7 0 0 0 51 13l-1 1-1-1A28.7 28.7 0 0 0 8.4 53.8l1 1L50 95.3l40.5-40.6 1-1a28.6 28.6 0 0 0 0-40.6z"/></svg>
@@ -62,7 +62,7 @@
 <textarea  id="statement"></textarea>
     <div class="image">
         <div id="imgInsert"><input id="example" type="file" accept="image/*"></div>
-        <button class="blue post-btn" id="addComment" onclick="addComment()">書き込み</button>
+        <button class="blue post-btn" id="addComment" onclick="addComment()"> 書き込み &#x1f5f9;</button>
     </div>
 </div>
 
