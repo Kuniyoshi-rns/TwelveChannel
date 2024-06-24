@@ -4,6 +4,8 @@ import com.example.TwelveChannel.Comment.ICommentService;
 import com.example.TwelveChannel.Favorite.IFavoriteService;
 import com.example.TwelveChannel.Tag.ITagService;
 import com.example.TwelveChannel.Tag.TagService;
+import com.example.TwelveChannel.User.UserEntity;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.DataClassRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -16,6 +18,9 @@ import java.util.List;
 public class ThreadRepository implements IThreadRepository{
     @Autowired
     private NamedParameterJdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private HttpSession httpSession;
 
 
     @Override
@@ -142,6 +147,8 @@ public class ThreadRepository implements IThreadRepository{
     @Override
     public List<ThreadEntity> searchThread(int offset, String tag, String order, String keyword) {
         var param = new MapSqlParameterSource();
+        //var user= (UserEntity)httpSession.getAttribute("loginuser");
+        //var user_id= user.id();
         String query = "SELECT * FROM threads ";
 
         if (!tag.isEmpty()) {
@@ -158,21 +165,9 @@ public class ThreadRepository implements IThreadRepository{
             param.addValue("keyword", "%" + keyword + "%");
         }
 
-        switch (order) {
-            case "並び替え":
-            case "新しい順":
-                query += "ORDER BY id desc";
-                break;
-            case "古い順":
-                query += "ORDER BY id asc";
-                break;
-            default:
-                query += "ORDER BY id asc";
-        }
+        if(order.equals("おすすめ")){
 
-//        query += " LIMIT :offset";
-//
-//        param.addValue("offset", offset);
+        }
 
         System.out.println(query);
         return jdbcTemplate.query(query, param, new DataClassRowMapper<>(ThreadEntity.class));
@@ -181,6 +176,8 @@ public class ThreadRepository implements IThreadRepository{
     @Override
     public List<ThreadEntity> searchOffsetThread(int offset, String tag, String order, String keyword){
         var param = new MapSqlParameterSource();
+        //var user= (UserEntity)httpSession.getAttribute("user");
+        //var user_id= user.id();
         String query = "SELECT * FROM threads ";
 
         if (!tag.isEmpty() && tag.length() > 0) {
@@ -270,6 +267,37 @@ public class ThreadRepository implements IThreadRepository{
     }
 
     @Override
+    public List<ThreadEntity> recommendationThread(int user_id){
+        var param = new MapSqlParameterSource();
+        param.addValue("user_id", user_id);
+        return jdbcTemplate.query("select * " +
+                                    "from threads " +
+                                    "where id in(select thread_id " +
+                                                "from threads_tags " +
+                                                "where tag in(select tag " +
+                                                            "from users_tags " +
+                                                            "where user_id = :user_id))"
+                                    ,param,new DataClassRowMapper<>(ThreadEntity.class));
+    }
+
+    @Override
+    public List<ThreadEntity> recommendationOffsetThread(int user_id,int offset){
+        var param = new MapSqlParameterSource();
+        param.addValue("user_id", user_id);
+        param.addValue("offset", offset);
+        return jdbcTemplate.query("select * " +
+                                    "from threads " +
+                                    "where id in(select thread_id " +
+                                                "from threads_tags " +
+                                                "where tag in(select tag " +
+                                                            "from users_tags " +
+                                                            "where user_id = :user_id))" +
+                                    "ORDER BY id DESC " +
+                                    "LIMIT 20 OFFSET :offset"
+                ,param,new DataClassRowMapper<>(ThreadEntity.class));
+    }
+
+
     public void userThreadAllDel(int user_id){
         var param=new MapSqlParameterSource();
         param.addValue("creator",user_id);
