@@ -26,7 +26,7 @@
                     <img src="/images/m.png"  alt="写真" width="22" height="22"> </button>
 
         </form>
-        <button class="home-btn blue" id="add-thread" onclick="location.href='/add-thread'">新規投稿</button>
+        <button class="home-btn blue" id="add-thread" onclick="location.href='/add-thread'">新規投稿 &#x1f7a5;</button>
     </div>
 
     <div class="scrollbar">
@@ -42,8 +42,8 @@
 
             <div class="like-comment">
 
-            <th:block th:each="count:${comment_count}" class="home-comment">
-                <p th:if="${thread.id==count.thread_id}">コメント:<span th:text="${count.count}"></span></p>
+            <th:block th:each="count:${comment_count}" >
+                <p th:if="${thread.id==count.thread_id}" class="home-comment">コメント:<span th:text="${count.count}"></span></p>
             </th:block>
 
             <th:block th:each="favorite:${favorites}">

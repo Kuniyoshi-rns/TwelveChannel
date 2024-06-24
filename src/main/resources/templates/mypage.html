@@ -16,7 +16,7 @@
 <div>
 
     <div class="top-btn">
-       <br><button id="home-back" class="return-btn" type="submit" >< 戻る</button>
+       <br><button id="home-back" class="return-btn" type="submit" >&#x1f844; 戻る</button>
 
        <div>
            <form class="mypage-btn">
@@ -46,7 +46,7 @@
 
             <div>
                 <input id="suggest" type="text" name="keyword" class="search-box" placeholder="タグ入力">
-                <input type="button" class="blue search-btn" value="登録" onclick="add()">
+                <input type="button" class="blue search-btn" value="登録 &#x1f7a5;" onclick="add()">
             </div><p></p>
 
             <button type="button" onclick="closeTagModal(),document.getElementById('suggest').value=''" >戻る</button>
@@ -64,12 +64,6 @@
 
     <h1 class="mypage">マイページ</h1>
 
-<!--    <form class="btns">-->
-<!--        <button class="btn" type="submit">投稿履歴</button>-->
-<!--        <button class="btn" type="submit">いいね履歴</button>-->
-<!--        <button class="btn" type="submit">コメント履歴</button>-->
-<!--    </form>-->
-
     <ul class="history-btn">
         <li><a href="/mypage?menu=1" class="history">投稿履歴</a></li>
         <li><a href="/mypage?menu=2" class="history">いいね履歴</a></li>
@@ -81,7 +75,7 @@
             <div th:each="thread:${threads}" th:if="${menu}==1 OR ${menu}==2">
                 <p>No.<span th:text="${thread.id}"></span></p>
                 <p>
-                    <a th:href="@{/thread/{thread_id} (thread_id=${thread.id})}" th:text="${thread.thread_title}" ></a>
+                    <a th:href="@{/thread/{thread_id} (thread_id=${thread.id})}" th:text="${thread.thread_title}" class="home-title"></a>
 
                     <th:block th:each="tag:${tags}">
                     <a th:href="@{/home?tag={tag} (tag=${tag.tag})}" th:text="'#'+${tag.tag}" th:if="${thread.id==tag.thread_id}"></a>
@@ -91,7 +85,7 @@
                 <div class="like-comment">
 
                 <th:block th:each="count:${comment_count}">
-                    <p th:if="${thread.id==count.thread_id}">コメント:<span th:text="${count.count}"></span></p>
+                    <p th:if="${thread.id==count.thread_id}" class="home-comment">コメント:<span th:text="${count.count}"></span></p>
                 </th:block>
 
                 <th:block th:each="favorite:${favorites}">
@@ -105,10 +99,10 @@
             <div th:each="comment:${comments}" th:if="${menu}==3">
                 <p>No.<span th:text="${comment.thread_id}"></span></p>
                 <p>
-                    <a th:href="@{/thread/{thread_id} (thread_id=${comment.thread_id})}" th:text="${comment.thread_title}" ></a>
+                    <a th:href="@{/thread/{thread_id} (thread_id=${comment.thread_id})}" th:text="${comment.thread_title}" class="home-title"></a>
 <!--                    <a th:href="@{/thread?thread_id={thread_id} (thread_id=${comment.thread_id})}" th:text="${comment.thread_title}" ></a>-->
                     -<span th:text="${comment.comment}"></span>
-                <p th:text="${comment.created_at}"></p>
+                <p th:text="${comment.created_at}" class="like-comment"></p>
                 <img th:src="${comment.image_base64}">
                 <hr>
             </div>
