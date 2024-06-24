@@ -97,8 +97,9 @@ public class ThreadService implements IThreadService{
     }
 
     @Override
-    public List<ThreadEntity> recommendationOffsetThread(int user_id,int offset){
-        return threadRepository.recommendationOffsetThread(user_id,offset);
+    public List<ThreadEntity> recommendationOffsetThread(int user_id,int offset) {
+        return threadRepository.recommendationOffsetThread(user_id, offset);
+    }
 
     public void userThreadAllDel(int user_id){
         threadRepository.userThreadAllDel(user_id);
