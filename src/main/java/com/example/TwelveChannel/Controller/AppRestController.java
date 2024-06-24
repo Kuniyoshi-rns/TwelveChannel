@@ -65,9 +65,9 @@ public class AppRestController {
 
     @GetMapping("isFavorite/{threadId}")
     public ResponseEntity<Boolean> isFavorite(@PathVariable("threadId") int threadId){
-        UserEntity userEntity = (UserEntity) session.getAttribute("");
-//        boolean isFavorite = favoriteService.isFavorite(userEntity.id(),threadId);
-        Boolean isFavorite = favoriteService.isFavorite(1,threadId);
+        UserEntity userEntity = (UserEntity) session.getAttribute("loginuser");
+        boolean isFavorite = favoriteService.isFavorite(userEntity.id(),threadId);
+//        Boolean isFavorite = favoriteService.isFavorite(1,threadId);
         System.out.println(isFavorite);
         return new ResponseEntity<>(isFavorite, HttpStatus.OK);
     }
@@ -89,17 +89,17 @@ public class AppRestController {
 
     @GetMapping("favorite/{threadId}")
     public ResponseEntity<FavoriteEntity> favoriteInsert(@PathVariable("threadId") int threadId){
-        UserEntity userEntity = (UserEntity) session.getAttribute("");
-//        favoriteService.insertFavorite(userEntity.id(),threadId);
-        favoriteService.insertFavorite(1,threadId);
+        UserEntity userEntity = (UserEntity) session.getAttribute("loginuser");
+        favoriteService.insertFavorite(userEntity.id(),threadId);
+//        favoriteService.insertFavorite(1,threadId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("favorite/{threadId}")
     public ResponseEntity<FavoriteEntity> favoriteDelete(@PathVariable("threadId") int threadId){
-        UserEntity userEntity = (UserEntity) session.getAttribute("");
-//        favoriteService.deleteFavorite(userEntity.id(), threadId);
-        favoriteService.deleteFavorite(1,threadId);
+        UserEntity userEntity = (UserEntity) session.getAttribute("loginuser");
+        favoriteService.deleteFavorite(userEntity.id(), threadId);
+//        favoriteService.deleteFavorite(1,threadId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
