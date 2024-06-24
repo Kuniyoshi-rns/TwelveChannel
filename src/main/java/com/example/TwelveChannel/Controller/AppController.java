@@ -155,9 +155,15 @@ public class AppController {
         if(tag.isEmpty() && keyword.isEmpty() && order.isEmpty()) {
             System.out.println("何もなし");
         }else{
+            if(keyword.startsWith("#")){
+                tag=keyword.substring(1);
+                keyword="";
+                System.out.println("タグ検索"+keyword+tag);
+                //keyword=keyword.substring(1);
+            }
             thread = threadService.searchThread(offset, tag, order, keyword);
             thread_page=thread.size();
-            thread=threadService.searchFiveThread(offset,tag,order,keyword);
+            thread=threadService.searchOffsetThread(offset,tag,order,keyword);
             for (var test : thread) {
                 System.out.println(test);
             }
@@ -175,12 +181,12 @@ public class AppController {
         model.addAttribute("tag",tag);
         model.addAttribute("order",order);
         model.addAttribute("keyword",keyword);
-        if(thread_page%5==0){
-            thread_page=thread_page/5;
+        if(thread_page%20==0){
+            thread_page=thread_page/20;
         }else{
-            thread_page=thread_page/5+1;
+            thread_page=thread_page/20+1;
         }
-        model.addAttribute("thread_page",offset/5+1);
+        model.addAttribute("thread_page",offset/20+1);
         model.addAttribute("thread_all",thread_page);
 
         return "home";

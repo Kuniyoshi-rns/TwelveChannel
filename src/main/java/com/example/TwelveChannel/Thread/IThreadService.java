@@ -26,7 +26,7 @@ public interface IThreadService {
 
     List<ThreadEntity> searchThread(int offset,String tag,String order,String keyword);
 
-    List<ThreadEntity> searchFiveThread(int offset,String tag,String order,String keyword);
+    List<ThreadEntity> searchOffsetThread(int offset, String tag, String order, String keyword);
 
     List<ThreadEntity> findThreadOffsetByUser(int user_id, int offset);
 
