@@ -90,4 +90,9 @@ public class ThreadService implements IThreadService{
     public List<ThreadEntity> findFavoriteThreadByUser(int user_id) {
         return threadRepository.findFavoriteThreadByUser(user_id);
     }
+
+    @Override
+    public void userThreadAllDel(int user_id){
+        threadRepository.userThreadAllDel(user_id);
+    }
 }

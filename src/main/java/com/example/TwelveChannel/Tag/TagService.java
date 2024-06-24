@@ -38,4 +38,8 @@ public class TagService implements ITagService{
 
     @Override
     public List<TagCountEntity> TagCount(String keyword){return tagRepository.TagCount(keyword);}
+    @Override
+    public void userTagAllDel(int user_id){
+        tagRepository.userTagAllDel(user_id);
+    }
 }

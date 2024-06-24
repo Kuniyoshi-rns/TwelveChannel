@@ -100,4 +100,12 @@ public class CommentRepository implements ICommentRepository {
                 "LIMIT 20 " +
                 "OFFSET :offset", param, new DataClassRowMapper<>(CommentEntity.class));
     }
+
+    @Override
+    public void userCommentAllDel(int user_id){
+        var param=new MapSqlParameterSource();
+        param.addValue("user_id",user_id);
+        jdbcTemplate.update("DELETE FROM comments " +
+                "WHERE user_id = :user_id",param);
+    }
 }

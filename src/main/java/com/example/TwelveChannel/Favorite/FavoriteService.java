@@ -42,5 +42,10 @@ public class FavoriteService implements IFavoriteService{
     public List<ThreadEntity> getFavoThreadList(int user_id) {
         return favoriteRepository.getFavoThreadList(user_id);
     }
+
+    @Override
+    public void userfavoriteAllDel(int user_id){
+        favoriteRepository.userfavoriteAllDel(user_id);
+    }
 }
 

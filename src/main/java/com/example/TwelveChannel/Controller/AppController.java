@@ -14,6 +14,7 @@ import com.example.TwelveChannel.User.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -86,10 +87,15 @@ public class AppController {
         var checkuser = userService.findByIdUser(loginform);
 
         if (checkuser==null && signUpForm.getPassword().equals(signUpForm.getPasswordCheck())){
+            int isInsert = userService.insertUser(signUpForm);
+            if(isInsert == 1){
             userService.insertUser(signUpForm);
             var loginuser = userService.findByIdUser(loginform);
             session.setAttribute("loginuser",loginuser);
             return "home";
+            }else{
+                model.addAttribute("checkuser","そのIDは存在しています");
+            }
         }else if(checkuser!=null){
             model.addAttribute("checkuser","そのIDは存在しています");
         }else {
@@ -269,6 +275,21 @@ public class AppController {
         }else {
             System.out.println("破棄できませんでした");
         }
+        return "redirect:/login";
+    }
+
+    @Transactional
+    @PostMapping("/withdrawal")
+    public String withdrawal(){
+//        UserEntity userEntity = (UserEntity) session.getAttribute("user");
+//        int userId = userEntity.id();
+        int userId = 24;//セッション仮置き
+        tagService.userTagAllDel(userId);
+        favoriteService.userfavoriteAllDel(userId);
+        commentService.userCommentAllDel(userId);
+        threadService.userThreadAllDel(userId);
+        userService.deleteUser(userId);
+        session.invalidate();
         return "redirect:/login";
     }
 }

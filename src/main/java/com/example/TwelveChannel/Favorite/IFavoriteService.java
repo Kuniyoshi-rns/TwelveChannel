@@ -19,4 +19,6 @@ public interface IFavoriteService {
     List<FavoriteThreadCount> favoriteThreadCountHome();
 
     List<ThreadEntity> getFavoThreadList(int user_id);
+
+    void userfavoriteAllDel(int user_id);
 }
