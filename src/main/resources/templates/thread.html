@@ -2,7 +2,7 @@
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title th:text="${thread.thread_title}"></title>
     <link href="/css/unten.css" rel="stylesheet">
 </head>
 <body>
@@ -10,12 +10,14 @@
 
 <div class="top-btn">
     <button class="return-btn"  id="back" onclick="location.href='/home'">←戻る</button>
+
     <button class="like-btn right" id="favorite"  th:if="${session.loginuser.id}!=1">
         <svg class="likeButton__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M91.6 13A28.7 28.7 0 0 0 51 13l-1 1-1-1A28.7 28.7 0 0 0 8.4 53.8l1 1L50 95.3l40.5-40.6 1-1a28.6 28.6 0 0 0 0-40.6z"/></svg>
         いいね</button>
+
     <div class="admin-btn">
-    <button class="blue edit right" id="edit"  th:if="${session.loginuser.id}==1" onclick="location.href='/edit-thread/thread_id'">編集</button>
-    <button class="red delete-btn right" id="delete"  th:if="${session.loginuser.id}==1" onclick="openDeleteModal()">削除</button>
+    <button class="blue edit right" id="edit"  th:if="${session.loginuser.id}==${thread.creator}" th:onclick="|location.href='/edit-thread/__${thread.id}__'|">編集</button>
+    <button class="red delete-btn right" id="delete"  th:if="${session.loginuser.id}==${thread.creator}" onclick="openDeleteModal()">削除</button>
     </div>
 </div>
 
@@ -30,12 +32,28 @@
     </div>
 
 <h1 class="thread" th:text="${thread.thread_title}"></h1>
+
 <span class="thread-tag">
-<span th:each="tag:${tags}" >
-    <a href="" th:text="'#'+${tag.tag}" th:if="${thread.id==tag.thread_id}"></a>
+  <span th:if="${tags.size()}<3" th:each="tag:${tags}">
+      <a href="" th:text="'#'+${tag.tag}" th:if="${thread.id==tag.thread_id}"></a>
+  </span>
+
+  <span th:if="${tags.size()}>=3" th:each="i:${#numbers.sequence(0,2)}">
+      <a href="" th:text="'#'+${tags[i].tag}"></a>
+  </span>
 </span>
-</span>
-<div class="scrollbar"  id="comment-list"></div>
+
+<div class="scrollbar"  id="comment-list">
+   <div class="comment1">
+       <span class="sample-span">
+           <span>投稿者　</span>
+           <span th:text="${thread.created_at.split(' ')[0].replaceAll('-','/')}+'　'"></span>
+       </span>
+<span th:text="${thread.comment}"></span>
+       <p><img th:if="${thread.image_name != ''}" th:src="${thread.image_base64}"></p>
+       <hr>
+   </div>
+</div>
 
 <div class="comment">
 <textarea  id="statement"></textarea>
@@ -172,16 +190,14 @@
     const imgForm = document.getElementById('imgInsert');
 
 
-    if(imageName !== ''){
-      deleteImage();
-    }
-
-
     const param = {method: 'POST',
                   headers:{'Content-Type': 'application/json'},
                    body: JSON.stringify(commentForm)}
-    if(statement.replaceAll(/　| /g,'') === ''){
+    if(statement.replaceAll(/　| /g,'') === '' && imageName === ''){
         return;
+    }
+    if(imageName !== ''){
+      deleteImage();
     }
     await fetch(`/insert-comment/${threadId}`,param)
     .then(res =>{
@@ -198,6 +214,9 @@
               commeDiv.classList.add("comment1");
               commeDiv.id = data.id;
 
+              let span = document.createElement('span');
+              span.classList.add('sample-span');
+
               let id = document.createElement('p');
               let date = document.createElement('p');
               let statement = document.createElement('p');
@@ -206,8 +225,12 @@
               date.textContent = data.created_at.split(' ')[0].replaceAll('-','/');
               statement.textContent = data.comment;
 
-              commeDiv.appendChild(id);
-              commeDiv.appendChild(date);
+              span.appendChild(id);
+              span.appendChild(date);
+
+              //commeDiv.appendChild(id);
+              //commeDiv.appendChild(date);
+              commeDiv.appendChild(span)
               commeDiv.appendChild(statement);
 
               if(data.image_base64 != ''){
@@ -216,6 +239,7 @@
               if(data.user_id === 1){
                  commeDiv.insertAdjacentHTML('beforeend',`<button class='comment-delete-btn red' onclick='commentDelete(${data.id})'>削除</button>`)
               }
+              commeDiv.insertAdjacentHTML('beforeend','<hr>');
               commentList.prepend(commeDiv);
           })
       }
@@ -284,8 +308,12 @@
 
               for(let comme of data){
                   let commeDiv = document.createElement('div');
-                  commeDiv.classList.add("comment");
+                  commeDiv.classList.add("comment1");
                   commeDiv.id = comme.id;
+
+                  let span = document.createElement('span');
+                  span.classList.add('sample-span');
+
                   let id = document.createElement('p');
                   let date = document.createElement('p');
                   let statement = document.createElement('p');
@@ -294,19 +322,25 @@
                   date.textContent = comme.created_at.split(' ')[0].replaceAll('-','/');
                   statement.textContent = comme.comment;
 
-                  commeDiv.appendChild(id);
-                  commeDiv.appendChild(date);
+                  span.appendChild(id);
+                  span.appendChild(date);
+
+                  //commeDiv.appendChild(id);
+                  //commeDiv.appendChild(date);
+                  commeDiv.appendChild(span)
+
                   commeDiv.appendChild(statement);
                   if(comme.image_base64 != ''){
                      commeDiv.insertAdjacentHTML('beforeend',`<img src="${comme.image_base64}" />`)
                   }
                   if(comme.user_id === 1){
-                     commeDiv.insertAdjacentHTML('beforeend',`<button onclick='commentDelete(${comme.id})'>削除</button>`)
+                     commeDiv.insertAdjacentHTML('beforeend',`<button class='comment-delete-btn red' onclick='commentDelete(${comme.id})'>削除</button>`)
                   }
+                  commeDiv.insertAdjacentHTML('beforeend','<hr>');
                   commentList.append(commeDiv);
               }
               if(data.length === comCount){
-                  commentList.insertAdjacentHTML('beforeend',`<button onclick='shit()' id='dataReload'>データ更新</button>`);
+                  commentList.insertAdjacentHTML('beforeend',`<button onclick='viewLoad()' id='dataReload'>データ更新</button>`);
               }
           })
       }

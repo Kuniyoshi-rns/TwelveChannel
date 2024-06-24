@@ -140,85 +140,80 @@ public class ThreadRepository implements IThreadRepository{
     }
 
     @Override
-    public List<ThreadEntity> searchThread(int offset,String tag,String order,String keyword){
-        var param= new MapSqlParameterSource();
-        System.out.println("offset:"+offset+" order:"+order+" keyword:"+keyword+" tag:"+tag);
-        switch (order){
+    public List<ThreadEntity> searchThread(int offset, String tag, String order, String keyword) {
+        var param = new MapSqlParameterSource();
+        String query = "SELECT * FROM threads ";
+
+        if (!tag.isEmpty()) {
+            query += "WHERE id IN (SELECT thread_id FROM threads_tags WHERE tag = '"+tag+"') ";
+            param.addValue("tag", tag);
+        }
+
+        if (!keyword.isEmpty() && keyword.length() > 0) {
+            if (!tag.isEmpty() && tag.length() > 1) {
+                query += "AND thread_title LIKE :keyword ";
+            } else {
+                query += "WHERE thread_title LIKE :keyword ";
+            }
+            param.addValue("keyword", "%" + keyword + "%");
+        }
+
+        switch (order) {
             case "並び替え":
-                order="id desc";
-                break;
             case "新しい順":
-                order="id desc";
+                query += "ORDER BY id desc";
                 break;
             case "古い順":
-                order="id asc";
+                query += "ORDER BY id asc";
                 break;
             default:
-                order="id asc";
+                query += "ORDER BY id asc";
         }
-        System.out.println(order);
-        param.addValue("offset",offset);
-        param.addValue("tag",tag);
-        param.addValue("order",order);
-        param.addValue("keyword",keyword);
-        if(tag.isEmpty() && keyword.length()>1){
-            System.out.println("keyword検索");
-            return jdbcTemplate.query("SELECT * FROM threads " +
-                            "WHERE thread_title LIKE '%"+keyword+"%' "+
-                            "ORDER BY "+order,
-                    param,new DataClassRowMapper<>(ThreadEntity.class));
-        }else if(keyword.isEmpty() && tag.length()>1){
-            System.out.println("Tag検索");
-            return jdbcTemplate.query("SELECT * FROM threads " +
-                            "WHERE id IN(select thread_id from threads_tags where tag='"+tag+"') " +
-                            "ORDER BY "+order,
-                    param,new DataClassRowMapper<>(ThreadEntity.class));
-        }
-        System.out.println("orderのみ");
-        return jdbcTemplate.query("SELECT * FROM threads " +
-                        "ORDER BY "+order,
-                param,new DataClassRowMapper<>(ThreadEntity.class));
+
+//        query += " LIMIT :offset";
+//
+//        param.addValue("offset", offset);
+
+        System.out.println(query);
+        return jdbcTemplate.query(query, param, new DataClassRowMapper<>(ThreadEntity.class));
     }
 
     @Override
     public List<ThreadEntity> searchFiveThread(int offset,String tag,String order,String keyword){
-        var param= new MapSqlParameterSource();
-        System.out.println("offset:"+offset+" order:"+order+" keyword:"+keyword+" tag:"+tag);
-        switch (order){
+        var param = new MapSqlParameterSource();
+        String query = "SELECT * FROM threads ";
+
+        if (!tag.isEmpty()) {
+            query += "WHERE id IN (SELECT thread_id FROM threads_tags WHERE tag = '"+tag+"') ";
+            param.addValue("tag", tag);
+        }
+
+        if (!keyword.isEmpty() && keyword.length() > 0) {
+            if (!tag.isEmpty() && tag.length() > 1) {
+                query += "AND thread_title LIKE :keyword ";
+            } else {
+                query += "WHERE thread_title LIKE :keyword ";
+            }
+            param.addValue("keyword", "%" + keyword + "%");
+        }
+
+        switch (order) {
             case "並び替え":
-                order="id desc";
-                break;
             case "新しい順":
-                order="id desc";
+                query += "ORDER BY id desc";
                 break;
             case "古い順":
-                order="id asc";
+                query += "ORDER BY id asc";
                 break;
             default:
-                order="id asc";
+                query += "ORDER BY id asc";
         }
-        System.out.println(order);
-        param.addValue("offset",offset);
-        param.addValue("tag",tag);
-        param.addValue("order",order);
-        param.addValue("keyword",keyword);
-        if(tag.isEmpty() && keyword.length()>1){
-            System.out.println("keyword検索");
-            return jdbcTemplate.query("SELECT * FROM threads " +
-                            "WHERE thread_title LIKE '%"+keyword+"%' "+
-                            "ORDER BY "+order+" LIMIT 5 OFFSET :offset",
-                    param,new DataClassRowMapper<>(ThreadEntity.class));
-        }else if(keyword.isEmpty() && tag.length()>1){
-            System.out.println("Tag検索");
-            return jdbcTemplate.query("SELECT * FROM threads " +
-                            "WHERE id IN(select thread_id from threads_tags where tag='"+tag+"') " +
-                            "ORDER BY "+order+" LIMIT 5 OFFSET :offset",
-                    param,new DataClassRowMapper<>(ThreadEntity.class));
-        }
-        System.out.println("orderのみ");
-        return jdbcTemplate.query("SELECT * FROM threads " +
-                        "ORDER BY "+order+" LIMIT 5 OFFSET :offset",
-                param,new DataClassRowMapper<>(ThreadEntity.class));
+
+        query += " LIMIT 5 OFFSET :offset";
+
+        param.addValue("offset", offset);
+
+        return jdbcTemplate.query(query, param, new DataClassRowMapper<>(ThreadEntity.class));
     }
 
     @Override

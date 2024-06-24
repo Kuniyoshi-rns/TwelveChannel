@@ -35,4 +35,7 @@ public class TagService implements ITagService{
     public int threadTagDelete(int thread_id, String tag) {
         return tagRepository.threadTagDelete(thread_id,tag);
     }
+
+    @Override
+    public List<TagCountEntity> TagCount(String keyword){return tagRepository.TagCount(keyword);}
 }

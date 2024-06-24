@@ -4,8 +4,12 @@
     <meta charset="UTF-8">
     <title>マイページ</title>
     <link href="/css/unten.css" rel="stylesheet">
-<!--    <link href="/css/commons.css" rel="stylesheet">-->
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.3/dist/css/autoComplete.min.css">
+
 </head>
 <body>
 <th:block th:insert="common/header"></th:block>
@@ -16,8 +20,10 @@
 
        <div>
            <form class="mypage-btn">
-            <button class="blue" type="button" onclick="openTagModal()">タグ設定&#x2699;&#xFE0F;</button>
-            <button class="blue" type="button" >新規投稿</button>
+
+             <button class="blue" type="button" onclick="openTagModal()">タグ設定&#x2699;&#xFE0F;</button>
+            <button class="blue" type="button" onclick="location.href='/add-thread'">新規投稿</button>
+
             <button class="red" type="button" onclick="openModal()">退会</button>
            </form>
 
@@ -31,20 +37,31 @@
         </div>
         <p > 退会すると再登録が必要になります</p>
     </div>
+
     <div id="tag-modal">
         <p class="retire"> タグ設定</p>
         <div>
-            <div class="tag-scrollbar" >
+            <div id="myTags" class="tag-scrollbar" >
             </div><p></p>
 
-            <div >
-                <input type="text" name="keyword" class="search-box" placeholder="タグ入力">
-                <input type="submit" class="blue search-btn"  value="登録">
+            <div>
+                <input id="suggest" type="text" name="keyword" class="search-box" placeholder="タグ入力">
+                <input type="button" class="blue search-btn" value="登録" onclick="add()">
             </div><p></p>
 
-            <button type="button" onclick="closeTagModal()" >戻る</button>
+            <button type="button" onclick="closeTagModal(),document.getElementById('suggest').value=''" >戻る</button>
         </div>
+
+
+<!--        <div class="input-wrap">-->
+<!--            <input type="text" id="suggest">-->
+<!--        </div>-->
+
+
     </div>
+
+
+
     <h1 class="mypage">マイページ</h1>
 
 <!--    <form class="btns">-->
@@ -64,8 +81,8 @@
             <div th:each="thread:${threads}" th:if="${menu}==1 OR ${menu}==2">
                 <p>No.<span th:text="${thread.id}"></span></p>
                 <p>
-                    <a th:href="@{/thread?thread_id={thread_id} (thread_id=${thread.id})}" th:text="${thread.thread_title}" ></a>
-                    -
+                    <a th:href="@{/thread/{thread_id} (thread_id=${thread.id})}" th:text="${thread.thread_title}" ></a>
+
                     <span th:each="tag:${tags}">
                     <a th:href="@{/home?tag={tag} (tag=${tag.tag})}" th:text="'#'+${tag.tag}" th:if="${thread.id==tag.thread_id}"></a>
                     </span>
@@ -83,7 +100,8 @@
             <div th:each="comment:${comments}" th:if="${menu}==3">
                 <p>No.<span th:text="${comment.thread_id}"></span></p>
                 <p>
-                    <a th:href="@{/thread?thread_id={thread_id} (thread_id=${comment.thread_id})}" th:text="${comment.thread_title}" ></a>
+                    <a th:href="@{/thread/{thread_id} (thread_id=${comment.thread_id})}" th:text="${comment.thread_title}" ></a>
+<!--                    <a th:href="@{/thread?thread_id={thread_id} (thread_id=${comment.thread_id})}" th:text="${comment.thread_title}" ></a>-->
                     -<span th:text="${comment.comment}"></span>
                 <p th:text="${comment.created_at}"></p>
                 <img th:src="${comment.image_base64}">
@@ -93,18 +111,63 @@
 
     </div>
     <div class="pagination">
-        <a th:href="@{/mypage?offset={offset}&menu={menu} (offset=${offset-20},menu=${menu})}" th:if="${offset>=20}">次へ</a>
+        <a th:href="@{/mypage?offset={offset}&menu={menu} (offset=${offset-20},menu=${menu})}" th:if="${offset>=20}">＜</a>
         <p><span th:text="${thread_page}"></span>/<span th:text="${thread_all}"></span>ページ</p>
-        <a th:href="@{/mypage?offset={offset}&menu={menu} (offset=${offset+20},menu=${menu})}" th:if="${thread_page<thread_all}">前へ</a>
+        <a th:href="@{/mypage?offset={offset}&menu={menu} (offset=${offset+20},menu=${menu})}" th:if="${thread_page<thread_all}">＞</a>
     </div>
     <div id="fadeLayer"></div>
 <script src="/js/unten.js"></script>
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script src="/js/tag-suggest.js"></script>
+
+
     <script>
         'use strict'
+
+        const tagList=[];
+        const myTags = document.getElementById('myTags');
 
         document.getElementById('home-back').addEventListener('click', () => {
           location.href = './home'
         })
+
+        async function getTags(){
+            await fetch('/getTags')
+            .then(res => {
+                if(res.status === 200){
+                    res.json()
+                    .then(data =>{
+                        for(let tag of data){
+                            tagList.push(tag.tag);
+                            myTags.insertAdjacentHTML('beforeend',`<button type="button" value=${tag.tag} onclick="remove(this.value),this.remove()">x ${tag.tag}</button>`);
+                        }
+                        console.log(tagList);
+                    });
+                }
+            });
+        }
+
+        async function add(){
+            let tagValue = document.getElementById('suggest').value;
+            if(tagValue.replaceAll(/　| /g,'') !== '' && !tagList.includes(tagValue)){
+                console.log(tagValue);
+                await fetch(`myTag/${tagValue}`);
+                myTags.insertAdjacentHTML('beforeend',`<button type="button" value=${tagValue} onclick="remove(this.value),this.remove()">x ${tagValue}</button>`);
+                tagList.push(tagValue);
+            }document.getElementById('suggest').value = '';
+        }
+        async function remove(value){
+            console.log(value);
+            const param = {method:"DELETE"};
+            await fetch(`myTag/${value}`,param);
+            tagList.splice(tagList.indexOf(value));
+        }
+
+        getTags();
     </script>
     </body>
 </html>
