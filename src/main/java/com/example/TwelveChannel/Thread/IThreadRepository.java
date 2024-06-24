@@ -34,4 +34,8 @@ public interface IThreadRepository {
     List<ThreadEntity> findFavoriteOffsetThreadByUser(int user_id, int offset);
 
     List<ThreadEntity> findFavoriteThreadByUser(int user_id);
+
+    List<ThreadEntity> recommendationThread(int user_id);
+
+    List<ThreadEntity> recommendationOffsetThread(int user_id,int offset);
 }
