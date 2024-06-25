@@ -94,6 +94,11 @@ body {
      height:30px;
 }
 
+input[type="search"]::-webkit-search-cancel-button{
+    -webkit-appearance: none;
+
+}
+
 .search {
     margin:  0 auto;
     display: flex;
@@ -421,7 +426,7 @@ textarea{
 }
 
 /*popupの基本設定*/
-#tag-modal,#modal,#delete-modal{
+#modal,#delete-modal{
     border: solid 1px;
     border-radius: 5px;
     text-align: center;
@@ -435,6 +440,25 @@ textarea{
     -webkit-transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%);
     background-color: #fff;
+}
+/*popupの基本設定*/
+#tag-modal{
+    border: solid 1px;
+    border-radius: 5px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.5s;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    background-color: #fff;
+}
+
+.myTag{
+    text-align: center;
 }
 
 .image{
@@ -606,3 +630,53 @@ a:hover {
   50% { transform: scale(0.8); }
   100% { transform: scale(2.1); }
 }
+
+
+.search-suggest-box  {
+margin-left:23%;
+margin-top:0px;
+  position: relative;
+  display: inline-block;
+  padding: 10px 10px;
+  min-width: 200px;
+  max-width: 100%;
+  color: #555;
+  font-size: 16px;
+  background: #f5f5f5;
+  border: solid 3px #555;
+  box-sizing: border-box;
+}
+
+.search-suggest-box :before {
+margin-top:0px;
+  content: "";
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  margin-left: -15px;
+  border: 12px solid transparent;
+  border-bottom: 12px solid #f5f5f5;
+  z-index: 2;
+}
+
+.search-suggest-box :after {
+  content: "";
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  margin-left: -17px;
+  border: 14px solid transparent;
+  border-bottom: 14px solid #555;
+  z-index: 1;
+}
+
+.search-suggest-box  li {
+  margin: 0;
+  padding: 0;
+  list-style:none;
+}
+
+.re{
+text-align: left;
+}
+

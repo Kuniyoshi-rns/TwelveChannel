@@ -17,7 +17,7 @@
         いいね</button>
 
     <div class="admin-btn">
-    <button class="blue edit right" id="edit"  th:if="${session.loginuser.id}==${thread.creator}" th:onclick="|location.href='/edit-thread/__${thread.id}__'|">編集  <img src="/images/edit.png" class="p"></button>
+    <button class="blue edit right" id="edit"  th:if="${session.loginuser.id}==${thread.creator}" th:onclick="|location.href='/edit-thread/__${thread.id}__'|">編集</button>
     <button class="red delete-btn right" id="delete"  th:if="${session.loginuser.id}==${thread.creator}" onclick="openDeleteModal()">削除</button>
     </div>
 </div>
