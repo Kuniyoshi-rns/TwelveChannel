@@ -41,15 +41,18 @@
     </div>
 
     <div id="tag-modal">
+        <button type="button" style="margin-left:95%" onclick="closeTagModal(),document.getElementById('suggest').value='',document.getElementById('sample').innerHTML=''" >×</button>
         <h1 class="myTag">タグ設定</h1>
+
         <div>
             <div id="myTags" class="tag-scrollbar" >
             </div><p></p>
 
-            <div>
-                <input id="suggest" type="text" name="keyword" class="search-box" placeholder="タグ入力">
+            <div class="myTag">
+                <input id="suggest" type="search" results="0" name="keyword" class="search-box" placeholder="タグ入力" autocomplete="off">
                 <input type="button" class="blue search-btn" value="登録 &#x1f5f9;" onclick="add()">
-                <button type="button" onclick="closeTagModal(),document.getElementById('suggest').value='',document.getElementById('sample').innerHTML=''" >戻る</button>
+
+
             </div><p></p>
             <div id="sample">
             </div>
@@ -86,12 +89,12 @@
                                             element.onclick = function(){
                                                 let value = sug.tag;
                                                 searchWord.value = value;
-                                                suggestBox.innerHTML = '';
+                                                document.getElementById('sample').innerHTML = '';
                                             }
                                             let txt = document.createTextNode(`${sug.tag} (${sug.count})`);
                                             element.appendChild(txt);
                                             ul.appendChild(element);
-                                            element.style='background-color:blue';
+
                                         }
                                         document.getElementById('sample').appendChild(ul);
                                     }

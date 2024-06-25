@@ -75,17 +75,18 @@
 
 <!--ここからポップアップ-->
 <div id="tag-modal">
+  <button type="button" style="margin-left:95%" onclick="closeTagModal(),document.getElementById('suggest').value=''" >×</button>
   <h1 class="myTag"> タグ追加</h1>
   <div>
     <div id="myTags" class="tag-scrollbar" >
     </div>
     <p></p>
-    <div>
+    <div class="myTag">
       <input id="suggest" type="text" name="keyword" class="search-box" placeholder="タグ入力">
       <input type="button" class="blue search-btn" value="追加" onclick="add()">
     </div><p></p>
 
-    <button type="button" onclick="closeTagModal(),document.getElementById('suggest').value=''" >戻る</button>
+
   </div>
 </div>
 <div id="fadeLayer"></div>
@@ -106,7 +107,7 @@
     const imgForm = document.getElementById('imageForm');
     console.log(imgForm.children)
     fileInput.setAttribute('type','hidden');
-    imgForm.insertAdjacentHTML('beforeend',`<button type="button" onclick="deleteImage()" class="tag-btn">x ${imageName}</button>`);
+    imgForm.insertAdjacentHTML('beforeend',`<button type="button" onclick="deleteImage()">x ${imageName}</button>`);
   }
   function deleteImage(){
     document.getElementById('image_name').value='';
@@ -175,7 +176,7 @@ fileInput.addEventListener('change', handleFileSelect);
             let tagArray = getTag.split(",");
             for(let tag of tagArray){
               tagList.push(tag);
-              myTags.insertAdjacentHTML('beforeend',`<button type="button" value=${tag} onclick="remove(this.value),this.remove()">x ${tag}</button>`);
+              myTags.insertAdjacentHTML('beforeend',`<button type="button" value=${tag} onclick="remove(this.value),this.remove()"  class="tag-btn">x ${tag}</button>`);
             }
         }
     }
@@ -184,7 +185,7 @@ fileInput.addEventListener('change', handleFileSelect);
     function add(){
         let tagValue = document.getElementById('suggest').value;
         if(tagValue.replaceAll(/　| /g,'') !== '' && !tagList.includes(tagValue)){
-            myTags.insertAdjacentHTML('beforeend',`<button type="button" value=${tagValue} onclick="remove(this.value),this.remove()">x ${tagValue}</button>`);
+            myTags.insertAdjacentHTML('beforeend',`<button type="button" value=${tagValue} onclick="remove(this.value),this.remove()" class="tag-btn">x ${tagValue}</button>`);
             if(getTag == ''){
                 getTag = getTag + tagValue;
             }else{

@@ -32,13 +32,14 @@
             </div>
             <div class="error errormsg" th:each="error: ${#fields.errors('title')}">[[ ${error} ]]</div>
 
-            <div class="add-tag">
-                <span>
-                <label>タグ：</label>
-                <input id="tagsForm" class="tag-input" type="text" name="tag" th:field="*{tag}" readonly>
-                      <button class="blue" type="button" onclick="openTagModal()">タグ設定</button>
-                </span>
+            <div class="l">
+
+                <label class="tag-name">タグ：</label>
+                <input id="tagsForm" class="tag-input2" type="text" name="tag" th:field="*{tag}" readonly>
+                      <button class="tag-in" type="button" onclick="openTagModal()"><img src="/images/plus.png" class="plus"></button>
+
             </div>
+
             <div th:if="${!#fields.hasErrors('tag')}">
                 <p style="margin:0"><span class="error errormsg" th:text="${message}"></span></p>
             </div>
@@ -67,18 +68,32 @@
         </form>
     </div>
 </div>
+
+<!--<div id="tag-modal">-->
+<!--    <button type="button" style="margin-left:95%" onclick="closeTagModal(),document.getElementById('suggest').value=''" >×</button>-->
+<!--    <h1 class="myTag"> タグ追加</h1>-->
+<!--    <div>-->
+<!--        <div id="myTags" class="tag-scrollbar" >-->
+<!--        </div>-->
+<!--        <p></p>-->
+<!--        <div class="myTag">-->
+<!--            <input id="suggest" type="text" name="keyword" class="search-box" placeholder="タグ入力">-->
+<!--            <input type="button" class="blue search-btn" value="追加" onclick="add()">-->
+<!--        </div><p></p>-->
+
 <div id="tag-modal">
-    <p class="retire"> タグ設定</p>
+    <button type="button" style="margin-left:95%" onclick="closeTagModal(),document.getElementById('suggest').value=''" >×</button>
+    <h1 class="myTag"> タグ追加</h1>
     <div>
         <div id="myTags" class="tag-scrollbar" >
         </div>
         <p></p>
-        <div>
+        <div class="myTag">
             <input id="suggest" type="text" name="keyword" class="search-box" placeholder="タグ入力">
-            <input type="button" class="blue search-btn" value="登録" onclick="add()">
+            <input type="button" class="blue search-btn" value="追加" onclick="add()">
         </div><p></p>
 
-        <button type="button" onclick="closeTagModal(),document.getElementById('suggest').value=''" >戻る</button>
+
     </div>
 </div>
 <div id="fadeLayer"></div>
@@ -155,7 +170,7 @@
             let tagArray = getTag.split(",");
             for(let tag of tagArray){
               tagList.push(tag);
-              myTags.insertAdjacentHTML('beforeend',`<button type="button" value=${tag} onclick="remove(this.value),this.remove()">x ${tag}</button>`);
+              myTags.insertAdjacentHTML('beforeend',`<button type="button" value=${tag} onclick="remove(this.value),this.remove()" class="tag-btn">x ${tag}</button>`);
             }
         }
     }
