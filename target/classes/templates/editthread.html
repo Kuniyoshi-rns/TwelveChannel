@@ -40,10 +40,9 @@
                 </span>
             </div>
             <div th:if="${!#fields.hasErrors('tag')}">
-                <p style="margin:0">　</p>
+                <p style="margin:0"><span class="error errormsg" th:text="${message}"></span></p>
             </div>
             <div class="error errormsg" th:each="error: ${#fields.errors('tag')}">[[ ${error} ]]</div>
-            <div class="error errormsg" th:text="${message}"></div>
 
             <div class="add-comment">
                 <label>本文：</label>
