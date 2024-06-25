@@ -44,4 +44,8 @@ public class CommentService implements ICommentService{
     public List<CommentEntity> getCommentOffsetByUser(int user_id, int offset) {
         return commentRepository.getCommentOffsetByUser(user_id,offset);
     }
+    @Override
+    public void userCommentAllDel(int user_id){
+        commentRepository.userCommentAllDel(user_id);
+    }
 }

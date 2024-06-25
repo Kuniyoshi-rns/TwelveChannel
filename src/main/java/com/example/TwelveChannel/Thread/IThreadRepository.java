@@ -25,7 +25,7 @@ public interface IThreadRepository {
 
     List<ThreadEntity> searchThread(int offset,String tag,String order,String keyword);
 
-    List<ThreadEntity> searchFiveThread(int offset,String tag,String order,String keyword);
+    List<ThreadEntity> searchOffsetThread(int offset, String tag, String order, String keyword);
 
     List<ThreadEntity> findThreadOffsetByUser(int user_id, int offset);
 
@@ -34,4 +34,12 @@ public interface IThreadRepository {
     List<ThreadEntity> findFavoriteOffsetThreadByUser(int user_id, int offset);
 
     List<ThreadEntity> findFavoriteThreadByUser(int user_id);
+
+
+    List<ThreadEntity> recommendationThread(int user_id);
+
+    List<ThreadEntity> recommendationOffsetThread(int user_id,int offset);
+
+    void userThreadAllDel(int user_id);
+
 }

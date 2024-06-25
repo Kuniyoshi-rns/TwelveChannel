@@ -20,5 +20,7 @@ public interface IFavoriteRepository {
 
     List<ThreadEntity> getFavoThreadList(int user_id);
 
+    void userfavoriteAllDel(int user_id);
+
 
 }

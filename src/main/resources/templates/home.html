@@ -11,21 +11,22 @@
 <body>
 <th:block th:insert="common/header"></th:block>
 <div>
-    <hr>
+
 
     <div class="top-btn">
         <form class="search" method="get" action="/home">
             <select name="order">
-                <option>並び替え</option>
+                <option value="">並び替え</option>
                 <option>新しい順</option>
                 <option>古い順</option>
             </select>
-            <div>
+
                 <input class="search-box" type="text" name="keyword" size="25" placeholder="キーワード検索">
-                <input class="search-btn blue" type="submit" value="検索">
-            </div>
+                <button class="search-btn blue" type="submit">
+                    <img src="/images/m.png"  alt="写真" width="22" height="22"> </button>
+
         </form>
-        <button class="home-btn blue" id="add-thread" onclick="location.href='/add-thread'">新規投稿</button>
+        <button class="home-btn blue" id="add-thread" onclick="location.href='/add-thread'">新規投稿 &#x1f7a5;</button>
     </div>
 
     <div class="scrollbar">
@@ -34,20 +35,20 @@
             <p>
                 <a th:href="@{/thread/{thread_id} (thread_id=${thread.id})}" th:text="${thread.thread_title}" class="home-title"></a>
                 -
-                <span th:each="tag:${tags}">
+                <th:block th:each="tag:${tags}">
                     <a th:href="@{/home?tag={tag} (tag=${tag.tag})}" th:text="'#'+${tag.tag}" th:if="${thread.id==tag.thread_id}"></a>
-                </span>
+                </th:block>
             </p>
 
             <div class="like-comment">
 
-            <div th:each="count:${comment_count}" class="home-comment">
-                <p th:if="${thread.id==count.thread_id}">コメント:<span th:text="${count.count}"></span></p>
-            </div>
+            <th:block th:each="count:${comment_count}" >
+                <p th:if="${thread.id==count.thread_id}" class="home-comment">コメント:<span th:text="${count.count}"></span></p>
+            </th:block>
 
-            <div th:each="favorite:${favorites}">
+            <th:block th:each="favorite:${favorites}">
                 <p th:if="${thread.id==favorite.thread_id}">いいね:<span th:text="${favorite.count}"></span></p>
-            </div>
+            </th:block>
 
             </div>
 
@@ -57,9 +58,10 @@
 
 
     <div class="pagination">
-        <a th:href="@{/home?offset={offset}&order={order}&keyword={keyword}&tag={tag} (offset=${offset-5},order=${order},keyword=${keyword},tag=${tag})}" th:if="${offset>=5}">＜</a>
+        <a th:href="@{/home?offset={offset}&order={order}&keyword={keyword}&tag={tag} (offset=${offset-20},order=${order},keyword=${keyword},tag=${tag})}" th:if="${offset>=20}">＜</a>
         <p><span th:text="${thread_page}"></span>/<span th:text="${thread_all}"></span>ページ</p>
-        <a th:href="@{/home?offset={offset}&order={order}&keyword={keyword}&tag={tag} (offset=${offset+5},order=${order},keyword=${keyword},tag=${tag})}" th:if="${thread_page<thread_all}">＞</a>
+        <a th:href="@{/home?offset={offset}&order={order}&keyword={keyword}&tag={tag} (offset=${offset+20},order=${order},keyword=${keyword},tag=${tag})}" th:if="${thread_page<thread_all}">＞</a>
+
     </div>
 
     <script>

@@ -8,10 +8,11 @@
 <body>
 <fieldset style="background-color:white" class="login">
 
-    <h1 ><img src="images/title_logo.png"></h1>
+    <h1 style="margin-bottom:0"><img src="images/title_logo.png"></h1>
 
     <div>
-        <p class="error" th:text="${loginError}"></p>
+        <p class="error" style="margin:0" th:if="${loginError}!=null" th:text="${loginError}"></p>
+        <p class="error" style="margin:0" th:if="${loginError}==null">　</p>
         <form action="/login" method="post" th:object="${loginForm}">
             <input type="text" class="login-input"  placeholder="ID" th:field="*{login_id}"><br>
             <div th:if="${!#fields.hasErrors('login_id')}">

@@ -14,6 +14,7 @@ import com.example.TwelveChannel.User.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -48,22 +49,23 @@ public class AppController {
 
     @PostMapping("/login")//ログイン情報確認
     public String login(@Validated @ModelAttribute("loginForm") LoginForm loginForm,
-                        BindingResult bindingResult, Model model) {
-        System.out.println(loginForm);
-        if (bindingResult.hasErrors()) {
+                        BindingResult bindingResult, Model model){
+        //System.out.println(loginForm);
+        if(bindingResult.hasErrors()) {
             return "login";
         }
 
-        System.out.println(userService.findByIdUser(loginForm));
-        var loginuser = userService.findByIdUser(loginForm);
+        //System.out.println(userService.findByIdUser(loginForm));
+        UserEntity loginuser = userService.findByIdUser(loginForm);
 
         if (loginuser == null) {
             model.addAttribute("loginError", "ID、またはパスワードが異なります。");
             return "login";
         }
 
-        System.out.println(userService.findByIdUser(loginForm));
-        session.setAttribute("loginuser", loginuser);
+        //System.out.println(userService.findByIdUser(loginForm));
+        session.setAttribute("loginuser",loginuser);
+        //System.out.print(session);
         return "redirect:/home";
     }
 
@@ -84,12 +86,19 @@ public class AppController {
         loginform.setPassword(signUpForm.getPassword());
         var checkuser = userService.findByIdUser(loginform);
 
-        if (checkuser == null && signUpForm.getPassword().equals(signUpForm.getPasswordCheck())) {
-            userService.insertUser(signUpForm);
+
+        if (checkuser==null && signUpForm.getPassword().equals(signUpForm.getPasswordCheck())){
+            int isInsert = userService.insertUser(signUpForm);
+            if(isInsert == 1){
+            var loginuser = userService.findByIdUser(loginform);
+            session.setAttribute("loginuser",loginuser);
             return "home";
-        } else if (checkuser != null) {
-            model.addAttribute("checkuser", "そのIDは存在しています");
-        } else {
+            }else{
+                model.addAttribute("checkuser","そのIDは存在しています");
+            }
+        }else if(checkuser!=null){
+            model.addAttribute("checkuser","そのIDは存在しています");
+        }else {
             model.addAttribute("checkuser", "パスワードが一致しません");
         }
         return "signup";
@@ -105,8 +114,8 @@ public class AppController {
         if (bindingResult.hasErrors()) {
             return "addthread";
         }
-//        UserEntity userEntity = (UserEntity) session.getAttribute("");
-//        int userId = userEntity.id();
+        UserEntity userEntity = (UserEntity) session.getAttribute("loginuser");
+        int userId = userEntity.id();
 //        上記コードはセッションを実装した段階で使う。消さないで。
 
         String getTags = threadAddForm.getTag();
@@ -180,39 +189,56 @@ public class AppController {
                        @RequestParam(name = "order", defaultValue = "") String order,
                        @RequestParam(name = "keyword", defaultValue = "") String keyword,
                        Model model) {
-        int thread_page = threadService.threadAll().size();
 
-        var thread = threadService.findThread(offset);
-        if (tag.isEmpty() && keyword.isEmpty() && order.isEmpty()) {
-            System.out.println("何もなし");
-        } else {
-            thread = threadService.searchThread(offset, tag, order, keyword);
-            thread_page = thread.size();
-            thread = threadService.searchFiveThread(offset, tag, order, keyword);
-            for (var test : thread) {
-                System.out.println(test);
+        int thread_page=threadService.threadAll().size();
+        UserEntity userEntity = (UserEntity) session.getAttribute("loginuser");
+        int user_id=userEntity.id();
+        var thread=threadService.findThread(offset);
+
+        if(tag.isEmpty() && keyword.isEmpty() && order.isEmpty()) {
+            if(threadService.recommendationThread(user_id).isEmpty()){
+                System.out.println("フォローしているタグ無し or タグを含むスレッド無し");
+            }else {
+                System.out.println("お勧め表示一覧");
+                thread = threadService.recommendationOffsetThread(user_id, offset);
+                thread_page=threadService.recommendationThread(user_id).size();
+                for (var test : threadService.recommendationOffsetThread(user_id, offset)) {
+                    System.out.println(test);
+                }
             }
+        }else{
+            if(keyword.startsWith("#")){
+                tag=keyword.substring(1);
+                keyword="";
+                System.out.println("タグ検索"+keyword+tag);
+            }
+            thread = threadService.searchThread(offset, tag, order, keyword);
+            thread_page=thread.size();
+            thread=threadService.searchOffsetThread(offset,tag,order,keyword);
+//            for (var test : thread) {
+//                System.out.println(test);
+//            }
         }
 
-        var all_tag = tagService.threadTagAllFind();
-        var comment_count = commentService.getCommentListAllThreadHome();
-        var favorite = favoriteService.favoriteThreadCountHome();
-        model.addAttribute("threads", thread);
-        model.addAttribute("tags", all_tag);
-        model.addAttribute("comment_count", comment_count);
-        model.addAttribute("favorites", favorite);
+        var all_tag=tagService.threadTagAllFind();
+        var comment_count=commentService.getCommentListAllThreadHome();
+        var favorite=favoriteService.favoriteThreadCountHome();
+        model.addAttribute("threads",thread);
+        model.addAttribute("tags",all_tag);
+        model.addAttribute("comment_count",comment_count);
+        model.addAttribute("favorites",favorite);
 
-        model.addAttribute("offset", offset);
-        model.addAttribute("tag", tag);
-        model.addAttribute("order", order);
-        model.addAttribute("keyword", keyword);
-        if (thread_page % 5 == 0) {
-            thread_page = thread_page / 5;
-        } else {
-            thread_page = thread_page / 5 + 1;
+        model.addAttribute("offset",offset);
+        model.addAttribute("tag",tag);
+        model.addAttribute("order",order);
+        model.addAttribute("keyword",keyword);
+        if(thread_page%20==0){
+            thread_page=thread_page/20;
+        }else{
+            thread_page=thread_page/20+1;
         }
-        model.addAttribute("thread_page", offset / 5 + 1);
-        model.addAttribute("thread_all", thread_page);
+        model.addAttribute("thread_page",offset/20+1);
+        model.addAttribute("thread_all",thread_page);
 
         return "home";
     }
@@ -220,11 +246,12 @@ public class AppController {
     @GetMapping("/mypage")
     public String mypage(@RequestParam(name = "offset", defaultValue = "0") int offset,
                          @RequestParam(name = "menu", defaultValue = "1") int menu,
-                         Model model) {
-//        var user= (UserEntity)httpSession.getAttribute("user");
-//        var user_id= user.id();
-        var user_id = 1;
-        System.out.println("マイページ遷移:menu=" + menu);
+                         Model model){
+
+        UserEntity userEntity = (UserEntity) session.getAttribute("loginuser");
+        int user_id=userEntity.id();
+      
+        System.out.println("マイページ遷移:menu="+menu);
 
         List<ThreadEntity> thread = null;
         List<CommentEntity> comment = null;
@@ -277,6 +304,26 @@ public class AppController {
 
     @GetMapping("/logout")
     public String logout(@ModelAttribute("loginForm") LoginForm loginForm) {
+        session.invalidate();
+        //session.removeAttribute("loginuser");
+        if (session.getAttribute("loginuser") == null){
+            System.out.println("破棄されました");
+        }else {
+            System.out.println("破棄できませんでした");
+        }
+        return "redirect:/login";
+    }
+
+    @Transactional
+    @PostMapping("/withdrawal")
+    public String withdrawal(){
+        UserEntity userEntity = (UserEntity) session.getAttribute("loginuser");
+        int userId = userEntity.id();
+        tagService.userTagAllDel(userId);
+        favoriteService.userfavoriteAllDel(userId);
+        commentService.userCommentAllDel(userId);
+        threadService.userThreadAllDel(userId);
+        userService.deleteUser(userId);
         session.invalidate();
         return "redirect:/login";
     }

@@ -21,4 +21,6 @@ public interface ITagService {
     void threadTagsInsert(int tread_id,String[] tags);
 
     void threadTagsDelete(int thread_id, String[] tags);
+
+    void userTagAllDel(int user_id);
 }

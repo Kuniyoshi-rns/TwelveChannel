@@ -2,9 +2,10 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
+  <th:block th:insert="common/sessionCheck"></th:block>
   <meta charset="UTF-8">
   <title>新規スレッド</title>
-  <link href="css/unten.css" rel="stylesheet">
+  <link href="/css/unten.css" rel="stylesheet">
   <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.3/dist/css/autoComplete.min.css">
 </head>
@@ -13,7 +14,7 @@
 <th:block th:insert="common/header"></th:block>
 
 <div class="top-btn"><button class="return-btn" type="button" onclick="location.href='./mypage'">
-  戻る
+  &#x1f844; 戻る
 </button>
 </div>
 <div>
@@ -61,7 +62,7 @@
           <input type="hidden" id="image_name" th:field="*{image_name}" value="">
           <input type="hidden" id="base64" th:field="*{image_base64}" value="">
 <!--          <script th:src="@{js/sample.js}"></script>-->
-          <button class="post-btn blue" type="submit">投稿</button>
+          <button class="post-btn blue" type="submit">投稿 &#x1f5f9;</button>
 
         </div>
       </div>

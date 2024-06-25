@@ -67,8 +67,8 @@ public class ThreadService implements IThreadService{
     }
 
     @Override
-    public List<ThreadEntity> searchFiveThread(int offset, String tag, String order, String keyword) {
-        return threadRepository.searchFiveThread(offset, tag, order, keyword);
+    public List<ThreadEntity> searchOffsetThread(int offset, String tag, String order, String keyword) {
+        return threadRepository.searchOffsetThread(offset, tag, order, keyword);
     }
 
     @Override
@@ -89,5 +89,19 @@ public class ThreadService implements IThreadService{
     @Override
     public List<ThreadEntity> findFavoriteThreadByUser(int user_id) {
         return threadRepository.findFavoriteThreadByUser(user_id);
+    }
+
+    @Override
+    public List<ThreadEntity> recommendationThread(int user_id){
+        return threadRepository.recommendationThread(user_id);
+    }
+
+    @Override
+    public List<ThreadEntity> recommendationOffsetThread(int user_id,int offset) {
+        return threadRepository.recommendationOffsetThread(user_id, offset);
+    }
+
+    public void userThreadAllDel ( int user_id){
+        threadRepository.userThreadAllDel(user_id);
     }
 }
