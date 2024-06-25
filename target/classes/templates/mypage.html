@@ -8,8 +8,8 @@
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
 
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.3/dist/css/autoComplete.min.css">
+<!--    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">-->
+<!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.3/dist/css/autoComplete.min.css">-->
 
 </head>
 <body>
@@ -51,8 +51,55 @@
                 <input type="button" class="blue search-btn" value="登録 &#x1f5f9;" onclick="add()">
             </div><p></p>
 
+            <ul id="search-suggest-box">
+            </ul>
             <button type="button" onclick="closeTagModal(),document.getElementById('suggest').value=''" >戻る</button>
         </div>
+        <script>
+            const searchWord = document.getElementById('suggest');
+            const suggestBox = document.getElementById('search-suggest-box');
+
+            searchWord.addEventListener('input', function (e) {
+                if (e.key == 'Tab') {
+                    return;
+                }
+                suggestCall(this.value);
+            });
+
+            async function suggestCall(term) {
+                console.log(term)
+                let suggestData = [];
+                if(term != ''){
+                    try {
+                        await fetch(`/suggest/${term}`)
+                        .then(res =>{
+                            if(res.status === 200){
+                                res.json()
+                                .then(data =>{
+                                    suggestBox.innerHTML = '';
+                                    for(let sug of data){
+                                        suggestData[suggestData.length]=`${sug.tag} (${sug.count})`;
+                                        let element = document.createElement('li');
+                                        element.onclick = function(){
+                                            let value = sug.tag;
+                                            searchWord.value = value;
+                                            suggestBox.innerHTML = '';
+                                        }
+                                        let txt = document.createTextNode(`${sug.tag} (${sug.count})`);
+                                        element.appendChild(txt);
+                                        suggestBox.appendChild(element);
+                                    }
+                                });
+                            }
+                        });
+                    } catch (err) {
+                        suggestBox.innerHTML = '';
+                    }
+                }else{
+                    suggestBox.innerHTML='';
+                }
+            };
+        </script>
 
 
 <!--        <div class="input-wrap">-->
@@ -121,9 +168,9 @@
 
 
 
-<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-<script src="/js/tag-suggest.js"></script>
+<!--<script src="https://code.jquery.com/jquery-3.6.0.js"></script>-->
+<!--<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>-->
+<!--<script src="/js/tag-suggest.js"></script>-->
 
 
     <script>

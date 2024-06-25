@@ -6,6 +6,7 @@ import com.example.TwelveChannel.Comment.ICommentService;
 import com.example.TwelveChannel.Favorite.FavoriteEntity;
 import com.example.TwelveChannel.Favorite.IFavoriteService;
 import com.example.TwelveChannel.Tag.ITagService;
+import com.example.TwelveChannel.Tag.TagCountEntity;
 import com.example.TwelveChannel.Tag.UserTagEntity;
 import com.example.TwelveChannel.Thread.IThreadService;
 import com.example.TwelveChannel.Thread.ThreadEntity;
@@ -135,6 +136,11 @@ public class AppRestController {
     public ResponseEntity<List<UserTagEntity>> myTags(){
         UserEntity userEntity = (UserEntity) session.getAttribute("loginuser");
         return new ResponseEntity<>(tagService.userTag(userEntity.id()),HttpStatus.OK);
+    }
+
+    @GetMapping("suggest/{term}")
+    public ResponseEntity<List<TagCountEntity>> suggest(@PathVariable("term") String term){
+        return new ResponseEntity<>(tagService.TagCount(term),HttpStatus.OK);
     }
 
 }
