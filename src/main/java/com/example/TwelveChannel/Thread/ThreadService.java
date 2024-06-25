@@ -103,5 +103,8 @@ public class ThreadService implements IThreadService{
 
     public void userThreadAllChange(int user_id){
         threadRepository.userThreadAllChange(user_id);
+
+    public void userThreadAllDel ( int user_id){
+        threadRepository.userThreadAllDel(user_id);
     }
 }

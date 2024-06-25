@@ -10,14 +10,14 @@
 <th:block th:insert="common/header"></th:block>
 
 <div class="top-btn">
-    <button class="return-btn"  id="back" onclick="location.href='/home'">←戻る</button>
+    <button class="return-btn"  id="back" onclick="location.href='/home'">	&#x1f844; 戻る</button>
 
-    <button class="like-btn right" id="favorite"  th:if="${session.loginuser.id}!=1">
+    <button class="like-btn right" id="favorite"  th:if="${session.loginuser.id}!=${thread.creator}">
         <svg class="likeButton__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M91.6 13A28.7 28.7 0 0 0 51 13l-1 1-1-1A28.7 28.7 0 0 0 8.4 53.8l1 1L50 95.3l40.5-40.6 1-1a28.6 28.6 0 0 0 0-40.6z"/></svg>
         いいね</button>
 
     <div class="admin-btn">
-    <button class="blue edit right" id="edit"  th:if="${session.loginuser.id}==${thread.creator}" th:onclick="|location.href='/edit-thread/__${thread.id}__'|">編集</button>
+    <button class="blue edit right" id="edit"  th:if="${session.loginuser.id}==${thread.creator}" th:onclick="|location.href='/edit-thread/__${thread.id}__'|">編集 	&#x1f589;</button>
     <button class="red delete-btn right" id="delete"  th:if="${session.loginuser.id}==${thread.creator}" onclick="openDeleteModal()">削除</button>
     </div>
 </div>
@@ -62,11 +62,11 @@
 <textarea  id="statement"></textarea>
     <div class="image">
         <div id="imgInsert"><input id="example" type="file" accept="image/*"></div>
-        <button class="blue post-btn" id="addComment" onclick="addComment()">書き込み</button>
+        <button class="blue post-btn" id="addComment" onclick="addComment()"> 書き込み &#x1f5f9;</button>
     </div>
 </div>
 
-<script>
+<script th:inline="javascript">
     let imageName = '';
     let imageBase64 = '';
 
@@ -239,9 +239,7 @@
               if(data.image_base64 != ''){
                  commeDiv.insertAdjacentHTML('beforeend',`<img src="${data.image_base64}" />`)
               }
-              if(data.user_id === 1){
-                 commeDiv.insertAdjacentHTML('beforeend',`<button class='comment-delete-btn red' onclick='commentDelete(${data.id})'>削除</button>`)
-              }
+              commeDiv.insertAdjacentHTML('beforeend',`<button class='comment-delete-btn red' onclick='commentDelete(${data.id})'>削除</button>`)
               commeDiv.insertAdjacentHTML('beforeend','<hr>');
               commentList.prepend(commeDiv);
           })
@@ -250,6 +248,7 @@
     }
 
     function commentView(){
+    console.log([[${session.loginuser}]]);
     console.log(document.URL.split('/').slice(-1)[0]);
     let threadId = document.URL.split('/').slice(-1)[0];
     fetch(`/view-comment/${threadId}`)
@@ -285,8 +284,9 @@
                   if(comme.image_base64 != ''){
                      commeDiv.insertAdjacentHTML('beforeend',`<img src="${comme.image_base64}" />`)
                   }
-                  if(comme.user_id === 1){
-                     commeDiv.insertAdjacentHTML('beforeend',`<button class='comment-delete-btn red' onclick='commentDelete(${comme.id})'>削除</button>`)
+
+                  if(comme.user_id == [[${session.loginuser.id}]]){
+                    commeDiv.insertAdjacentHTML('beforeend',`<button class='comment-delete-btn red' onclick='commentDelete(${comme.id})'>削除</button>`)
                   }
                   commeDiv.insertAdjacentHTML('beforeend','<hr>');
                   commentList.append(commeDiv);
@@ -336,8 +336,8 @@
                   if(comme.image_base64 != ''){
                      commeDiv.insertAdjacentHTML('beforeend',`<img src="${comme.image_base64}" />`)
                   }
-                  if(comme.user_id === 1){
-                     commeDiv.insertAdjacentHTML('beforeend',`<button class='comment-delete-btn red' onclick='commentDelete(${comme.id})'>削除</button>`)
+                  if(comme.user_id == [[${session.loginuser.id}]]){
+                    commeDiv.insertAdjacentHTML('beforeend',`<button class='comment-delete-btn red' onclick='commentDelete(${comme.id})'>削除</button>`)
                   }
                   commeDiv.insertAdjacentHTML('beforeend','<hr>');
                   commentList.append(commeDiv);
