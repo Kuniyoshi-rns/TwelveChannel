@@ -32,8 +32,10 @@
     <div id="modal">
         <p class="retire"> 本当に退会しますか？</p>
         <div>
-            <input type="button"  class="red retire-btn" value="退会">
+            <form action="/withdrawal" method="post">
+            <input type="submit" class="red retire-btn" value="退会">
             <button type="button" onclick="closeModal()" >キャンセル</button>
+            </form>
         </div>
         <p > 退会すると再登録が必要になります</p>
     </div>

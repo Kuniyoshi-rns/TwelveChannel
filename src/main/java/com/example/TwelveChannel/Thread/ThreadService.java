@@ -101,6 +101,9 @@ public class ThreadService implements IThreadService{
         return threadRepository.recommendationOffsetThread(user_id, offset);
     }
 
+    public void userThreadAllChange(int user_id){
+        threadRepository.userThreadAllChange(user_id);
+
     public void userThreadAllDel ( int user_id){
         threadRepository.userThreadAllDel(user_id);
     }
