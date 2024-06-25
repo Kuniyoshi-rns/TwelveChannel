@@ -89,7 +89,6 @@ public class AppController {
         if (checkuser==null && signUpForm.getPassword().equals(signUpForm.getPasswordCheck())){
             int isInsert = userService.insertUser(signUpForm);
             if(isInsert == 1){
-            userService.insertUser(signUpForm);
             var loginuser = userService.findByIdUser(loginform);
             session.setAttribute("loginuser",loginuser);
             return "home";
@@ -294,10 +293,10 @@ public class AppController {
     public String withdrawal(){
         UserEntity userEntity = (UserEntity) session.getAttribute("loginuser");
         int userId = userEntity.id();
-        tagService.userTagAllDel(userId);
-        favoriteService.userfavoriteAllDel(userId);
-        commentService.userCommentAllDel(userId);
-        threadService.userThreadAllDel(userId);
+        tagService.userTagAllDel(userId);//●
+        favoriteService.userfavoriteAllDel(userId);//●
+        commentService.userCommentAllDel(userId);//●
+        threadService.userThreadAllChange(userId);
         userService.deleteUser(userId);
         session.invalidate();
         return "redirect:/login";
