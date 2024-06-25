@@ -43,7 +43,7 @@ public class AppController {
     private HttpSession session;
 
     @GetMapping("/login")//ログイン画面
-    public String index(@ModelAttribute("loginForm")LoginForm loginForm){
+    public String index(@ModelAttribute("loginForm") LoginForm loginForm) {
         return "login";
     }
 
@@ -58,8 +58,8 @@ public class AppController {
         //System.out.println(userService.findByIdUser(loginForm));
         UserEntity loginuser = userService.findByIdUser(loginForm);
 
-        if(loginuser==null){
-            model.addAttribute("loginError","ID、またはパスワードが異なります。");
+        if (loginuser == null) {
+            model.addAttribute("loginError", "ID、またはパスワードが異なります。");
             return "login";
         }
 
@@ -71,20 +71,21 @@ public class AppController {
 
     //新規登録
     @GetMapping("/signup")
-    public String signup(@ModelAttribute("SignUpForm")SignUpForm signUpForm){
+    public String signup(@ModelAttribute("SignUpForm") SignUpForm signUpForm) {
         return "signup";
-        }
+    }
 
     @PostMapping("/signup")
-    public String signup(@Validated@ModelAttribute("SignUpForm")SignUpForm signUpForm,BindingResult bindingResult, Model model){
-        if (bindingResult.hasErrors()){
+    public String signup(@Validated @ModelAttribute("SignUpForm") SignUpForm signUpForm, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
             return "signup";
         }
 
-        var loginform= new LoginForm();
+        var loginform = new LoginForm();
         loginform.setLogin_id(signUpForm.getLogin_id());
         loginform.setPassword(signUpForm.getPassword());
         var checkuser = userService.findByIdUser(loginform);
+
 
         if (checkuser==null && signUpForm.getPassword().equals(signUpForm.getPasswordCheck())){
             int isInsert = userService.insertUser(signUpForm);
@@ -109,15 +110,24 @@ public class AppController {
     }
 
     @PostMapping("/add-thread")
-    public String addPost(@Validated @ModelAttribute("addThread") ThreadAddForm threadAddForm,BindingResult bindingResult, Model model) {
-        if(bindingResult.hasErrors()){
+    public String addPost(@Validated @ModelAttribute("addThread") ThreadAddForm threadAddForm, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
             return "addthread";
         }
         UserEntity userEntity = (UserEntity) session.getAttribute("loginuser");
         int userId = userEntity.id();
 //        上記コードはセッションを実装した段階で使う。消さないで。
-        int threadId = threadService.insertThreadOkuma(threadAddForm, userId);
-        tagService.threadTagInsert(threadId, threadAddForm.getTag());
+
+        String getTags = threadAddForm.getTag();
+        String[] tags = getTags.split(",");
+        for (String tag : tags){
+            if (tag.length() > 50){
+                model.addAttribute("message", "タグは50文字以内にしてください");
+                return "addthread";
+            }
+        }
+        int threadId = threadService.insertThreadOkuma(threadAddForm, 47);
+        tagService.threadTagsInsert(threadId, tags);
         return "redirect:/thread/" + threadId;
     }
 
@@ -125,7 +135,13 @@ public class AppController {
     public String editThread(@PathVariable("thread_id") int threadId, @ModelAttribute("editThread") ThreadAddForm threadAddForm, Model model) {
         var thread = threadService.findByIdThread(threadId);
         var threadTag = tagService.threadTag(threadId);
-        threadAddForm.setTag(threadTag.get(0).tag());
+
+        String tags = threadTag.get(0).tag();
+
+        for (int i=1 ; i < threadTag.size(); i++){
+            tags = tags + "," + threadTag.get(i).tag();
+        }
+        threadAddForm.setTag(tags);
         threadAddForm.setTitle(thread.thread_title());
         threadAddForm.setComment(thread.comment());
         threadAddForm.setImage_name(thread.image_name());
@@ -136,24 +152,33 @@ public class AppController {
     }
 
     @PostMapping("/edit-thread/{thread_id}")
-    public String editThreadPost(@PathVariable("thread_id") int threadId, @Validated @ModelAttribute("editThread") ThreadAddForm threadAddForm,BindingResult bindingResult, Model model) {
-        if(bindingResult.hasErrors()){
+    public String editThreadPost(@PathVariable("thread_id") int threadId, @Validated @ModelAttribute("editThread") ThreadAddForm threadAddForm, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
             return "editthread";
         }
-        tagService.threadTagDelete(threadId, threadAddForm.getTag());
+
+        String getTags = threadAddForm.getTag();
+        String[] tags = getTags.split(",");
+        for (String tag : tags){
+            if (tag.length() > 50){
+                model.addAttribute("message", "タグは50文字以内にしてください");
+                return "editthread";
+            }
+        }
+        tagService.threadTagsDelete(threadId, tags);
         threadService.updateThreadOkuma(threadAddForm, threadId);
-        tagService.threadTagInsert(threadId, threadAddForm.getTag());
+        tagService.threadTagsInsert(threadId, tags);
         return "redirect:/thread/" + threadId;
     }
 
 
-    @GetMapping({"/thread","/thread/{thread_id}"})
-    public String Thread(@PathVariable("thread_id") int thread_id, Model model){
+    @GetMapping({"/thread", "/thread/{thread_id}"})
+    public String Thread(@PathVariable("thread_id") int thread_id, Model model) {
 //        var loginuser = new UserEntity(1,"yamada","02");
 //        session.setAttribute("loginuser",loginuser);
-        model.addAttribute("thread",threadService.findByIdThread(thread_id));
+        model.addAttribute("thread", threadService.findByIdThread(thread_id));
         System.out.println(threadService.findByIdThread(thread_id));
-        model.addAttribute("tags",tagService.threadTag(thread_id));
+        model.addAttribute("tags", tagService.threadTag(thread_id));
 
         return "thread";
     }
@@ -164,6 +189,7 @@ public class AppController {
                        @RequestParam(name = "order", defaultValue = "") String order,
                        @RequestParam(name = "keyword", defaultValue = "") String keyword,
                        Model model) {
+
         int thread_page=threadService.threadAll().size();
         UserEntity userEntity = (UserEntity) session.getAttribute("loginuser");
         int user_id=userEntity.id();
@@ -227,52 +253,52 @@ public class AppController {
       
         System.out.println("マイページ遷移:menu="+menu);
 
-        List<ThreadEntity> thread=null;
-        List<CommentEntity> comment=null;
-        int thread_page=0;
+        List<ThreadEntity> thread = null;
+        List<CommentEntity> comment = null;
+        int thread_page = 0;
 
-        switch (menu){
+        switch (menu) {
             case 1:
-                thread=threadService.findThreadOffsetByUser(user_id,offset);
-                thread_page=threadService.findThreadByUser(user_id).size();
+                thread = threadService.findThreadOffsetByUser(user_id, offset);
+                thread_page = threadService.findThreadByUser(user_id).size();
                 break;
             case 2:
-                thread=threadService.findFavoriteOffsetThreadByUser(user_id,offset);
-                thread_page=threadService.findFavoriteThreadByUser(user_id).size();
+                thread = threadService.findFavoriteOffsetThreadByUser(user_id, offset);
+                thread_page = threadService.findFavoriteThreadByUser(user_id).size();
                 break;
             case 3:
-                comment=commentService.getCommentOffsetByUser(user_id,offset);
-                thread_page=commentService.getCommentByUser(user_id).size();
+                comment = commentService.getCommentOffsetByUser(user_id, offset);
+                thread_page = commentService.getCommentByUser(user_id).size();
                 break;
             default:
                 break;
         }
 
-        System.out.println("全部で"+thread_page+"件");
+        System.out.println("全部で" + thread_page + "件");
 
-        for(var test : commentService.getCommentOffsetByUser(user_id,offset)){
+        for (var test : commentService.getCommentOffsetByUser(user_id, offset)) {
             System.out.println(test);
         }
 
-        var all_tag=tagService.threadTagAllFind();
-        var comment_count=commentService.getCommentListAllThreadHome();
-        var favorite=favoriteService.favoriteThreadCountHome();
+        var all_tag = tagService.threadTagAllFind();
+        var comment_count = commentService.getCommentListAllThreadHome();
+        var favorite = favoriteService.favoriteThreadCountHome();
 
-        model.addAttribute("threads",thread);
-        model.addAttribute("comments",comment);
-        model.addAttribute("tags",all_tag);
-        model.addAttribute("comment_count",comment_count);
-        model.addAttribute("favorites",favorite);
+        model.addAttribute("threads", thread);
+        model.addAttribute("comments", comment);
+        model.addAttribute("tags", all_tag);
+        model.addAttribute("comment_count", comment_count);
+        model.addAttribute("favorites", favorite);
 
-        model.addAttribute("offset",offset);
-        model.addAttribute("menu",menu);
-        if(thread_page%20==0 && thread_page!=0){
-            thread_page=thread_page/20;
-        }else{
-            thread_page=thread_page/20+1;
+        model.addAttribute("offset", offset);
+        model.addAttribute("menu", menu);
+        if (thread_page % 20 == 0 && thread_page != 0) {
+            thread_page = thread_page / 20;
+        } else {
+            thread_page = thread_page / 20 + 1;
         }
-        model.addAttribute("thread_page",offset/20+1);
-        model.addAttribute("thread_all",thread_page);
+        model.addAttribute("thread_page", offset / 20 + 1);
+        model.addAttribute("thread_all", thread_page);
         return "mypage";
     }
 
