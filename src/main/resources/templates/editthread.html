@@ -164,7 +164,7 @@
     function add(){
         let tagValue = document.getElementById('suggest').value;
         if(tagValue.replaceAll(/　| /g,'') !== '' && !tagList.includes(tagValue)){
-            myTags.insertAdjacentHTML('beforeend',`<button type="button" value=${tagValue} onclick="remove(this.value),this.remove()">x ${tagValue}</button>`);
+            myTags.insertAdjacentHTML('beforeend',`<button type="button" value=${tagValue} onclick="remove(this.value),this.remove()" class="tag-btn">x ${tagValue}</button>`);
             if(getTag == ''){
                 getTag = getTag + tagValue;
             }else{

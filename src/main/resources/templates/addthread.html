@@ -108,7 +108,7 @@
     const imgForm = document.getElementById('imageForm');
     console.log(imgForm.children)
     fileInput.setAttribute('type','hidden');
-    imgForm.insertAdjacentHTML('beforeend',`<button type="button" onclick="deleteImage()">x ${imageName}</button>`);
+    imgForm.insertAdjacentHTML('beforeend',`<button type="button" onclick="deleteImage()" class="tag-btn">x ${imageName}</button>`);
   }
   function deleteImage(){
     document.getElementById('image_name').value='';
