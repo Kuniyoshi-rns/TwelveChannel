@@ -69,9 +69,13 @@ body {
         height:13px;
 }
 
+.error{
+    color:red;
+}
+
 
 .delete-btn{
-    width: 5em;
+    width: 10em;
 }
 
 .edit{
