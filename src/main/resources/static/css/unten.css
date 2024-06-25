@@ -59,10 +59,19 @@ body {
     gap:10px;
      position: absolute;
      right: 15%;
+
+
 }
 
+.p{
+    margin-top:7px;
+        width:15px;
+        height:13px;
+}
+
+
 .delete-btn{
-    width: 10em;
+    width: 5em;
 }
 
 .edit{
