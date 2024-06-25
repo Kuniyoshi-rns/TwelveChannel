@@ -92,7 +92,7 @@ public class AppController {
             if(isInsert == 1){
             var loginuser = userService.findByIdUser(loginform);
             session.setAttribute("loginuser",loginuser);
-            return "home";
+            return "redirect:/home";
             }else{
                 model.addAttribute("checkuser","そのIDは存在しています");
             }
@@ -126,7 +126,7 @@ public class AppController {
                 return "addthread";
             }
         }
-        int threadId = threadService.insertThreadOkuma(threadAddForm, 47);
+        int threadId = threadService.insertThreadOkuma(threadAddForm, userId);
         tagService.threadTagsInsert(threadId, tags);
         return "redirect:/thread/" + threadId;
     }
@@ -192,6 +192,9 @@ public class AppController {
 
         int thread_page=threadService.threadAll().size();
         UserEntity userEntity = (UserEntity) session.getAttribute("loginuser");
+        if(userEntity==null){
+            return "thread";
+        }
         int user_id=userEntity.id();
         var thread=threadService.findThread(offset);
 
@@ -249,6 +252,9 @@ public class AppController {
                          Model model){
 
         UserEntity userEntity = (UserEntity) session.getAttribute("loginuser");
+        if(userEntity==null){
+            return "thread";
+        }
         int user_id=userEntity.id();
       
         System.out.println("マイページ遷移:menu="+menu);
