@@ -89,7 +89,6 @@ public class AppController {
         if (checkuser==null && signUpForm.getPassword().equals(signUpForm.getPasswordCheck())){
             int isInsert = userService.insertUser(signUpForm);
             if(isInsert == 1){
-            userService.insertUser(signUpForm);
             var loginuser = userService.findByIdUser(loginform);
             session.setAttribute("loginuser",loginuser);
             return "home";
