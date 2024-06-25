@@ -3,21 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>新規ユーザー登録</title>
-    <link href="css/unten.css" rel="stylesheet">
+    <link href="/css/unten.css" rel="stylesheet">
 </head>
 <body>
 
 
 
 <div>
-    <button type="button" onclick="location.href='/login'">戻る</button>
+    <button type="button" onclick="location.href='/login'" class="blue">戻る</button>
     <form action="signup" method="post" th:object="${SignUpForm}">
         <fieldset class="login">
             <div>
-                <h1><img src="images/signup_logo.png" alt="新規登録"></h1>
+                <h1 style="margin-bottom:0"><img src="images/signup_logo.png" alt="新規登録"></h1>
             </div>
 
-            <p class="error" th:text="${checkuser}"></p>
+            <p class="error" th:if="${checkuser}!=null" th:text="${checkuser}" style="margin:0"></p>
+            <p th:if="${checkuser}==null" style="margin:0">　</p>
             <div>
 
                 <input type="text" placeholder="ID" th:field="*{login_id}" class="login-input">
@@ -48,7 +49,7 @@
                     [[${error}]]
                 </div>
             </div>
-            <button type="submit" class="login-btn">登録</button>
+            <button type="submit" class="login-btn blue">登録</button>
         </fieldset>
 
     </form>

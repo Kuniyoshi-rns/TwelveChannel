@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
+    <th:block th:insert="common/sessionCheck"></th:block>
     <meta charset="UTF-8">
     <title>スレッド編集</title>
-    <link href="css/unten.css" rel="stylesheet">
+    <link href="/css/unten.css" rel="stylesheet">
 </head>
 <body>
 <th:block th:insert="common/header"></th:block>
@@ -23,8 +24,8 @@
         <form action="" method="post" th:object=${editThread}>
 
             <div class="add-title">
-                <label class="add-thread">スレッドタイトル:</label>
-                <input style="margin:0" class="title-input" type="text" name="title" th:field="*{title}">
+                <label >スレッドタイトル:</label>
+                <input  class="title-input" type="text" name="title" th:field="*{title}">
             </div>
             <div th:if="${!#fields.hasErrors('title')}">
                 <p style="margin:0">　</p>
@@ -32,13 +33,17 @@
             <div class="error errormsg" th:each="error: ${#fields.errors('title')}">[[ ${error} ]]</div>
 
             <div class="add-tag">
+                <span>
                 <label>タグ：</label>
-                <input class="tag-input" type="text" name="tag" th:field="*{tag}">
+                <input id="tagsForm" class="tag-input" type="text" name="tag" th:field="*{tag}" readonly>
+                      <button class="blue" type="button" onclick="openTagModal()">タグ設定</button>
+                </span>
             </div>
             <div th:if="${!#fields.hasErrors('tag')}">
                 <p style="margin:0">　</p>
             </div>
             <div class="error errormsg" th:each="error: ${#fields.errors('tag')}">[[ ${error} ]]</div>
+            <div class="error errormsg" th:text="${message}"></div>
 
             <div class="add-comment">
                 <label>本文：</label>
@@ -63,6 +68,22 @@
         </form>
     </div>
 </div>
+<div id="tag-modal">
+    <p class="retire"> タグ設定</p>
+    <div>
+        <div id="myTags" class="tag-scrollbar" >
+        </div>
+        <p></p>
+        <div>
+            <input id="suggest" type="text" name="keyword" class="search-box" placeholder="タグ入力">
+            <input type="button" class="blue search-btn" value="登録" onclick="add()">
+        </div><p></p>
+
+        <button type="button" onclick="closeTagModal(),document.getElementById('suggest').value=''" >戻る</button>
+    </div>
+</div>
+<div id="fadeLayer"></div>
+<script src="/js/unten.js"></script>
 <script>
     let imageName = document.getElementById('image_name').value
     const fileInput = document.getElementById('example');
@@ -91,11 +112,16 @@
     // ファイルが読み込まれたときに実行する
     reader.onload = function (e) {
       const imageUrl = e.target.result; // 画像のURLはevent.target.resultで呼び出せる
-      const canvas = document.createElement('canvas');
-      canvas.width = 200;
-      canvas.height = img.height * (200/img.width);
-      canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
-      document.getElementById('base64').value = canvas.toDataURL();
+      var img = new Image();
+      img.src = imageUrl;
+      img.onload=function(){
+          const canvas = document.createElement('canvas');
+          canvas.width = 200;
+          canvas.height = img.height * (200/img.width);
+          canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
+          console.log(canvas.toDataURL());
+          document.getElementById('base64').value = canvas.toDataURL();
+      }
     //  const img = document.createElement("img"); // img要素を作成
     //  img.src = imageUrl; // 画像のURLをimg要素にセット
     //  preview.appendChild(img); // #previewの中に追加
@@ -116,6 +142,57 @@
 
   }
   fileInput.addEventListener('change', handleFileSelect);
+
+
+    //
+    const tagList=[];
+    const myTags = document.getElementById('myTags');
+    let getTag = document.getElementById('tagsForm').value;
+
+    function getTags(){
+        console.log(getTags);
+        if(getTag == ""){
+        }else{
+            let tagArray = getTag.split(",");
+            for(let tag of tagArray){
+              tagList.push(tag);
+              myTags.insertAdjacentHTML('beforeend',`<button type="button" value=${tag} onclick="remove(this.value),this.remove()">x ${tag}</button>`);
+            }
+        }
+    }
+
+
+    function add(){
+        let tagValue = document.getElementById('suggest').value;
+        if(tagValue.replaceAll(/　| /g,'') !== '' && !tagList.includes(tagValue)){
+            myTags.insertAdjacentHTML('beforeend',`<button type="button" value=${tagValue} onclick="remove(this.value),this.remove()">x ${tagValue}</button>`);
+            if(getTag == ''){
+                getTag = getTag + tagValue;
+            }else{
+                getTag = getTag + ',' + tagValue;
+            }
+            document.getElementById('tagsForm').value = getTag;
+            tagList.push(tagValue);
+        }
+        document.getElementById('suggest').value = '';
+
+
+    }
+    function remove(value){
+        tagList.splice(tagList.indexOf(value));
+        let removeTag;
+        if(parseInt(getTag.indexOf(',')) == -1){
+            removeTag = getTag.replace(value , '');
+        }else{
+            removeTag = getTag.replace(',' + value , '');         //先頭以外を消す場合
+            removeTag = removeTag.replace(value + ',' , '');     //先頭を消す場合
+        }
+        document.getElementById('tagsForm').value = removeTag;
+        getTag = removeTag;
+    }
+
+    getTags();
+  //
 </script>
 </body>
 </html>

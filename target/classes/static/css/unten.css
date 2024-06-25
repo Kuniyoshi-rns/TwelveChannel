@@ -9,7 +9,7 @@ body {
 }
 
 /*12ちゃんねるの画像*/
-#title {
+.ten {
     display: block;
     height: 70px;
     margin-left:10%;
@@ -33,11 +33,7 @@ body {
     margin-left: 15%
 }
 
-    .return-btn:hover {
-        box-shadow: 0px 12px 24px #0b5dae63;
-        transform: translateY(-4px);
-        background: linear-gradient(110.85deg, #095DAD 0%, #11af75 100.19%);
-    }
+
 
 .mypage-btn{
     width: 10em;
@@ -63,7 +59,20 @@ body {
     gap:10px;
      position: absolute;
      right: 15%;
+
+
 }
+
+.p{
+    margin-top:7px;
+        width:15px;
+        height:13px;
+}
+
+.error{
+    color:red;
+}
+
 
 .delete-btn{
     width: 10em;
@@ -74,21 +83,23 @@ body {
 }
 
 .search-btn{
+
     width:60px;
-    height:32px;
+    height:35px;
 }
 
 .search-box{
+
      width:200px;
      height:30px;
 }
 
 .search {
-    margin-left: 600px;
+    margin:  0 auto;
     display: flex;
     flex-direction: row;
     margin-bottom:30px;
-    margin-top:30px
+    margin-top:30px;
 }
 
 .top-btn{
@@ -104,7 +115,10 @@ body {
 }
 
 .thread-tag{
-    text-align: center;
+
+   display:flex;
+   justify-content:center;
+
 }
 .thread{
     margin-bottom: 0px;
@@ -120,9 +134,30 @@ body {
     border-radius: 5px / 5px;}
     .pagination .this {background-color:#777;
     color:#fff;
+
+      
  }
 
- .pagination { text-align: center;}
+ .pagination {
+    text-align: center;
+        margin: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: row;
+ }
+
+ .pagination div:nth-child(3) {
+     flex: 0 1 auto;
+     text-align: center;
+     width: 100%;
+ }
+
+ .pagination div:nth-child(3)::before,
+ .pagination div:nth-child(3)::after {
+     content: "";
+     flex: 1;
+ }
 
 .scrollbar {
     width: 70%;
@@ -136,15 +171,22 @@ body {
     overflow-y:scroll;
 }
 
+#comment-list{
+
+}
+
 .history-btn li {
     background-color:white;
     display: inline;
     padding:10px 15px;
     border:1px #ccc solid;color:#000053;
-    border-radius: 5px / 5px;}
-    .history-btn .this {background-color:#777;
-    color:#fff;
- }
+    border-radius: 5px / 5px;
+
+    }
+
+.history{
+    text-decoration: none;
+}
 
 .history-btn { text-align: center; }
 
@@ -195,18 +237,29 @@ body {
 
 .like-btn{
     width: 10em;
+    height:3em;
     position: absolute;
     right: 15%; /* 右寄せ */
-    color: white;
-    background-color:#17207A;
+    font-weight: bold;
+   color: #888;
+    border-radius:30px;
+    background-color: transparent;
+     border: 0.2em solid;
+     border-radius: 1em;
 }
+
 
 .unlike-btn{
     width: 10em;
+    height:3em;
     position: absolute;
     right: 15%; /* 右寄せ */
-    color: black;
-    background-color: red;
+    color: white;
+    background-image: linear-gradient(90deg, rgba(247, 93, 139, 1), rgba(254, 176, 64, 1));
+    border-radius:30px;
+    border: 0em solid;
+         border-radius: 1em;
+         font-weight: bold;
 }
 
 .add-thread{
@@ -220,21 +273,13 @@ padding-right:10px;
 }
 
 #myPage{
-background-color: #4169e1;
-color: white;
+    background-color: #4169e1;
+    color: white;
 }
 
-button:hover {
-    /* マウスオーバー時に背景色をグレーに変更 */
-    background-color: #333;
-}
 
 .add-title{
-    margin-left:200px;
-    vertical-align:top;
-    display: flex;
-    flex-direction: row;
-    margin-right:10px;
+    margin-left:210px;
 }
 
 .errormsg{
@@ -243,6 +288,7 @@ button:hover {
 }
 
 .title-input{
+
     width:920px;
     height:50px;
 
@@ -293,12 +339,6 @@ textarea{
     width: 10em;
 }
 
-.post-btn:hover {
-    box-shadow: 0px 12px 24px #0b5dae63;
-    transform: translateY(-4px);
-    background: linear-gradient(110.85deg, #095DAD 0%, #11af75 100.19%);
-}
-
 .comment-like{
     display: flex;
     flex-direction: row;
@@ -311,13 +351,10 @@ textarea{
 
 #logout,.red{
     background-color:#ff6347;
+    color:white;
 }
 
-#logout:hover {
-    box-shadow: 0px 12px 24px #0b5dae63;
-    transform: translateY(-4px);
-    background: linear-gradient(110.85deg, #FFFFFF 0%, #FFF970 100.19%);
-}
+
 
 
 
@@ -380,6 +417,7 @@ textarea{
     background-color:white;
     overflow-x:hidden;
     overflow-y:scroll;
+    gap:10;
 }
 
 /*popupの基本設定*/
@@ -419,10 +457,101 @@ textarea{
 #myPage,#logout{
     width: 10em;
     height:40px;
+    font-weight: bold;
 }
 
 #myPage:hover {
-           box-shadow: 0px 12px 24px #0b5dae63;
-           transform: translateY(-4px);
-           background: linear-gradient(110.85deg, #A1A0EF 0%, #1501F9 50%, #8A00BA 100.19%);
-       }
+    box-shadow: 0px 12px 24px #0b5dae63;
+    transform: translateY(-4px);
+    background:  linear-gradient(150deg, rgba(0, 255, 177, 1), rgba(65, 74, 255, 1) 44%, rgba(171, 25, 248, 1) 90%);
+}
+
+#logout:hover {
+    box-shadow: 0px 12px 24px #0b5dae63;
+    transform: translateY(-4px);
+    background:  linear-gradient(150deg, rgba(245, 255, 0, 1), rgba(255, 179, 0, 1) 46%, rgba(255, 0, 0, 1));
+}
+.red:hover {
+
+     box-shadow: 0px 12px 24px #0b5dae63;
+     transform: translateY(-4px);
+     background-color: #ffa500;
+}
+
+.blue:hover {
+    box-shadow: 0px 12px 24px #0b5dae63;
+    transform: translateY(-4px);
+    background-color: #4169e1;
+}
+
+.like-btn:hover {
+    box-shadow: 0px 12px 24px #0b5dae63;
+    transform: translateY(-4px);
+    color: #e5348c;
+         }
+
+
+
+.post-btn:hover {
+    box-shadow: 0px 12px 24px #0b5dae63;
+    transform: translateY(-4px);
+    background: linear-gradient(110.85deg, #095DAD 0%, #11af75 100.19%);
+}
+
+.return-btn:hover {
+    box-shadow: 0px 12px 24px #0b5dae63;
+    transform: translateY(-4px);
+    background-color: #4169e1;
+}
+
+.aiu:hover {
+                shadow: 0px 12px 24px #0b5dae63;
+                transform: translateY(-4px);
+}
+
+.comment-delete-btn{
+    margin-left: 90%;
+    width: 5em;
+}
+
+.sample-span{
+    display:flex;
+    gap:20px;
+}
+
+.like-comment{
+     display: flex;
+     flex-direction: row;
+     justify-content: flex-end;
+     margin-right:10px;
+
+
+}
+
+.home-comment{
+margin-right:10px;
+}
+
+
+.home-title{
+    font-size:  20px;
+}
+
+ .likeButton__icon {
+ display: inline-block;
+ fill: currentColor;
+ width: 1em;
+ height: 0.8em;
+ margin-top: 0.5em;
+ }
+
+.tag-btn{
+     margin:3px;
+     border-radius:20px;
+     padding:10px;
+     background:#DCCDFF;
+}
+
+
+
+
