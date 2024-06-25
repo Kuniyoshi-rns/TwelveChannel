@@ -311,7 +311,7 @@ padding-right:10px;
 }
 
 .add-tag{
-    margin-left:295px;
+    margin-left:300px;
     margin-top:0px;
 
 }
@@ -498,6 +498,8 @@ textarea{
     background: linear-gradient(110.85deg, #095DAD 0%, #11af75 100.19%);
 }
 
+
+
 .return-btn:hover {
     box-shadow: 0px 12px 24px #0b5dae63;
     transform: translateY(-4px);
@@ -552,6 +554,55 @@ margin-right:10px;
      background:#DCCDFF;
 }
 
+.tag-in{
+    height:55px;
+    width:50px;
+    margin-right:0;
+    font-size: 1.3em;
+    background-color:white;
+
+    border-left:none;
+
+}
 
 
+.l{
+ display: flex;
+    flex-direction: row;
+  margin-left:300px;
+    margin-top:0px;
 
+}
+
+.tag-input2{
+    width:870px;
+    height:50px;
+border-right:none;
+}
+
+.tag-name{
+    margin-top:15px;
+}
+
+.plus{
+margin-top:10px;
+  width:20px;
+    height:20px;
+
+}
+
+.plus:hover{
+
+    transform: translateY(-4px);
+ animation: pulsation .7s alternate infinite;
+}
+
+a:hover {
+
+}
+
+@keyframes pulsation {
+  0% { transform: scale(1.5); }
+  50% { transform: scale(0.8); }
+  100% { transform: scale(2.1); }
+}
