@@ -5,6 +5,8 @@
   <meta charset="UTF-8">
   <title>新規スレッド</title>
   <link href="css/unten.css" rel="stylesheet">
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.3/dist/css/autoComplete.min.css">
 </head>
 
 <body>
@@ -36,13 +38,17 @@
 
 
       <div class="add-tag">
+        <span>
         <label>タグ：</label>
-        <input class="tag-input" type="text" name="tag" th:field="*{tag}">
+        <input id="tagsForm" class="tag-input" type="text" name="tag" th:field="*{tag}" readonly>
+          <button class="blue" type="button" onclick="openTagModal()">タグ設定</button>
+        </span>
       </div>
       <div th:if="${!#fields.hasErrors('tag')}">
         <p style="margin:0">　</p>
       </div>
       <div class="error errormsg" th:each="error: ${#fields.errors('tag')}">[[ ${error} ]]</div>
+      <div class="error errormsg" th:text="${message}"></div>
 
       <div class="add-comment">
         <label>本文：</label>
@@ -67,6 +73,32 @@
     </form>
   </div>
 </div>
+
+
+<!--ここからポップアップ-->
+<div id="tag-modal">
+  <p class="retire"> タグ設定</p>
+  <div>
+    <div id="myTags" class="tag-scrollbar" >
+    </div>
+    <p></p>
+    <div>
+      <input id="suggest" type="text" name="keyword" class="search-box" placeholder="タグ入力">
+      <input type="button" class="blue search-btn" value="登録" onclick="add()">
+    </div><p></p>
+
+    <button type="button" onclick="closeTagModal(),document.getElementById('suggest').value=''" >戻る</button>
+  </div>
+</div>
+<div id="fadeLayer"></div>
+<script src="/js/unten.js"></script>
+<!--ここまでポップアップ-->
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script src="/js/tag-suggest.js"></script>
 <script>
   let imageName = document.getElementById('image_name').value
   const fileInput = document.getElementById('example');
@@ -128,6 +160,62 @@ const handleFileSelect = () => {
 
 }
 fileInput.addEventListener('change', handleFileSelect);
+
+
+
+
+  //
+    const tagList=[];
+    const myTags = document.getElementById('myTags');
+    let getTag = document.getElementById('tagsForm').value;
+
+    function getTags(){
+        console.log(getTags);
+        if(getTag == ""){
+        }else{
+            let tagArray = getTag.split(",");
+            for(let tag of tagArray){
+              tagList.push(tag);
+              myTags.insertAdjacentHTML('beforeend',`<button type="button" value=${tag} onclick="remove(this.value),this.remove()">x ${tag}</button>`);
+            }
+        }
+    }
+
+
+    function add(){
+        let tagValue = document.getElementById('suggest').value;
+        if(tagValue.replaceAll(/　| /g,'') !== '' && !tagList.includes(tagValue)){
+            myTags.insertAdjacentHTML('beforeend',`<button type="button" value=${tagValue} onclick="remove(this.value),this.remove()">x ${tagValue}</button>`);
+            if(getTag == ''){
+                getTag = getTag + tagValue;
+            }else{
+                getTag = getTag + ',' + tagValue;
+            }
+            document.getElementById('tagsForm').value = getTag;
+            tagList.push(tagValue);
+        }
+        document.getElementById('suggest').value = '';
+
+
+    }
+    function remove(value){
+        tagList.splice(tagList.indexOf(value));
+        let removeTag;
+        if(parseInt(getTag.indexOf(',')) == -1){
+            removeTag = getTag.replace(value , '');
+        }else{
+            removeTag = getTag.replace(',' + value , '');         //先頭以外を消す場合
+            removeTag = removeTag.replace(value + ',' , '');     //先頭を消す場合
+        }
+        document.getElementById('tagsForm').value = removeTag;
+        getTag = removeTag;
+    }
+
+    getTags();
+  //
+
+
+
 </script>
 </body>
 

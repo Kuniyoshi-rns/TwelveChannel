@@ -12,8 +12,7 @@ public class ThreadAddForm {
 
     String comment;
 
-    @NotBlank(message = "")
-    @Length(min = 1,max = 50)
+    @NotBlank(message = "タグを１つ以上設定してください")
     String tag;
 
     String image_name;

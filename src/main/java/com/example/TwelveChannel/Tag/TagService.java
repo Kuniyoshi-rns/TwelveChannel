@@ -2,6 +2,7 @@ package com.example.TwelveChannel.Tag;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -38,4 +39,20 @@ public class TagService implements ITagService{
 
     @Override
     public List<TagCountEntity> TagCount(String keyword){return tagRepository.TagCount(keyword);}
+
+    @Transactional
+    @Override
+    public void threadTagsInsert(int tread_id,String[] tags){
+        for (String tag : tags){
+            threadTagInsert(tread_id,tag);
+        }
+    }
+
+    @Transactional
+    @Override
+    public void threadTagsDelete(int thread_id, String[] tags) {
+        for (String tag : tags) {
+            threadTagDelete(thread_id, tag);
+        }
+    }
 }

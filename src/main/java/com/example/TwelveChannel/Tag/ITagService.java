@@ -17,4 +17,8 @@ public interface ITagService {
 
     int threadTagDelete(int thread_id,String tag);
     List<TagCountEntity> TagCount(String keyword);
+
+    void threadTagsInsert(int tread_id,String[] tags);
+
+    void threadTagsDelete(int thread_id, String[] tags);
 }
