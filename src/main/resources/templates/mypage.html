@@ -49,11 +49,11 @@
             <div>
                 <input id="suggest" type="text" name="keyword" class="search-box" placeholder="タグ入力">
                 <input type="button" class="blue search-btn" value="登録 &#x1f5f9;" onclick="add()">
+                <button type="button" onclick="closeTagModal(),document.getElementById('suggest').value='',document.getElementById('search-suggest-box').innerHTML=''" >戻る</button>
             </div><p></p>
 
-            <ul id="search-suggest-box">
+            <ul id="search-suggest-box" style="background-color:red">
             </ul>
-            <button type="button" onclick="closeTagModal(),document.getElementById('suggest').value=''" >戻る</button>
         </div>
         <script>
             const searchWord = document.getElementById('suggest');
@@ -88,6 +88,7 @@
                                         let txt = document.createTextNode(`${sug.tag} (${sug.count})`);
                                         element.appendChild(txt);
                                         suggestBox.appendChild(element);
+                                        element.style='background-color:blue';
                                     }
                                 });
                             }
