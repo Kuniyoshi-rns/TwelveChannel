@@ -17,7 +17,7 @@
         いいね</button>
 
     <div class="admin-btn">
-    <button class="blue edit right" id="edit"  th:if="${session.loginuser.id}==${thread.creator}" th:onclick="|location.href='/edit-thread/__${thread.id}__'|">編集 	&#x1f589;</button>
+    <button class="blue edit right" id="edit"  th:if="${session.loginuser.id}==${thread.creator}" th:onclick="|location.href='/edit-thread/__${thread.id}__'|">編集  <img src="/images/edit.png" class="p"></button>
     <button class="red delete-btn right" id="delete"  th:if="${session.loginuser.id}==${thread.creator}" onclick="openDeleteModal()">削除</button>
     </div>
 </div>
@@ -293,7 +293,7 @@
               }
               if(data.length == comCount){
                   comCount=5;
-                  commentList.insertAdjacentHTML('beforeend',`<button onclick='viewLoad()' id='dataReload'>データ更新</button>`);
+                  commentList.insertAdjacentHTML('beforeend',`<button onclick='viewLoad()' id='dataReload'　class='updete-btn'>データ更新</button>`);
               }
           })
       }

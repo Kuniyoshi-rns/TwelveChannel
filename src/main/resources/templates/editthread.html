@@ -24,8 +24,8 @@
         <form action="" method="post" th:object=${editThread}>
 
             <div class="add-title">
-                <label class="add-thread">スレッドタイトル:</label>
-                <input style="margin:0" class="title-input" type="text" name="title" th:field="*{title}">
+                <label >スレッドタイトル:</label>
+                <input  class="title-input" type="text" name="title" th:field="*{title}">
             </div>
             <div th:if="${!#fields.hasErrors('title')}">
                 <p style="margin:0">　</p>
