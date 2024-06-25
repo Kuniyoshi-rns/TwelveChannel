@@ -49,11 +49,10 @@
             <div>
                 <input id="suggest" type="text" name="keyword" class="search-box" placeholder="タグ入力">
                 <input type="button" class="blue search-btn" value="登録 &#x1f5f9;" onclick="add()">
-                <button type="button" onclick="closeTagModal(),document.getElementById('suggest').value='',document.getElementById('search-suggest-box').innerHTML=''" >戻る</button>
+                <button type="button" onclick="closeTagModal(),document.getElementById('suggest').value='',document.getElementById('sample').innerHTML=''" >戻る</button>
             </div><p></p>
-
-            <ul id="search-suggest-box" style="background-color:red">
-            </ul>
+            <div id="sample">
+            </div>
         </div>
         <script>
             const searchWord = document.getElementById('suggest');
@@ -76,28 +75,34 @@
                             if(res.status === 200){
                                 res.json()
                                 .then(data =>{
-                                    suggestBox.innerHTML = '';
-                                    for(let sug of data){
-                                        suggestData[suggestData.length]=`${sug.tag} (${sug.count})`;
-                                        let element = document.createElement('li');
-                                        element.onclick = function(){
-                                            let value = sug.tag;
-                                            searchWord.value = value;
-                                            suggestBox.innerHTML = '';
+                                    document.getElementById('sample').innerHTML = '';
+                                    if(!data.isEmpty){
+                                        let ul = document.createElement('ul');
+                                        ul.classList.add('search-suggest-box');
+
+                                        for(let sug of data){
+                                            suggestData[suggestData.length]=`${sug.tag} (${sug.count})`;
+                                            let element = document.createElement('li');
+                                            element.onclick = function(){
+                                                let value = sug.tag;
+                                                searchWord.value = value;
+                                                suggestBox.innerHTML = '';
+                                            }
+                                            let txt = document.createTextNode(`${sug.tag} (${sug.count})`);
+                                            element.appendChild(txt);
+                                            ul.appendChild(element);
+                                            element.style='background-color:blue';
                                         }
-                                        let txt = document.createTextNode(`${sug.tag} (${sug.count})`);
-                                        element.appendChild(txt);
-                                        suggestBox.appendChild(element);
-                                        element.style='background-color:blue';
+                                        document.getElementById('sample').appendChild(ul);
                                     }
                                 });
                             }
                         });
                     } catch (err) {
-                        suggestBox.innerHTML = '';
+                        document.getElementById('sample').innerHTML = '';
                     }
                 }else{
-                    suggestBox.innerHTML='';
+                    document.getElementById('sample').innerHTML = '';
                 }
             };
         </script>
