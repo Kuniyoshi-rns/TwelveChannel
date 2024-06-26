@@ -228,6 +228,7 @@
               id.textContent = 'No. '+data.id;
               date.textContent = data.created_at.split(' ')[0].replaceAll('-','/');
               statement.textContent = data.comment;
+              statement.style="white-space:pre;"
 
               span.appendChild(id);
               span.appendChild(date);
@@ -274,6 +275,7 @@
                   id.textContent = 'No. '+comme.id;
                   date.textContent = comme.created_at.split(' ')[0].replaceAll('-','/');
                   statement.textContent = comme.comment;
+                  statement.style="white-space:pre;"
 
                   span.appendChild(id);
                   span.appendChild(date);
@@ -325,6 +327,7 @@
                   id.textContent = 'No. '+comme.id;
                   date.textContent = comme.created_at.split(' ')[0].replaceAll('-','/');
                   statement.textContent = comme.comment;
+                  statement.style="white-space:pre;"
 
                   span.appendChild(id);
                   span.appendChild(date);

@@ -97,7 +97,7 @@ public class CommentRepository implements ICommentRepository {
                 "INNER JOIN threads " +
                 "ON comments.thread_id = threads.id " +
                 "WHERE user_id = :user_id " +
-                "LIMIT 20 " +
+                "ORDER BY comments.created_at DESC LIMIT 20 " +
                 "OFFSET :offset", param, new DataClassRowMapper<>(CommentEntity.class));
     }
 
