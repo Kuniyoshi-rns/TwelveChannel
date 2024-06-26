@@ -135,6 +135,11 @@ public class AppController {
     public String editThread(@PathVariable("thread_id") int threadId, @ModelAttribute("editThread") ThreadAddForm threadAddForm, Model model) {
         var thread = threadService.findByIdThread(threadId);
         var threadTag = tagService.threadTag(threadId);
+        UserEntity userEntity = (UserEntity) session.getAttribute("loginuser");
+
+        if(thread.creator() != userEntity.id()){
+            return "redirect:/home";
+        }
 
         String tags = threadTag.get(0).tag();
 
