@@ -50,7 +50,8 @@
            <span>投稿者　</span>
            <span th:text="${thread.created_at.split(' ')[0].replaceAll('-','/')}+'　'"></span>
        </span>
-<span th:text="${thread.comment}"></span>
+        <span th:text="${thread.comment}" style="white-space:pre;">
+        </span>
        <p><img th:if="${thread.image_name != ''}" th:src="${thread.image_base64}"></p>
        <hr>
        <div id="comment-list">
