@@ -1,0 +1,13 @@
+<script th:inline="javascript">
+    function func(){
+      //  console.log('login')
+       const user = [[${session.loginuser}]];
+      // const user = null
+      if(user == null){
+        alert('ログインしてください');
+        location.href = '/login';
+      }
+    }
+    // setTimeout(func, 1000)
+    func();
+</script>

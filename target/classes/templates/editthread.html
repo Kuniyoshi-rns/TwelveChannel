@@ -89,15 +89,75 @@
         </div>
         <p></p>
         <div class="myTag">
-            <input id="suggest" type="text" name="keyword" class="search-box" placeholder="タグ入力">
+            <input id="suggest" type="search" results="0" name="keyword" class="search-box" placeholder="タグ入力" autocomplete="off" maxlength="50">
             <input type="button" class="blue search-btn" value="追加" onclick="add()">
         </div><p></p>
-
-
+        <div id="sample">
+        </div>
     </div>
 </div>
 <div id="fadeLayer"></div>
 <script src="/js/unten.js"></script>
+<script>
+    const input = document.getElementById('suggest')
+    input.addEventListener('input', () => {
+      const inputCheck = /\s+|\:+|\/+|\?+|\#+|\[+|\]+|\@+|\!+|\$+|\&+|\'+|\(+|\)+|\*+|\++|\,+|\;+|\=+|\\+|\_+/g // 空白の正規表現
+      const value = input.value
+      input.value = value.replace(inputCheck, '')
+    })
+</script>
+<script>
+    const searchWord = document.getElementById('suggest');
+    const suggestBox = document.getElementById('search-suggest-box');
+
+    searchWord.addEventListener('input', function (e) {
+        if (e.key == 'Tab') {
+            return;
+        }
+        suggestCall(this.value);
+    });
+
+    async function suggestCall(term) {
+        console.log(term)
+        let suggestData = [];
+        if(term != ''){
+            try {
+                await fetch(`/suggest/${term}`)
+                .then(res =>{
+                    if(res.status === 200){
+                        res.json()
+                        .then(data =>{
+                            document.getElementById('sample').innerHTML = '';
+                            if(data.length>0){
+                                let ul = document.createElement('ul');
+                                ul.classList.add('search-suggest-box');
+
+                                for(let sug of data){
+                                    suggestData[suggestData.length]=`${sug.tag} (${sug.count})`;
+                                    let element = document.createElement('li');
+                                    element.onclick = function(){
+                                        let value = sug.tag;
+                                        searchWord.value = value;
+                                        document.getElementById('sample').innerHTML = '';
+                                    }
+                                    let txt = document.createTextNode(`${sug.tag} (${sug.count})`);
+                                    element.appendChild(txt);
+                                    ul.appendChild(element);
+
+                                }
+                                document.getElementById('sample').appendChild(ul);
+                            }
+                        });
+                    }
+                });
+            } catch (err) {
+                document.getElementById('sample').innerHTML = '';
+            }
+        }else{
+            document.getElementById('sample').innerHTML = '';
+        }
+    };
+</script>
 <script>
     let imageName = document.getElementById('image_name').value
     const fileInput = document.getElementById('example');
