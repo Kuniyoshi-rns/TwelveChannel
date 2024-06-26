@@ -169,7 +169,7 @@
     const imgForm = document.getElementById('imageForm');
     console.log(imgForm.children)
     fileInput.setAttribute('type','hidden');
-    imgForm.insertAdjacentHTML('beforeend',`<button type="button" onclick="deleteImage()">x ${imageName}</button>`);
+    imgForm.insertAdjacentHTML('beforeend',`<button type="button" onclick="deleteImage()">× ${imageName}</button>`);
   }
   function deleteImage(){
     document.getElementById('image_name').value='';
@@ -218,7 +218,7 @@ const handleFileSelect = () => {
   }
   const imgForm = document.getElementById('imageForm');
   fileInput.setAttribute('type','hidden');
-  imgForm.insertAdjacentHTML('beforeend',`<button type="button" onclick="deleteImage()">x ${imageName}</button>`);
+  imgForm.insertAdjacentHTML('beforeend',`<button type="button" onclick="deleteImage()">× ${imageName}</button>`);
 
 }
 fileInput.addEventListener('change', handleFileSelect);
@@ -238,7 +238,7 @@ fileInput.addEventListener('change', handleFileSelect);
             let tagArray = getTag.split(",");
             for(let tag of tagArray){
               tagList.push(tag);
-              myTags.insertAdjacentHTML('beforeend',`<button type="button" value=${tag} onclick="remove(this.value),this.remove()"  class="tag-btn">x ${tag}</button>`);
+              myTags.insertAdjacentHTML('beforeend',`<button type="button" value=${tag} onclick="remove(this.value),this.remove()"  class="tag-btn">× ${tag}</button>`);
             }
         }
     }
@@ -247,7 +247,7 @@ fileInput.addEventListener('change', handleFileSelect);
     function add(){
         let tagValue = document.getElementById('suggest').value;
         if(tagValue.replaceAll(/　| /g,'') !== '' && !tagList.includes(tagValue)){
-            myTags.insertAdjacentHTML('beforeend',`<button type="button" value=${tagValue} onclick="remove(this.value),this.remove()" class="tag-btn">x ${tagValue}</button>`);
+            myTags.insertAdjacentHTML('beforeend',`<button type="button" value=${tagValue} onclick="remove(this.value),this.remove()" class="tag-btn">× ${tagValue}</button>`);
             if(getTag == ''){
                 getTag = getTag + tagValue;
             }else{

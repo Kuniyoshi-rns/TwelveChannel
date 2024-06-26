@@ -208,7 +208,7 @@
                     .then(data =>{
                         for(let tag of data){
                             tagList.push(tag.tag);
-                            myTags.insertAdjacentHTML('beforeend',`<button type="button" class="tag-btn" value=${tag.tag} onclick="remove(this.value),this.remove()">x ${tag.tag}</button>`);
+                            myTags.insertAdjacentHTML('beforeend',`<button type="button" class="tag-btn" value=${tag.tag} onclick="remove(this.value),this.remove()">× ${tag.tag}</button>`);
                         }
                         console.log(tagList);
                     });
@@ -221,7 +221,7 @@
             if(tagValue.replaceAll(/　| /g,'') !== '' && !tagList.includes(tagValue)){
                 console.log(tagValue);
                 await fetch(`myTag/${tagValue}`);
-                myTags.insertAdjacentHTML('beforeend',`<button type="button" class="tag-btn" value=${tagValue} onclick="remove(this.value),this.remove()">x ${tagValue}</button>`);
+                myTags.insertAdjacentHTML('beforeend',`<button type="button" class="tag-btn" value=${tagValue} onclick="remove(this.value),this.remove()">× ${tagValue}</button>`);
                 tagList.push(tagValue);
             }document.getElementById('suggest').value = '';
         }
