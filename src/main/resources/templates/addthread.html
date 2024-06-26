@@ -83,7 +83,7 @@
     <p></p>
     <div class="myTag">
       <input id="suggest" type="search" results="0" name="keyword" class="search-box" placeholder="タグ入力" autocomplete="off" maxlength="50">
-      <input type="button" class="blue search-btn" value="追加" onclick="add()">
+      <input type="button" class="blue search-btn" value="追加" onclick="add(),document.getElementById('sample').innerHTML='';">
     </div><p></p>
     <div id="sample"></div>
 
