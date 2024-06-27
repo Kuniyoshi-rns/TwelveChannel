@@ -25,7 +25,7 @@
   </div>
 
   <div>
-    <form action="/add-thread" method="post" th:object="${addThread}">
+    <form action="/add-thread" method="post" th:object="${addThread}" name="addThread">
       <div class="add-title">
         <label >スレッドタイトル: </label>
         <input  class="title-input" type="text" name="title" th:field="*{title}">
@@ -59,7 +59,7 @@
           <input type="hidden" id="image_name" th:field="*{image_name}" value="">
           <input type="hidden" id="base64" th:field="*{image_base64}" value="">
 <!--          <script th:src="@{js/sample.js}"></script>-->
-          <button class="post-btn blue" type="submit">投稿 &#x1f5f9;</button>
+          <button class="post-btn blue" type="submit" onclick="this.disabled = true;document.addThread.submit();">投稿 &#x1f5f9;</button>
 
         </div>
       </div>
