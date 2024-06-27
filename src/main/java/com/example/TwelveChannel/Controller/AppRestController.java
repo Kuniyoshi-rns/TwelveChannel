@@ -43,9 +43,9 @@ public class AppRestController {
     @GetMapping("view-comment/{threadId}")
     public ResponseEntity<List<CommentEntity>> viewAll(@PathVariable("threadId") int threadId){
         list = commentService.getCommentByThread(threadId);
-        commentCount = 10; //後から変更
+        commentCount = 0; //後から変更
         List<CommentEntity> returnList;
-        if(list.size() > commentCount) {
+        if(list.size() < commentCount) {
             returnList = list.subList(0,commentCount);
             System.out.println(list.size());
         }else{
