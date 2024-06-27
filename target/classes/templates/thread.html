@@ -10,7 +10,18 @@
 <th:block th:insert="common/header"></th:block>
 
 <div class="top-btn">
-    <button class="return-btn"  id="back" onclick="location.href='/home'">	&#x1f844; 戻る</button>
+    <button class="return-btn"  id="back" onclick="returnBack()">	&#x1f844; 戻る</button>
+
+    <script>
+        function returnBack(){
+            const ref = document.referrer;
+            if(ref.indexOf('/mypage') !== -1 || ref.indexOf('/home') !== -1){
+                document.location = ref;
+            }else{
+                document.location = '/home';
+            }
+        }
+    </script>
 
     <button class="like-btn right" id="favorite"  th:if="${session.loginuser.id}!=${thread.creator}">
         <svg class="likeButton__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M91.6 13A28.7 28.7 0 0 0 51 13l-1 1-1-1A28.7 28.7 0 0 0 8.4 53.8l1 1L50 95.3l40.5-40.6 1-1a28.6 28.6 0 0 0 0-40.6z"/></svg>
@@ -50,7 +61,8 @@
            <span>投稿者　</span>
            <span th:text="${thread.created_at.split(' ')[0].replaceAll('-','/')}+'　'"></span>
        </span>
-<span th:text="${thread.comment}"></span>
+        <span th:text="${thread.comment}" style="white-space:pre;">
+        </span>
        <p><img th:if="${thread.image_name != ''}" th:src="${thread.image_base64}"></p>
        <hr>
        <div id="comment-list">
@@ -119,7 +131,7 @@
         }
         const imgForm = document.getElementById('imgInsert');
         fileInput.setAttribute('type','hidden');
-        imgForm.insertAdjacentHTML('beforeend',`<button type="button" onclick="deleteImage()">x ${imageName}</button>`);
+        imgForm.insertAdjacentHTML('beforeend',`<button type="button" onclick="deleteImage()">× ${imageName}</button>`);
 
     }
 
@@ -227,6 +239,7 @@
               id.textContent = 'No. '+data.id;
               date.textContent = data.created_at.split(' ')[0].replaceAll('-','/');
               statement.textContent = data.comment;
+              statement.style="white-space:pre;"
 
               span.appendChild(id);
               span.appendChild(date);
@@ -241,7 +254,7 @@
               }
               commeDiv.insertAdjacentHTML('beforeend',`<button class='comment-delete-btn red' onclick='commentDelete(${data.id})'>削除</button>`)
               commeDiv.insertAdjacentHTML('beforeend','<hr>');
-              commentList.prepend(commeDiv);
+              commentList.append(commeDiv);
           })
       }
     })
@@ -273,6 +286,7 @@
                   id.textContent = 'No. '+comme.id;
                   date.textContent = comme.created_at.split(' ')[0].replaceAll('-','/');
                   statement.textContent = comme.comment;
+                  statement.style="white-space:pre;"
 
                   span.appendChild(id);
                   span.appendChild(date);
@@ -285,11 +299,12 @@
                      commeDiv.insertAdjacentHTML('beforeend',`<img src="${comme.image_base64}" />`)
                   }
 
-                  if(comme.user_id == [[${session.loginuser.id}]]){
+                  if(comme.user_id == [[${session.loginuser.id}]] || [[${session.loginuser.id}]] == [[${thread.creator}]]){
+                   console.log('スレッド作った人'+[[${thread.creator}]]);
                     commeDiv.insertAdjacentHTML('beforeend',`<button class='comment-delete-btn red' onclick='commentDelete(${comme.id})'>削除</button>`)
                   }
                   commeDiv.insertAdjacentHTML('beforeend','<hr>');
-                  commentList.append(commeDiv);
+                  commentList.prepend(commeDiv);
               }
               if(data.length == comCount){
                   comCount=5;
@@ -324,6 +339,7 @@
                   id.textContent = 'No. '+comme.id;
                   date.textContent = comme.created_at.split(' ')[0].replaceAll('-','/');
                   statement.textContent = comme.comment;
+                  statement.style="white-space:pre;"
 
                   span.appendChild(id);
                   span.appendChild(date);
@@ -336,13 +352,13 @@
                   if(comme.image_base64 != ''){
                      commeDiv.insertAdjacentHTML('beforeend',`<img src="${comme.image_base64}" />`)
                   }
-                  if(comme.user_id == [[${session.loginuser.id}]]){
+                  if(comme.user_id == [[${session.loginuser.id}]] || [[${session.loginuser.id}]] == [[${thread.creator}]]){
                     commeDiv.insertAdjacentHTML('beforeend',`<button class='comment-delete-btn red' onclick='commentDelete(${comme.id})'>削除</button>`)
                   }
                   commeDiv.insertAdjacentHTML('beforeend','<hr>');
-                  commentList.append(commeDiv);
+                  commentList.insertAdjacentHTML('afterend',commeDiv);
               }
-              if(data.length === comCount){
+              if(data.length < 0){
                   commentList.insertAdjacentHTML('beforeend',`<button onclick='viewLoad()' id='dataReload'>データ更新</button>`);
               }
           })

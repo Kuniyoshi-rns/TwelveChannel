@@ -13,10 +13,20 @@
 <body>
 <th:block th:insert="common/header"></th:block>
 
-<div class="top-btn"><button class="return-btn" type="button" onclick="location.href='./mypage'">
+<div class="top-btn"><button id="return-btn" class="return-btn" type="button" onclick="returnBack()">
   &#x1f844; 戻る
 </button>
 </div>
+<script>
+  function returnBack(){
+    const ref = document.referrer;
+    if(ref.indexOf('/mypage') !== -1 || ref.indexOf('/home') !== -1){
+      document.location = ref;
+    }else{
+      document.location = '/home';
+    }
+  }
+</script>
 <div>
   <div>
     <h1 class="mypage">
@@ -25,7 +35,7 @@
   </div>
 
   <div>
-    <form action="/add-thread" method="post" th:object="${addThread}">
+    <form action="/add-thread" method="post" th:object="${addThread}" name="addThread">
       <div class="add-title">
         <label >スレッドタイトル: </label>
         <input  class="title-input" type="text" name="title" th:field="*{title}">
@@ -59,7 +69,7 @@
           <input type="hidden" id="image_name" th:field="*{image_name}" value="">
           <input type="hidden" id="base64" th:field="*{image_base64}" value="">
 <!--          <script th:src="@{js/sample.js}"></script>-->
-          <button class="post-btn blue" type="submit">投稿 &#x1f5f9;</button>
+          <button class="post-btn blue" type="submit" onclick="this.disabled = true;document.addThread.submit();">投稿 &#x1f5f9;</button>
 
         </div>
       </div>
@@ -169,7 +179,7 @@
     const imgForm = document.getElementById('imageForm');
     console.log(imgForm.children)
     fileInput.setAttribute('type','hidden');
-    imgForm.insertAdjacentHTML('beforeend',`<button type="button" onclick="deleteImage()">x ${imageName}</button>`);
+    imgForm.insertAdjacentHTML('beforeend',`<button type="button" onclick="deleteImage()">× ${imageName}</button>`);
   }
   function deleteImage(){
     document.getElementById('image_name').value='';
@@ -218,7 +228,7 @@ const handleFileSelect = () => {
   }
   const imgForm = document.getElementById('imageForm');
   fileInput.setAttribute('type','hidden');
-  imgForm.insertAdjacentHTML('beforeend',`<button type="button" onclick="deleteImage()">x ${imageName}</button>`);
+  imgForm.insertAdjacentHTML('beforeend',`<button type="button" onclick="deleteImage()">× ${imageName}</button>`);
 
 }
 fileInput.addEventListener('change', handleFileSelect);
@@ -238,7 +248,7 @@ fileInput.addEventListener('change', handleFileSelect);
             let tagArray = getTag.split(",");
             for(let tag of tagArray){
               tagList.push(tag);
-              myTags.insertAdjacentHTML('beforeend',`<button type="button" value=${tag} onclick="remove(this.value),this.remove()"  class="tag-btn">x ${tag}</button>`);
+              myTags.insertAdjacentHTML('beforeend',`<button type="button" value=${tag} onclick="remove(this.value),this.remove()"  class="tag-btn">× ${tag}</button>`);
             }
         }
     }
@@ -247,7 +257,7 @@ fileInput.addEventListener('change', handleFileSelect);
     function add(){
         let tagValue = document.getElementById('suggest').value;
         if(tagValue.replaceAll(/　| /g,'') !== '' && !tagList.includes(tagValue)){
-            myTags.insertAdjacentHTML('beforeend',`<button type="button" value=${tagValue} onclick="remove(this.value),this.remove()" class="tag-btn">x ${tagValue}</button>`);
+            myTags.insertAdjacentHTML('beforeend',`<button type="button" value=${tagValue} onclick="remove(this.value),this.remove()" class="tag-btn">× ${tagValue}</button>`);
             if(getTag == ''){
                 getTag = getTag + tagValue;
             }else{
