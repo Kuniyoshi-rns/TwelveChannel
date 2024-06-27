@@ -13,10 +13,20 @@
 <body>
 <th:block th:insert="common/header"></th:block>
 
-<div class="top-btn"><button class="return-btn" type="button" onclick="location.href='./mypage'">
+<div class="top-btn"><button id="return-btn" class="return-btn" type="button" onclick="returnBack()">
   &#x1f844; 戻る
 </button>
 </div>
+<script>
+  function returnBack(){
+    const ref = document.referrer;
+    if(ref.indexOf('/mypage') !== -1 || ref.indexOf('/home') !== -1){
+      document.location = ref;
+    }else{
+      document.location = '/home';
+    }
+  }
+</script>
 <div>
   <div>
     <h1 class="mypage">
