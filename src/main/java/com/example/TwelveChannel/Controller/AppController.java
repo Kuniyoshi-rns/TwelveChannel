@@ -48,24 +48,16 @@ public class AppController {
     }
 
     @PostMapping("/login")//ログイン情報確認
-    public String login(@Validated @ModelAttribute("loginForm") LoginForm loginForm,
-                        BindingResult bindingResult, Model model){
-        //System.out.println(loginForm);
+    public String login(@Validated @ModelAttribute("loginForm") LoginForm loginForm, BindingResult bindingResult, Model model){
         if(bindingResult.hasErrors()) {
             return "login";
         }
-
-        //System.out.println(userService.findByIdUser(loginForm));
         UserEntity loginuser = userService.findByIdUser(loginForm);
-
         if (loginuser == null) {
             model.addAttribute("loginError", "ID、またはパスワードが異なります。");
             return "login";
         }
-
-        //System.out.println(userService.findByIdUser(loginForm));
         session.setAttribute("loginuser",loginuser);
-        //System.out.print(session);
         return "redirect:/home";
     }
 
@@ -80,6 +72,19 @@ public class AppController {
         if (bindingResult.hasErrors()) {
             return "signup";
         }
+
+        String getLoginId = signUpForm.getLogin_id();
+        String getPassword = signUpForm.getPassword();
+
+        var loginIdCheck = !(getLoginId.matches("[-_@+*;:#$%&A-Za-z0-9]+") || getLoginId.matches("\\w"));
+        var passCheck = !(getPassword.matches("[-_@+*;:#$%&A-Za-z0-9]+") || getPassword.matches("\\w"));
+
+        if(loginIdCheck || passCheck){
+            if(loginIdCheck){model.addAttribute("messageSign", "半角英数字、または-_@+*;:#$%&が使えます");}
+            if(passCheck){model.addAttribute("messagePass", "半角英数字、または-_@+*;:#$%&が使えます");}
+            return "signup";
+        }
+
 
         var loginform = new LoginForm();
         loginform.setLogin_id(signUpForm.getLogin_id());
