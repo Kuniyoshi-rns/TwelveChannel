@@ -194,13 +194,17 @@ public class AppController {
     }
 
     @GetMapping("/home")
-    public String home(@RequestParam(name = "offset", defaultValue = "0") int offset,
+    public String home(@RequestParam(name = "page", defaultValue = "1") int page,
                        @RequestParam(name = "tag", defaultValue = "") String tag,
                        @RequestParam(name = "order", defaultValue = "") String order,
                        @RequestParam(name = "keyword", defaultValue = "") String keyword,
                        Model model) {
 
+        int offset = (page-1)*20;
+        System.out.println(offset);
+
         int thread_page=threadService.threadAll().size();
+        System.out.println(thread_page);
         UserEntity userEntity = (UserEntity) session.getAttribute("loginuser");
         if(userEntity==null){
             return "thread";
@@ -250,16 +254,18 @@ public class AppController {
         }else{
             thread_page=thread_page/20+1;
         }
-        model.addAttribute("thread_page",offset/20+1);
+        model.addAttribute("thread_page",page);
         model.addAttribute("thread_all",thread_page);
 
         return "home";
     }
 
     @GetMapping("/mypage")
-    public String mypage(@RequestParam(name = "offset", defaultValue = "0") int offset,
+    public String mypage(@RequestParam(name = "page", defaultValue = "1") int page,
                          @RequestParam(name = "menu", defaultValue = "1") int menu,
                          Model model){
+
+        int offset = 20*(page-1);
 
         UserEntity userEntity = (UserEntity) session.getAttribute("loginuser");
         if(userEntity==null){
@@ -313,7 +319,7 @@ public class AppController {
         } else {
             thread_page = thread_page / 20 + 1;
         }
-        model.addAttribute("thread_page", offset / 20 + 1);
+        model.addAttribute("thread_page", page);
         model.addAttribute("thread_all", thread_page);
         return "mypage";
     }

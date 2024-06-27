@@ -58,9 +58,9 @@
 
 
     <div class="pagination">
-        <a th:href="@{/home?offset={offset}&order={order}&keyword={keyword}&tag={tag} (offset=${offset-20},order=${order},keyword=${keyword},tag=${tag})}" th:if="${offset>=20}">＜</a>
+        <a th:href="@{/home?page={page}&order={order}&keyword={keyword}&tag={tag} (page=${thread_page-1},order=${order},keyword=${keyword},tag=${tag})}" th:if="${offset>=20}">＜</a>
         <p><span th:text="${thread_page}"></span>/<span th:text="${thread_all}"></span>ページ</p>
-        <a th:href="@{/home?offset={offset}&order={order}&keyword={keyword}&tag={tag} (offset=${offset+20},order=${order},keyword=${keyword},tag=${tag})}" th:if="${thread_page<thread_all}">＞</a>
+        <a th:href="@{/home?page={page}&order={order}&keyword={keyword}&tag={tag} (page=${thread_page+1},order=${order},keyword=${keyword},tag=${tag})}" th:if="${thread_page<thread_all}">＞</a>
 
     </div>
 
