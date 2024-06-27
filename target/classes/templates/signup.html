@@ -22,21 +22,28 @@
             <div>
 
                 <input type="text" placeholder="ID" th:field="*{login_id}" class="login-input">
-                <div th:if="${!#fields.hasErrors('login_id')}">
+                <div th:if="${!#fields.hasErrors('login_id') && messageSign == null}">
                     <p style="margin:0">　</p>
                 </div>
                 <div class="error" th:each="error: ${#fields.errors('login_id')}">
                     <p style="margin:0" th:text="${error}"></p>
                 </div>
+                <div class="error">
+                    <p style="margin:0" th:text="${messageSign}">
+                </div>
+<!--                <p style="margin:0"><span class="error errormsg" th:text="${messageSign}"></span></p>-->
             </div>
 
             <div>
                 <input type="password" placeholder="パスワード" th:field="*{password}" class="login-input">
-                <div th:if="${!#fields.hasErrors('password')}">
+                <div th:if="${!#fields.hasErrors('password') && messagePass == null}">
                     <p style="margin:0">　</p>
                 </div>
                 <div class="error" th:each="error: ${#fields.errors('password')}">
                     [[${error}]]
+                </div>
+                <div class="error">
+                    <p style="margin:0" th:text="${messagePass}">
                 </div>
             </div>
 
