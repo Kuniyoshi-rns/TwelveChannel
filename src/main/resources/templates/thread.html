@@ -254,7 +254,7 @@
               }
               commeDiv.insertAdjacentHTML('beforeend',`<button class='comment-delete-btn red' onclick='commentDelete(${data.id})'>削除</button>`)
               commeDiv.insertAdjacentHTML('beforeend','<hr>');
-              commentList.prepend(commeDiv);
+              commentList.append(commeDiv);
           })
       }
     })
@@ -299,11 +299,12 @@
                      commeDiv.insertAdjacentHTML('beforeend',`<img src="${comme.image_base64}" />`)
                   }
 
-                  if(comme.user_id == [[${session.loginuser.id}]]){
+                  if(comme.user_id == [[${session.loginuser.id}]] || [[${session.loginuser.id}]] == [[${thread.creator}]]){
+                   console.log('スレッド作った人'+[[${thread.creator}]]);
                     commeDiv.insertAdjacentHTML('beforeend',`<button class='comment-delete-btn red' onclick='commentDelete(${comme.id})'>削除</button>`)
                   }
                   commeDiv.insertAdjacentHTML('beforeend','<hr>');
-                  commentList.append(commeDiv);
+                  commentList.prepend(commeDiv);
               }
               if(data.length == comCount){
                   comCount=5;
@@ -351,13 +352,13 @@
                   if(comme.image_base64 != ''){
                      commeDiv.insertAdjacentHTML('beforeend',`<img src="${comme.image_base64}" />`)
                   }
-                  if(comme.user_id == [[${session.loginuser.id}]]){
+                  if(comme.user_id == [[${session.loginuser.id}]] || [[${session.loginuser.id}]] == [[${thread.creator}]]){
                     commeDiv.insertAdjacentHTML('beforeend',`<button class='comment-delete-btn red' onclick='commentDelete(${comme.id})'>削除</button>`)
                   }
                   commeDiv.insertAdjacentHTML('beforeend','<hr>');
-                  commentList.append(commeDiv);
+                  commentList.insertAdjacentHTML('afterend',commeDiv);
               }
-              if(data.length === comCount){
+              if(data.length < 0){
                   commentList.insertAdjacentHTML('beforeend',`<button onclick='viewLoad()' id='dataReload'>データ更新</button>`);
               }
           })
